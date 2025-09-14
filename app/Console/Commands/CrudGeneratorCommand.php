@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+use App\Services\ApiRouteService;
+use App\Services\RequestGenerator;
+use App\Services\ResourceGenerator;
+use App\Services\ModuleCheckService;
+use App\Services\ControllerGenerator;
+use App\Services\ModuleSeederService;
+use App\Services\ProviderBindService;
+use App\Services\RepositoryGenerator;
+use Illuminate\Support\Facades\Artisan;
+
+class CrudGeneratorCommand extends Command
+{
+    protected $signature = 'crud:generate {module} {model}';
+    protected $description = 'Generate CRUD (Controller, Requests, Resource, Repository) inside an HMVC Module';
+
+    public function handle()
+    {
+        $module = $this->argument('module');
+        $model  = $this->argument('model');
+
+        // Generate Repository
+        RepositoryGenerator::generate($module, $model);
+        // Generate Request Validation
+        RequestGenerator::make($module, $model);
+        // Generate Controller
+        ControllerGenerator::make($module, $model);
+        // Generate Resource
+        ResourceGenerator::make($module, $model);
+        // Generate Api Resource
+        ApiRouteService::make($module, $model);
+        // Generate Bind Repository
+        ProviderBindService::make($module, $model);
+        ModuleSeederService::make($module, $model);
+
+        $this->info("CRUD generated for {$model} inside Module {$module}");
+
+  // ✅ Run php artisan optimize
+        Artisan::call('optimize');
+        $this->info("Artisan optimize executed successfully.");
+}
+}
