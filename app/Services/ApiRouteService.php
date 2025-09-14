@@ -43,19 +43,16 @@ class ApiRouteService
         $routeLine = "    Route::apiResource('{$plural}', {$model}Controller::class)->names('{$name}');";
 
         if (!str_contains($content, $routeLine)) {
-            // regex يمسك أي بلوك v1 (بـ middleware أو من غير)
-            $pattern = "/(Route::(?:middleware\(\['auth:sanctum'\]\)->)?prefix\('v1'\)->group\(function \(\) \{)/";
+             $pattern = "/(Route::(?:middleware\(\['auth:sanctum'\]\)->)?prefix\('v1'\)->group\(function \(\) \{)/";
 
             if (preg_match($pattern, $content)) {
-                // لو لقى بلوك v1
-                $content = preg_replace(
+                 $content = preg_replace(
                     $pattern,
                     "$1\n{$routeLine}",
                     $content
                 );
             } else {
-                // لو معندوش أي بلوك v1 خالص
-                $content .= "\nRoute::middleware(['auth:sanctum'])->prefix('v1')->group(function () {\n";
+                 $content .= "\nRoute::middleware(['auth:sanctum'])->prefix('v1')->group(function () {\n";
                 $content .= "{$routeLine}\n";
                 $content .= "});\n";
             }

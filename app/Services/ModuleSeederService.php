@@ -31,24 +31,28 @@ class ModuleSeederService
 
         $columns = Schema::getColumnListing($table);
 
-        $seederStub = self::generateStub($module, $model, $columns);
+        $seederStub = self::generateStub($module, $model, $columns, $table);
 
         File::put($seederPath, $seederStub);
 
-        // تحديث ModuleDatabaseSeeder
-        self::updateModuleSeeder($module, $model);
+         self::updateModuleSeeder($module, $model);
 
-        // تشغيل Seeder مباشرة
-        $seederClass = "Modules\\{$module}\\Database\\Seeders\\{$model}\\{$model}Seeder";
+         $seederClass = "Modules\\{$module}\\Database\\Seeders\\{$model}\\{$model}Seeder";
         Artisan::call('db:seed', [
             '--class' => $seederClass,
+            '--force' => true
+        ]);
+
+         $moduleSeederClass = "Modules\\{$module}\\Database\\Seeders\\{$module}DatabaseSeeder";
+        Artisan::call('db:seed', [
+            '--class' => $moduleSeederClass,
             '--force' => true
         ]);
 
         return "{$model}Seeder created and seeded successfully inside Module {$module}.";
     }
 
-    private static function generateStub($module, $model, $columns)
+    private static function generateStub($module, $model, $columns, $table)
     {
         $rows = "";
 
@@ -58,8 +62,11 @@ class ModuleSeederService
             foreach ($columns as $col) {
                 if (in_array($col, ['id', 'created_at', 'updated_at'])) continue;
 
-                // قيم ذكية حسب نوع العمود
-                if (str_ends_with($col, '_id')) {
+                $columnType = self::getColumnType($table, $col);
+
+                 if ($columnType === 'json') {
+                    $value = "json_encode(['sample' => 'Sample {$col} {$i}'])";
+                } elseif (str_ends_with($col, '_id')) {
                     $relatedTable = Str::snake(Str::plural(Str::replaceLast('_id', '', $col)));
                     if (Schema::hasTable($relatedTable)) {
                         $ids = DB::table($relatedTable)->pluck('id')->toArray();
@@ -78,14 +85,18 @@ class ModuleSeederService
                 } elseif ($col === 'full_name') {
                     $value = "Sample Name {$i}";
                 } elseif ($col === 'password') {
-                    $value = bcrypt('password123');
+                    $value = "bcrypt('password123')";
                 } elseif ($col === 'gender') {
                     $value = $i % 2 === 0 ? 'Male' : 'Female';
                 } else {
                     $value = "Sample {$col} {$i}";
                 }
 
-                $dataString .= "                '{$col}' => '{$value}',\n";
+                 if ($columnType === 'json' || $col === 'password') {
+                    $dataString .= "                '{$col}' => {$value},\n";
+                } else {
+                    $dataString .= "                '{$col}' => '{$value}',\n";
+                }
             }
 
             $rows .= "        {$model}::firstOrCreate([\n{$dataString}        ]);\n\n";
@@ -118,7 +129,7 @@ class {$model}Seeder extends Seeder
 
 namespace Modules\\{$module}\\Database\\Seeders;
 
-use Illuminate\Database\Seeder;
+use Illuminate\\Database\\Seeder;
 
 class {$module}DatabaseSeeder extends Seeder
 {
@@ -135,12 +146,16 @@ class {$module}DatabaseSeeder extends Seeder
         $seederClass = "{$model}\\{$model}Seeder::class";
 
         if (!str_contains($content, $seederClass)) {
-            // ابحث عن بداية run() method
             if (preg_match('/public function run\(\): void\s*\{/', $content, $matches, PREG_OFFSET_CAPTURE)) {
                 $pos = $matches[0][1] + strlen($matches[0][0]);
                 $content = substr_replace($content, "\n        \$this->call({$seederClass});", $pos, 0);
                 File::put($moduleSeederPath, $content);
             }
         }
+    }
+
+    private static function getColumnType($table, $column)
+    {
+        return DB::getSchemaBuilder()->getColumnType($table, $column);
     }
 }

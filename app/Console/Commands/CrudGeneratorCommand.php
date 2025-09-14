@@ -39,8 +39,7 @@ class CrudGeneratorCommand extends Command
 
         $this->info("CRUD generated for {$model} inside Module {$module}");
 
-  // ✅ Run php artisan optimize
-        Artisan::call('optimize');
+         Artisan::call('optimize');
         $this->info("Artisan optimize executed successfully.");
 }
 }

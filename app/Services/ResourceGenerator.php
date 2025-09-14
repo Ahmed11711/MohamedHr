@@ -16,7 +16,7 @@ class ResourceGenerator
             return "Table '{$table}' does not exist in database!";
         }
 
-         $baseFolder  = module_path($module, "app/Transformers");
+        $baseFolder  = module_path($module, "app/Transformers");
         $modelFolder = $baseFolder . "/{$model}";
 
         if (!File::exists($modelFolder)) {
@@ -41,10 +41,17 @@ class ResourceGenerator
     private static function generateStub($module, $model, $columns)
     {
         $fieldsString = "";
+        $table = Str::snake(Str::pluralStudly($model));
+
         foreach ($columns as $col) {
+            $type = Schema::getColumnType($table, $col);
+
             if (Str::endsWith($col, '_id')) {
                 $relation = Str::camel(Str::replaceLast('_id', '', $col));
                 $fieldsString .= "            '{$relation}' => \$resource->{$relation}?->name,\n";
+            } elseif ($type === 'json') {
+                // ✅ Handle JSON columns as translatable
+                $fieldsString .= "            '{$col}' => \$this->getTranslations('{$col}'),\n";
             } else {
                 $fieldsString .= "            '{$col}' => \$resource->{$col},\n";
             }

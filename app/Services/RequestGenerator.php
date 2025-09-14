@@ -58,6 +58,8 @@ class RequestGenerator
                     case 'date':
                     case 'datetime':
                     case 'timestamp': $rule = 'date'; break;
+                    case 'json': $rule = 'array'; break;
+
                     default: $rule = ''; break;
                 }
 
