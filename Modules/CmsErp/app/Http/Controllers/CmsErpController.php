@@ -12,6 +12,7 @@ class CmsErpController extends Controller
      */
     public function index()
     {
+        return 55;
         return view('cmserp::index');
     }
 
