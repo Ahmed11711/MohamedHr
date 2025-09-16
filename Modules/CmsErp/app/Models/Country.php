@@ -4,11 +4,10 @@ namespace Modules\CmsErp\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+// use Modules\CmsErp\Database\Factories\CountryFactory;
 use Spatie\Translatable\HasTranslations;
 
-// use Modules\CmsErp\Database\Factories\AuthorizedforExpenseApprovalFactory;
-
-class AuthorizedforExpenseApproval extends Model
+class Country extends Model
 {
     use HasFactory,HasTranslations;
 
@@ -16,10 +15,15 @@ class AuthorizedforExpenseApproval extends Model
      * The attributes that are mass assignable.
      */
     protected $fillable = [];
-    public $translatable = ['activity_name'];
+    public $translatable = ['name'];
 
-    // protected static function newFactory(): AuthorizedforExpenseApprovalFactory
+    public function cities()
+    {
+        return $this->hasMany(State::class);
+    }
+    // protected static function newFactory(): CountryFactory
     // {
-    //     // return AuthorizedforExpenseApprovalFactory::new();
+    //     // return CountryFactory::new();
     // }
+
 }
