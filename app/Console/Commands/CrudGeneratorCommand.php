@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Services\ApiRouteService;
 use App\Services\RequestGenerator;
+use App\Services\ColumnSyncService;
 use App\Services\ResourceGenerator;
 use App\Services\ModuleCheckService;
 use App\Services\ControllerGenerator;
@@ -36,6 +37,8 @@ class CrudGeneratorCommand extends Command
         // Generate Bind Repository
         ProviderBindService::make($module, $model);
         ModuleSeederService::make($module, $model);
+        //
+        ColumnSyncService::make($module,$model);
 
         $this->info("CRUD generated for {$model} inside Module {$module}");
 

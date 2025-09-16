@@ -44,14 +44,5 @@ class User extends Authenticatable
         ];
     }
 
-    // Nationality
-    public function nationality()
-    {
-        return $this->belongsTo(nationalities::class);
-    }
 
-      public function language()
-    {
-        return $this->belongsTo(Languages::class);
-    }
 }
