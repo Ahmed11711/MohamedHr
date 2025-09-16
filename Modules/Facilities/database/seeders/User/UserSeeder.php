@@ -2,8 +2,8 @@
 
 namespace Modules\Facilities\Database\Seeders\User;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
+use Modules\Facilities\Models\User;
 
 class UserSeeder extends Seeder
 {
@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
                 'gender' => 'Female',
                 'nationality_id' => '1',
                 'language_id' => '1',
-                'termsAccepted' => true,
+                'termsAccepted' => 'Sample termsAccepted 1',
         ]);
 
         User::firstOrCreate([
@@ -34,11 +34,50 @@ class UserSeeder extends Seeder
                 'gender' => 'Male',
                 'nationality_id' => '2',
                 'language_id' => '2',
-                'termsAccepted' => true,
+                'termsAccepted' => 'Sample termsAccepted 2',
         ]);
 
+        User::firstOrCreate([
+                'userName' => 'Sample userName 3',
+                'email' => 'user3@example.com',
+                'fullName' => 'Sample fullName 3',
+                'password' => bcrypt('password123'),
+                'mobileNumber' => '010100003',
+                'securityQuestion_id' => '3',
+                'security_answer' => 'Sample security_answer 3',
+                'gender' => 'Female',
+                'nationality_id' => '3',
+                'language_id' => '3',
+                'termsAccepted' => 'Sample termsAccepted 3',
+        ]);
 
+        User::firstOrCreate([
+                'userName' => 'Sample userName 4',
+                'email' => 'user4@example.com',
+                'fullName' => 'Sample fullName 4',
+                'password' => bcrypt('password123'),
+                'mobileNumber' => '010100004',
+                'securityQuestion_id' => '4',
+                'security_answer' => 'Sample security_answer 4',
+                'gender' => 'Male',
+                'nationality_id' => '4',
+                'language_id' => '4',
+                'termsAccepted' => 'Sample termsAccepted 4',
+        ]);
 
+        User::firstOrCreate([
+                'userName' => 'Sample userName 5',
+                'email' => 'user5@example.com',
+                'fullName' => 'Sample fullName 5',
+                'password' => bcrypt('password123'),
+                'mobileNumber' => '010100005',
+                'securityQuestion_id' => '5',
+                'security_answer' => 'Sample security_answer 5',
+                'gender' => 'Female',
+                'nationality_id' => '5',
+                'language_id' => '5',
+                'termsAccepted' => 'Sample termsAccepted 5',
+        ]);
 
     }
 }

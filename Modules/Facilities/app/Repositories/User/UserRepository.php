@@ -2,9 +2,9 @@
 
 namespace Modules\Facilities\Repositories\User;
 
-use App\Models\User;
-use App\Repositories\BaseRepository\BaseRepository;
 use Modules\Facilities\Repositories\User\UserRepositoryInterface;
+use App\Repositories\BaseRepository\BaseRepository;
+use Modules\Facilities\Models\User;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
