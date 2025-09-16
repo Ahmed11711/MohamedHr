@@ -11,6 +11,13 @@ class CmsErpDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(City\CitySeeder::class);
+        $this->call(Country\CountrySeeder::class);
+        $this->call(ActivitySpecific\ActivitySpecificSeeder::class);
+        $this->call(ActivityPrivate\ActivityPrivateSeeder::class);
+        $this->call(ActivityGeneral\ActivityGeneralSeeder::class);
+        $this->call(Language\LanguageSeeder::class);
+        $this->call(Nationality\NationalitySeeder::class);
         $this->call(BloodType\BloodTypeSeeder::class);
         $this->call(Allowance\AllowanceSeeder::class);
         $this->call(SecurityQuestions\SecurityQuestionsSeeder::class);

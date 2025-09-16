@@ -2,6 +2,27 @@
 
 namespace Modules\CmsErp\Providers;
 
+use Modules\CmsErp\Repositories\City\CityRepositoryInterface;
+use Modules\CmsErp\Repositories\City\CityRepository;
+
+use Modules\CmsErp\Repositories\Country\CountryRepositoryInterface;
+use Modules\CmsErp\Repositories\Country\CountryRepository;
+
+use Modules\CmsErp\Repositories\ActivitySpecific\ActivitySpecificRepositoryInterface;
+use Modules\CmsErp\Repositories\ActivitySpecific\ActivitySpecificRepository;
+
+use Modules\CmsErp\Repositories\ActivityPrivate\ActivityPrivateRepositoryInterface;
+use Modules\CmsErp\Repositories\ActivityPrivate\ActivityPrivateRepository;
+
+use Modules\CmsErp\Repositories\ActivityGeneral\ActivityGeneralRepositoryInterface;
+use Modules\CmsErp\Repositories\ActivityGeneral\ActivityGeneralRepository;
+
+use Modules\CmsErp\Repositories\Language\LanguageRepositoryInterface;
+use Modules\CmsErp\Repositories\Language\LanguageRepository;
+
+use Modules\CmsErp\Repositories\Nationality\NationalityRepositoryInterface;
+use Modules\CmsErp\Repositories\Nationality\NationalityRepository;
+
 use Modules\CmsErp\Repositories\TrialPeriod\TrialPeriodRepositoryInterface;
 use Modules\CmsErp\Repositories\TrialPeriod\TrialPeriodRepository;
 
@@ -131,6 +152,13 @@ $this->app->register(EventServiceProvider::class);
         $this->app->bind(SalaryTypeRepositoryInterface::class, SalaryTypeRepository::class);
         $this->app->bind(SubscriptionRepositoryInterface::class, SubscriptionRepository::class);
         $this->app->bind(TrialPeriodRepositoryInterface::class, TrialPeriodRepository::class);
+        $this->app->bind(NationalityRepositoryInterface::class, NationalityRepository::class);
+        $this->app->bind(LanguageRepositoryInterface::class, LanguageRepository::class);
+        $this->app->bind(ActivityGeneralRepositoryInterface::class, ActivityGeneralRepository::class);
+        $this->app->bind(ActivityPrivateRepositoryInterface::class, ActivityPrivateRepository::class);
+        $this->app->bind(ActivitySpecificRepositoryInterface::class, ActivitySpecificRepository::class);
+        $this->app->bind(CountryRepositoryInterface::class, CountryRepository::class);
+        $this->app->bind(CityRepositoryInterface::class, CityRepository::class);
 }
 
     /**

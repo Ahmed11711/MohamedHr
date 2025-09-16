@@ -1,6 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\CmsErp\Http\Controllers\City\CityController;
+use Modules\CmsErp\Http\Controllers\Country\CountryController;
+use Modules\CmsErp\Http\Controllers\ActivitySpecific\ActivitySpecificController;
+use Modules\CmsErp\Http\Controllers\ActivityPrivate\ActivityPrivateController;
+use Modules\CmsErp\Http\Controllers\ActivityGeneral\ActivityGeneralController;
+use Modules\CmsErp\Http\Controllers\Language\LanguageController;
+use Modules\CmsErp\Http\Controllers\Nationality\NationalityController;
 use Modules\CmsErp\Http\Controllers\TrialPeriod\TrialPeriodController;
 use Modules\CmsErp\Http\Controllers\Subscription\SubscriptionController;
 use Modules\CmsErp\Http\Controllers\SalaryType\SalaryTypeController;
@@ -28,6 +35,13 @@ use Modules\CmsErp\Http\Controllers\SecurityQuestions\SecurityQuestionsControlle
 use Modules\CmsErp\Http\Controllers\CmsErpController;
 
 Route::prefix('v1')->group(function () {
+    Route::apiResource('cities', CityController::class)->names('city');
+    Route::apiResource('countries', CountryController::class)->names('country');
+    Route::apiResource('activity_specifics', ActivitySpecificController::class)->names('activity_specific');
+    Route::apiResource('activity_privates', ActivityPrivateController::class)->names('activity_private');
+    Route::apiResource('activity_generals', ActivityGeneralController::class)->names('activity_general');
+    Route::apiResource('languages', LanguageController::class)->names('language');
+    Route::apiResource('nationalities', NationalityController::class)->names('nationality');
     Route::apiResource('trial_periods', TrialPeriodController::class)->names('trial_period');
     Route::apiResource('subscriptions', SubscriptionController::class)->names('subscription');
     Route::apiResource('salary_types', SalaryTypeController::class)->names('salary_type');
