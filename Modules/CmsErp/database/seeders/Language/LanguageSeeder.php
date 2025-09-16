@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Modules\CmsErp\Database\Seeders\Language;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;

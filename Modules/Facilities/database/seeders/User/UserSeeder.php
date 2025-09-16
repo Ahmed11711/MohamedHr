@@ -2,9 +2,9 @@
 
 namespace Modules\Facilities\Database\Seeders\User;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Modules\Facilities\Models\User;
-
+ 
 class UserSeeder extends Seeder
 {
     public function run(): void
@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
                 'gender' => 'Female',
                 'nationality_id' => '1',
                 'language_id' => '1',
-                'termsAccepted' => 'Sample termsAccepted 1',
+                'termsAccepted' => true,
         ]);
 
         User::firstOrCreate([
@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
                 'gender' => 'Male',
                 'nationality_id' => '2',
                 'language_id' => '2',
-                'termsAccepted' => 'Sample termsAccepted 2',
+                'termsAccepted' => true,
         ]);
 
         User::firstOrCreate([
@@ -48,7 +48,7 @@ class UserSeeder extends Seeder
                 'gender' => 'Female',
                 'nationality_id' => '3',
                 'language_id' => '3',
-                'termsAccepted' => 'Sample termsAccepted 3',
+                'termsAccepted' => false,
         ]);
 
         User::firstOrCreate([
@@ -62,7 +62,7 @@ class UserSeeder extends Seeder
                 'gender' => 'Male',
                 'nationality_id' => '4',
                 'language_id' => '4',
-                'termsAccepted' => 'Sample termsAccepted 4',
+                'termsAccepted' => true,
         ]);
 
         User::firstOrCreate([
@@ -76,7 +76,7 @@ class UserSeeder extends Seeder
                 'gender' => 'Female',
                 'nationality_id' => '5',
                 'language_id' => '5',
-                'termsAccepted' => 'Sample termsAccepted 5',
+                'termsAccepted' => true,
         ]);
 
     }
