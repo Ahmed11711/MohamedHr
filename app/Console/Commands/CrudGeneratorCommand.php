@@ -36,9 +36,11 @@ class CrudGeneratorCommand extends Command
         ApiRouteService::make($module, $model);
         // Generate Bind Repository
         ProviderBindService::make($module, $model);
+
         ModuleSeederService::make($module, $model);
         //
         ColumnSyncService::make($module,$model);
+         // ModuleSeederService::make($module, $model);
 
         $this->info("CRUD generated for {$model} inside Module {$module}");
 
