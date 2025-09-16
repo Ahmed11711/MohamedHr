@@ -9,20 +9,25 @@ class NationalitySeeder extends Seeder
 {
     public function run(): void
     {
-        Nationality::firstOrCreate([
-        ]);
+        $nationalities = [
+            [
+                'name' => json_encode([
+                    'ar' => 'مصري',
+                    'en' => 'Egyptian',
+                ], JSON_UNESCAPED_UNICODE),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => json_encode([
+                    'ar' => 'اماراتي',
+                    'en' => 'Emirati',
+                ], JSON_UNESCAPED_UNICODE),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ];
 
-        Nationality::firstOrCreate([
-        ]);
-
-        Nationality::firstOrCreate([
-        ]);
-
-        Nationality::firstOrCreate([
-        ]);
-
-        Nationality::firstOrCreate([
-        ]);
-
+        Nationality::insert($nationalities);
     }
 }

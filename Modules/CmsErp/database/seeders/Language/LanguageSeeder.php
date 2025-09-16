@@ -1,28 +1,33 @@
 <?php
 
-namespace Modules\CmsErp\Database\Seeders\Language;
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\CmsErp\Models\Language;
+use Illuminate\Support\Facades\DB;
 
 class LanguageSeeder extends Seeder
 {
     public function run(): void
     {
-        Language::firstOrCreate([
-        ]);
+        $languages = [
+            [
+                'name' => json_encode([
+                    'ar' => 'العربية',
+                    'en' => 'Arabic',
+                ], JSON_UNESCAPED_UNICODE),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => json_encode([
+                    'ar' => 'الانجليزية',
+                    'en' => 'English',
+                ], JSON_UNESCAPED_UNICODE),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ];
 
-        Language::firstOrCreate([
-        ]);
-
-        Language::firstOrCreate([
-        ]);
-
-        Language::firstOrCreate([
-        ]);
-
-        Language::firstOrCreate([
-        ]);
-
+        DB::table('languages')->insert($languages);
     }
 }
