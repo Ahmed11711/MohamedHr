@@ -5,7 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
- use Modules\Facilities\Database\Seeders\FacilitiesDatabaseSeeder;
+use Modules\CmsErp\Database\Seeders\CmsErpDatabaseSeeder;
+use Modules\Facilities\Database\Seeders\FacilitiesDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,8 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
- $this->call([
+     $this->call([
+        CmsErpDatabaseSeeder::class,
         FacilitiesDatabaseSeeder::class,
+
      ]);
 
     }

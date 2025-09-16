@@ -54,7 +54,12 @@ class RequestGenerator
                     case 'text': $rule = 'string'; break;
                     case 'integer':
                     case 'bigint': $rule = 'integer'; break;
-                    case 'boolean': $rule = 'boolean'; break;
+                    case 'boolean':
+                    case 'tinyint':
+                    case 'tinyint(1)':
+                        $rule = 'boolean';
+                        break;
+
                     case 'date':
                     case 'datetime':
                     case 'timestamp': $rule = 'date'; break;

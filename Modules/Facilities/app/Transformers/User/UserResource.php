@@ -25,6 +25,8 @@ class UserResource extends JsonResource
             'termsAccepted' => $resource->termsAccepted,
             'created_at' => $resource->created_at,
             'updated_at' => $resource->updated_at,
+
+
         ];
     }
 }

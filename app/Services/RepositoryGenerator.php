@@ -16,8 +16,7 @@ class RepositoryGenerator
         File::makeDirectory($repositoryDir, 0755, true);
     }
 
-    // ✅ لو الملف موجود، يتجاهله
-    if (!File::exists($repositoryPath)) {
+     if (!File::exists($repositoryPath)) {
         $repositoryStub = "<?php
 
 namespace Modules\\{$module}\\Repositories\\{$model};

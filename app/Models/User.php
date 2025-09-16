@@ -43,6 +43,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
+ public function columns()
+    {
+        return $this->morphMany(columns::class, 'model');
+    }
 
 }

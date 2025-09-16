@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('columns', function (Blueprint $table) {
         $table->id();
-         $table->string('module');
+        //  $table->string('module');
         $table->string('model');
         $table->json('key');
         $table->json('label');
         $table->boolean('sortable')->default(true);
         $table->boolean('filterable')->default(true);
+
         $table->timestamps();
          });
     }

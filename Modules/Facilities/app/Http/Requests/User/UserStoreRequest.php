@@ -24,9 +24,9 @@ class UserStoreRequest extends FormRequest
             'securityQuestion_id' => 'required|exists:security_questions,id',
             'security_answer' => 'required',
             'gender' => 'required',
-            'nationality_id' => 'required|integer',
-            'language_id' => 'required|integer',
-            'termsAccepted' => 'required',
+            'nationality_id' => 'required|integer|exists:nationalities,id',
+            'language_id' => 'required|integer|exists:languages,id',
+            'termsAccepted' => 'required|boolean',
         ];
     }
 

@@ -6,5 +6,5 @@ use Modules\Facilities\Http\Controllers\User\UserController;
 
 Route::prefix('v1')->group(function () {
     Route::apiResource('users', UserController::class)->names('user');
-      Route::apiResource('facilities', FacilitiesController::class)->names('facilities');
+          Route::apiResource('facilities', FacilitiesController::class)->names('facilities');
 });

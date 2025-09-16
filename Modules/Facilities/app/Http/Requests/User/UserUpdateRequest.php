@@ -24,9 +24,9 @@ class UserUpdateRequest extends FormRequest
             'securityQuestion_id' => 'sometimes|required|exists:security_questions,id',
             'security_answer' => 'sometimes|required',
             'gender' => 'sometimes|required',
-            'nationality_id' => 'sometimes|required|integer',
-            'language_id' => 'sometimes|required|integer',
-            'termsAccepted' => 'sometimes|required',
+            'nationality_id' => 'sometimes|required|integer|exists:nationalities,id',
+            'language_id' => 'sometimes|required|integer|exists:languages,id',
+            'termsAccepted' => 'sometimes|required|boolean',
         ];
     }
 
