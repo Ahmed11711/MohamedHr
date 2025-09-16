@@ -2,6 +2,9 @@
 
 namespace Modules\Employee\Providers;
 
+use Modules\Employee\Repositories\Employeeinfo\EmployeeinfoRepositoryInterface;
+use Modules\Employee\Repositories\Employeeinfo\EmployeeinfoRepository;
+
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
@@ -32,11 +35,11 @@ class EmployeeServiceProvider extends ServiceProvider
     /**
      * Register the service provider.
      */
-    public function register(): void
-    {
-        $this->app->register(EventServiceProvider::class);
+    public function register(): void {
+$this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
-    }
+        $this->app->bind(EmployeeinfoRepositoryInterface::class, EmployeeinfoRepository::class);
+}
 
     /**
      * Register commands in the format of Command::class
