@@ -19,7 +19,7 @@ class Country extends Model
 
     public function cities()
     {
-        return $this->hasMany(State::class);
+        return $this->hasMany(City::class);
     }
     // protected static function newFactory(): CountryFactory
     // {

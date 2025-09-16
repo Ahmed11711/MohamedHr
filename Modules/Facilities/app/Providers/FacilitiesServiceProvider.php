@@ -2,6 +2,9 @@
 
 namespace Modules\Facilities\Providers;
 
+use Modules\Facilities\Repositories\User\UserRepositoryInterface;
+use Modules\Facilities\Repositories\User\UserRepository;
+
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
@@ -32,11 +35,11 @@ class FacilitiesServiceProvider extends ServiceProvider
     /**
      * Register the service provider.
      */
-    public function register(): void
-    {
-        $this->app->register(EventServiceProvider::class);
+    public function register(): void {
+$this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
-    }
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+}
 
     /**
      * Register commands in the format of Command::class
