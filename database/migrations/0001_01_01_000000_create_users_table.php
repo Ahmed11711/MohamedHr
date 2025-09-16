@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('fullName');
             $table->string('password');
             $table->string('mobileNumber');
-            $table->integer('security_questions');
+            $table->integer('securityQuestion_id');
             $table->string('security_answer');
             $table->enum('gender', ['Male', 'Female']);
             $table->unsignedBigInteger('nationality_id');

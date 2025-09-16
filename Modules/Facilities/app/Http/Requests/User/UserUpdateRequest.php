@@ -21,7 +21,7 @@ class UserUpdateRequest extends FormRequest
             'fullName' => 'sometimes|required|string',
             'password' => 'sometimes|required',
             'mobileNumber' => 'sometimes|required',
-            'security_questions' => 'sometimes|required',
+            'securityQuestion_id' => 'sometimes|required|exists:security_questions,id',
             'security_answer' => 'sometimes|required',
             'gender' => 'sometimes|required',
             'nationality_id' => 'sometimes|required|integer',

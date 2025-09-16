@@ -21,7 +21,7 @@ class UserStoreRequest extends FormRequest
             'fullName' => 'required|string',
             'password' => 'required',
             'mobileNumber' => 'required',
-            'security_questions' => 'required',
+            'securityQuestion_id' => 'required|exists:security_questions,id',
             'security_answer' => 'required',
             'gender' => 'required',
             'nationality_id' => 'required|integer',

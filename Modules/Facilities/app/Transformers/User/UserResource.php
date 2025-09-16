@@ -17,7 +17,7 @@ class UserResource extends JsonResource
             'fullName' => $resource->fullName,
             'password' => $resource->password,
             'mobileNumber' => $resource->mobileNumber,
-            'security_questions' => $resource->security_questions,
+            'securityQuestion' => $resource->securityQuestion?->name,
             'security_answer' => $resource->security_answer,
             'gender' => $resource->gender,
             'nationality' => $resource->nationality?->name,
