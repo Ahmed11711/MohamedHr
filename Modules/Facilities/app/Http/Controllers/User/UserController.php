@@ -2,13 +2,15 @@
 
 namespace Modules\Facilities\Http\Controllers\User;
 
-use Modules\Facilities\Repositories\User\UserRepositoryInterface;
+use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 use Modules\Facilities\Http\Requests\User\UserStoreRequest;
 use Modules\Facilities\Http\Requests\User\UserUpdateRequest;
+use Modules\Facilities\Repositories\User\UserRepositoryInterface;
+use Modules\Facilities\Transformers\BaseCollection\BaseCollection;
 use Modules\Facilities\Transformers\User\UserResource;
 
 class UserController extends Controller
@@ -24,8 +26,14 @@ class UserController extends Controller
 
     public function index()
     {
+
+
         $data = $this->UserRepository->all();
-        return $this->successResponse(UserResource::collection($data), 'User list retrieved successfully');
+
+        return $this->successResponse(
+            new BaseCollection($data, 'user', UserResource::class),
+            'User list retrieved successfully'
+        );
     }
 
     public function show($id)

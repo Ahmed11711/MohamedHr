@@ -3,6 +3,7 @@ namespace App\Repositories\BaseRepository;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\BaseRepository\BaseRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 
 class BaseRepository implements BaseRepositoryInterface
 {
@@ -16,6 +17,13 @@ class BaseRepository implements BaseRepositoryInterface
     public function all()
     {
         return $this->model->all();
+    }
+
+    public function allRelations(array $relations)
+    {
+        Log::info("uu",[$relations]);
+    return $this->model->with($relations)->get();
+
     }
 
     public function paginate()

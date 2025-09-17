@@ -11,7 +11,7 @@ class ApiRouteService
     {
         $apiFile = module_path($module, "Routes/api.php");
 
-         if (!File::exists($apiFile)) {
+        if (!File::exists($apiFile)) {
             $content = "<?php\n\nuse Illuminate\Support\Facades\Route;\n\n";
             $content .= "Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {\n";
             $content .= "    // API Resources\n";
@@ -29,7 +29,6 @@ class ApiRouteService
         $controllerNamespace = "Modules\\{$module}\\Http\\Controllers\\{$model}\\{$model}Controller";
         $controllerUse = "use {$controllerNamespace};";
 
-        // لو الـ use مش موجود نضيفه
         if (!str_contains($content, $controllerUse)) {
             $content = preg_replace(
                 '/(use Illuminate\\\\Support\\\\Facades\\\\Route;)/',
@@ -43,16 +42,16 @@ class ApiRouteService
         $routeLine = "    Route::apiResource('{$plural}', {$model}Controller::class)->names('{$name}');";
 
         if (!str_contains($content, $routeLine)) {
-             $pattern = "/(Route::(?:middleware\(\['auth:sanctum'\]\)->)?prefix\('v1'\)->group\(function \(\) \{)/";
+            $pattern = "/(Route::(?:middleware\(\['auth:sanctum'\]\)->)?prefix\('v1'\)->group\(function \(\) \{)/";
 
             if (preg_match($pattern, $content)) {
-                 $content = preg_replace(
+                $content = preg_replace(
                     $pattern,
                     "$1\n{$routeLine}",
                     $content
                 );
             } else {
-                 $content .= "\nRoute::middleware(['auth:sanctum'])->prefix('v1')->group(function () {\n";
+                $content .= "\nRoute::middleware(['auth:sanctum'])->prefix('v1')->group(function () {\n";
                 $content .= "{$routeLine}\n";
                 $content .= "});\n";
             }

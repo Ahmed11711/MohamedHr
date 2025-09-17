@@ -9,20 +9,6 @@ class EmployeeinfoSeeder extends Seeder
 {
     public function run(): void
     {
-        Employeeinfo::firstOrCreate([
-        ]);
-
-        Employeeinfo::firstOrCreate([
-        ]);
-
-        Employeeinfo::firstOrCreate([
-        ]);
-
-        Employeeinfo::firstOrCreate([
-        ]);
-
-        Employeeinfo::firstOrCreate([
-        ]);
-
+        // Employeeinfo::firstOrCreate([]);
     }
 }

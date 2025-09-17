@@ -15,9 +15,9 @@ class UserResource extends JsonResource
             'userName' => $resource->userName,
             'email' => $resource->email,
             'fullName' => $resource->fullName,
-            'password' => $resource->password,
+            // 'password' => $resource->password,
             'mobileNumber' => $resource->mobileNumber,
-            'securityQuestion' => $resource->securityQuestion?->name,
+            'securityQuestion' => $resource->securityQuestion?->questions,
             'security_answer' => $resource->security_answer,
             'gender' => $resource->gender,
             'nationality' => $resource->nationality?->name,
@@ -25,7 +25,6 @@ class UserResource extends JsonResource
             'termsAccepted' => $resource->termsAccepted,
             'created_at' => $resource->created_at,
             'updated_at' => $resource->updated_at,
-
 
         ];
     }

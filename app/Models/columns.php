@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class columns extends Model
 {
-    //
 
-      public function columnable()
-    {
-        return $this->morphTo();
-    }
+
+  public function columnable()
+  {
+    return $this->morphTo();
+  }
 }

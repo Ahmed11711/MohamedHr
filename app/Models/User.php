@@ -6,8 +6,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Modules\Facilities\Models\Languages;
-use Modules\Facilities\Models\nationalities;
+use Modules\CmsErp\Models\Language;
+use Modules\CmsErp\Models\Nationality;
+use Modules\CmsErp\Models\SecurityQuestions;
+use Modules\Facilities\Models\InfoFacilities;
 
 class User extends Authenticatable
 {
@@ -43,9 +45,32 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
- public function columns()
+    public function getTermsAcceptedAttribute($value)
     {
-        return $this->morphMany(columns::class, 'model');
+        return (bool) $value;
     }
 
+    // User columns 
+    public function columns()
+    {
+        return $this->hasMany(InfoFacilities::class, 'infoable_type', 'User');
+    }
+
+    // User nationality 
+    public function nationality()
+    {
+        return $this->belongsTo(Nationality::class, 'nationality_id');
+    }
+
+    // User language 
+    public function language()
+    {
+        return $this->belongsTo(Language::class, 'language_id');
+    }
+
+    // User securityQuestion 
+    public function securityQuestion()
+    {
+        return $this->belongsTo(SecurityQuestions::class, 'securityQuestion_id');
+    }
 }

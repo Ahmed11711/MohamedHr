@@ -3,6 +3,8 @@
 namespace Modules\Facilities\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\Facilities\Database\Seeders\ColumnsSeeder;
+use Modules\Facilities\Database\Seeders\InfoSeeder;
 
 class FacilitiesDatabaseSeeder extends Seeder
 {
@@ -11,7 +13,11 @@ class FacilitiesDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(Facilities\FacilitiesSeeder::class);
         $this->call(User\UserSeeder::class);
-        // $this->call([]);
+        $this->call([
+            ColumnsSeeder::class,
+            InfoSeeder::class,
+        ]);
     }
 }

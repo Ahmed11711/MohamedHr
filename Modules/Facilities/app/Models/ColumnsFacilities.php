@@ -5,18 +5,11 @@ namespace Modules\Facilities\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Facilities\Database\Factories\ColumnsFacilitiesFactory;
+use Spatie\Translatable\HasTranslations;
 
-class columns_facilities extends Model
+class ColumnsFacilities extends Model
 {
-    use HasFactory;
-
-    /**
-     * The attributes that are mass assignable.
-     */
-    protected $fillable = [];
-
-    // protected static function newFactory(): ColumnsFacilitiesFactory
-    // {
-    //     // return ColumnsFacilitiesFactory::new();
-    // }
+    use HasFactory, HasTranslations;
+    protected $table = 'columns_facilities';
+    public $translatable = ['key', 'label'];
 }

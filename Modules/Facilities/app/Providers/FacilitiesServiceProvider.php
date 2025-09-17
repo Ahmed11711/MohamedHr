@@ -2,6 +2,12 @@
 
 namespace Modules\Facilities\Providers;
 
+use Modules\Facilities\Repositories\Facilities\FacilitiesRepositoryInterface;
+use Modules\Facilities\Repositories\Facilities\FacilitiesRepository;
+
+use Modules\Facilities\Repositories\Fatama\FatamaRepositoryInterface;
+use Modules\Facilities\Repositories\Fatama\FatamaRepository;
+
 use Modules\Facilities\Repositories\User\UserRepositoryInterface;
 use Modules\Facilities\Repositories\User\UserRepository;
 
@@ -39,6 +45,7 @@ class FacilitiesServiceProvider extends ServiceProvider
 $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(FacilitiesRepositoryInterface::class, FacilitiesRepository::class);
 }
 
     /**

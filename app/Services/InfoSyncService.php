@@ -2,85 +2,86 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class InfoSyncService
 {
     /**
-     * Sync info columns and insert to model-specific infos table
+     * Generate/Update InfoSeeder file instead of inserting in DB
      *
-     * @param string $model  Model name (e.g., 'Product')
+     * @param string $module     Module name (e.g., Facilities)
+     * @param string $modelClass Full model class (e.g., App\Models\User)
+     * @param string $modelName  Name to store in infoable_type (e.g., 'User')
      * @return string
      */
-    public static function make(string $model)
+    public static function make(string $module, string $modelName)
     {
-        // جدول الأعمدة: info_{model_plural_snake_case}
-        $columnsTable = 'info_' . Str::snake(Str::pluralStudly($model));
-        // جدول تخزين infos الخاص بالموديل: infos_{model_plural_snake_case}
-        $infosTable = 'info_' . Str::snake(Str::pluralStudly($model));
- 
-        // التحقق من وجود جداول الأعمدة و جداول البيانات
-        if (!Schema::hasTable($columnsTable)) {
-            return "Columns table '{$columnsTable}' does not exist!";
-        }
-
-        if (!Schema::hasTable($infosTable)) {
-            return "Infos table '{$infosTable}' does not exist!";
-        }
-
-        // جلب الأعمدة من جدول الأعمدة (info_{model})
-        $columns = Schema::getColumnListing($columnsTable);
-
-        // الأعمدة التي لا نحتاجها
-        $ignore = ['id', 'created_at', 'updated_at', 'deleted_at'];
-
-        // مهيئ Google Translate إلى العربية
         $tr = new GoogleTranslate('ar');
 
-        foreach ($columns as $col) {
-            if (in_array($col, $ignore)) {
-                continue; // تجاهل الأعمدة النظامية
-            }
+        $englishTitle = Str::title(str_replace('_', ' ', $modelName));
+        $arabicTitle  = $tr->translate($englishTitle);
 
-            // الترجمة العربية للعنوان
-            $arabicTitle = $tr->translate(Str::title(str_replace('_', ' ', $col)));
+        $englishDesc = "Description for {$englishTitle}";
+        $arabicDesc  = $tr->translate($englishDesc);
 
-            // وصف عربي إضافي (يمكن تعديله حسب حاجتك)
-            $arabicDesc = $arabicTitle . " وصف إضافي للعمود";
+        $title = json_encode(['en' => $englishTitle, 'ar' => $arabicTitle], JSON_UNESCAPED_UNICODE);
+        $desc  = json_encode(['en' => $englishDesc, 'ar' => $arabicDesc], JSON_UNESCAPED_UNICODE);
 
-            // تجميع العنوان والشرح (العربي والإنجليزي)
-            $title = [
-                'en' => Str::title(str_replace('_', ' ', $col)),
-                'ar' => $arabicTitle,
-            ];
+        $path = module_path($module, "Database/Seeders");
 
-            $desc = [
-                'en' => 'Description for ' . Str::title(str_replace('_', ' ', $col)),
-                'ar' => $arabicDesc,
-            ];
+        if (!File::exists($path)) {
+            File::makeDirectory($path, 0755, true);
+        }
 
-            // التحقق إذا السجل موجود مسبقًا في جدول infos_{model}
-            $exists = DB::table($infosTable)
-                ->where('infoable_type', 'App\\Models\\' . $model)
-                ->whereJsonContains('title->en', $title['en'])
-                ->exists();
+        $seederName = "InfoSeeder.php";
+        $filePath   = $path . '/' . $seederName;
 
-            if (!$exists) {
-                // إدخال السجل الجديد
-                DB::table($infosTable)->insert([
-                    'infoable_type' => 'App\\Models\\' . $model,
-                    'title'         => json_encode($title, JSON_UNESCAPED_UNICODE),
-                    'desc'          => json_encode($desc, JSON_UNESCAPED_UNICODE),
-                    'created_at'    => now(),
-                    'updated_at'    => now(),
-                ]);
+        $namespace  = "Modules\\{$module}\\Database\\Seeders";
+
+        $arrayString = "[\n            'infoable_type' => '{$modelName}',\n" .
+            "            'title' => '{$title}',\n" .
+            "            'desc' => '{$desc}',\n" .
+            "            'created_at' => now(),\n" .
+            "            'updated_at' => now(),\n        ]";
+
+        if (!File::exists($filePath)) {
+            $seederContent = <<<PHP
+<?php
+
+namespace {$namespace};
+
+use Illuminate\\Database\\Seeder;
+use Illuminate\\Support\\Facades\\DB;
+
+class InfoSeeder extends Seeder
+{
+    public function run(): void
+    {
+        DB::table('info_{$module}')->insert([
+            {$arrayString}
+        ]);
+    }
+}
+PHP;
+            File::put($filePath, $seederContent);
+        } else {
+            $oldContent = File::get($filePath);
+
+            if (strpos($oldContent, "infoable_type' => '{$modelName}'") === false) {
+                $newInsert = "        DB::table('info_{$module}')->insert([\n            {$arrayString}\n        ]);\n";
+
+                $newContent = preg_replace(
+                    '/\}\s*\}\s*$/',
+                    $newInsert . "    }\n}",
+                    $oldContent
+                );
+
+                File::put($filePath, $newContent);
             }
         }
 
-        return "Info synced for model '{$model}'";
+        return "InfoSeeder updated: {$filePath}";
     }
 }

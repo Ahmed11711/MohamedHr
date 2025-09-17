@@ -40,26 +40,20 @@ class CrudGeneratorCommand extends Command
 
         // ModuleSeederService::make($module, $model);
 
-<<<<<<< HEAD
         ModuleSeederService::make($module, $model);
         //
         ColumnSyncService::make($module, $model);
         // ModuleSeederService::make($module, $model);
-=======
-        // ModuleSeederService::make($module, $model);
+         // ModuleSeederService::make($module, $model);
         // ColumnSyncService
         ColumnSyncService::make($module, $model);
         // infoSyncService
         InfoSyncService::make($module, $model);
->>>>>>> e40630aaac86d342b71cde4b993bcfe99676068f
-
+ 
         $this->info("CRUD generated for {$model} inside Module {$module}");
 
         Artisan::call('optimize');
-<<<<<<< HEAD
-        $this->info("Artisan optimize executed successfully.");
-=======
-        $this->info('Artisan optimize executed successfully.');
->>>>>>> e40630aaac86d342b71cde4b993bcfe99676068f
-    }
+         $this->info("Artisan optimize executed successfully.");
+         $this->info('Artisan optimize executed successfully.');
+     }
 }

@@ -11,6 +11,7 @@ interface BaseRepositoryInterface {
 
     public function find($id);
 
+    public function allRelations(array $data);
     public function create(array $data);
 
     public function update($id, array $data);
