@@ -2,6 +2,9 @@
 
 namespace Modules\CmsErp\Providers;
 
+use Modules\CmsErp\Repositories\Religion\ReligionRepositoryInterface;
+use Modules\CmsErp\Repositories\Religion\ReligionRepository;
+
 use Modules\CmsErp\Repositories\City\CityRepositoryInterface;
 use Modules\CmsErp\Repositories\City\CityRepository;
 
@@ -159,6 +162,7 @@ $this->app->register(EventServiceProvider::class);
         $this->app->bind(ActivitySpecificRepositoryInterface::class, ActivitySpecificRepository::class);
         $this->app->bind(CountryRepositoryInterface::class, CountryRepository::class);
         $this->app->bind(CityRepositoryInterface::class, CityRepository::class);
+        $this->app->bind(ReligionRepositoryInterface::class, ReligionRepository::class);
 }
 
     /**

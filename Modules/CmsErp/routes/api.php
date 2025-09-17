@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\CmsErp\Http\Controllers\Religion\ReligionController;
 use Modules\CmsErp\Http\Controllers\City\CityController;
 use Modules\CmsErp\Http\Controllers\Country\CountryController;
 use Modules\CmsErp\Http\Controllers\ActivitySpecific\ActivitySpecificController;
@@ -35,6 +36,7 @@ use Modules\CmsErp\Http\Controllers\SecurityQuestions\SecurityQuestionsControlle
 use Modules\CmsErp\Http\Controllers\CmsErpController;
 
 Route::prefix('v1')->group(function () {
+    Route::apiResource('religions', ReligionController::class)->names('religion');
     Route::apiResource('cities', CityController::class)->names('city');
     Route::apiResource('countries', CountryController::class)->names('country');
     Route::apiResource('activity_specifics', ActivitySpecificController::class)->names('activity_specific');

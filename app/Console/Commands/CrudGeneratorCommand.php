@@ -22,7 +22,7 @@ class CrudGeneratorCommand extends Command
     public function handle()
     {
         $module = $this->argument('module');
-        $model  = $this->argument('model');
+        $model = $this->argument('model');
 
         // Generate Repository
         RepositoryGenerator::generate($module, $model);
@@ -39,14 +39,14 @@ class CrudGeneratorCommand extends Command
 
         ModuleSeederService::make($module, $model);
 
-        // ModuleSeederService::make($module, $model);
+        ModuleSeederService::make($module, $model);
         //
-        ColumnSyncService::make($module,$model);
-         // ModuleSeederService::make($module, $model);
+        ColumnSyncService::make($module, $model);
+        // ModuleSeederService::make($module, $model);
 
         $this->info("CRUD generated for {$model} inside Module {$module}");
 
-         Artisan::call('optimize');
+        Artisan::call('optimize');
         $this->info("Artisan optimize executed successfully.");
-}
+    }
 }
