@@ -16,44 +16,53 @@ use Illuminate\Support\Facades\Artisan;
 
 class CrudGeneratorCommand extends Command
 {
-    protected $signature = 'crud:generate {module} {model}';
+        protected $signature = 'crud:generate {module} {model}';
 
-    protected $description = 'Generate CRUD (Controller, Requests, Resource, Repository) inside an HMVC Module';
+        protected $description = 'Generate CRUD (Controller, Requests, Resource, Repository) inside an HMVC Module';
 
-    public function handle()
-    {
-        $module = $this->argument('module');
-        $model = $this->argument('model');
+        public function handle()
+        {
+                $module = $this->argument('module');
+                $model = $this->argument('model');
 
-        // Generate Repository
-        RepositoryGenerator::generate($module, $model);
-        // Generate Request Validation
-        RequestGenerator::make($module, $model);
-        // Generate Controller
-        ControllerGenerator::make($module, $model);
-        // Generate Resource
-        ResourceGenerator::make($module, $model);
-        // Generate Api Resource
-        ApiRouteService::make($module, $model);
-        // Generate Bind Repository
-        ProviderBindService::make($module, $model);
+                // Generate Repository
+                RepositoryGenerator::generate($module, $model);
+                // Generate Request Validation
+                RequestGenerator::make($module, $model);
+                // Generate Controller
+                ControllerGenerator::make($module, $model);
+                // Generate Resource
+                ResourceGenerator::make($module, $model);
+                // Generate Api Resource
+                ApiRouteService::make($module, $model);
+                // Generate Bind Repository
+                ProviderBindService::make($module, $model);
 
-        // ModuleSeederService::make($module, $model);
+                // ModuleSeederService::make($module, $model);
 
-        ModuleSeederService::make($module, $model);
-        //
-        ColumnSyncService::make($module, $model);
-        // ModuleSeederService::make($module, $model);
-         // ModuleSeederService::make($module, $model);
-        // ColumnSyncService
-        ColumnSyncService::make($module, $model);
-        // infoSyncService
-        InfoSyncService::make($module, $model);
- 
-        $this->info("CRUD generated for {$model} inside Module {$module}");
+                // Generate Seeder
+                ModuleSeederService::make($module, $model);
+                // Sync Columns
+                ColumnSyncService::make($module, $model);
+                // ModuleSeederService::make($module, $model);
+                // ModuleSeederService::make($module, $model);
+                // ColumnSyncService
+                ColumnSyncService::make($module, $model);
+                // infoSyncService
+                InfoSyncService::make($module, $model);
 
-        Artisan::call('optimize');
-         $this->info("Artisan optimize executed successfully.");
-         $this->info('Artisan optimize executed successfully.');
-     }
+                $this->info("CRUD generated for {$model} inside Module {$module}");
+
+                Artisan::call('optimize');
+                $this->info("Artisan optimize executed successfully.");
+                $this->info('Artisan optimize executed successfully.');
+
+                // Sync Info
+                InfoSyncService::make($module, $model);
+
+                $this->info("CRUD generated for {$model} inside Module {$module}");
+
+                Artisan::call('optimize');
+                $this->info("Artisan optimize executed successfully.");
+        }
 }
