@@ -6,6 +6,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Modules\CmsErp\Database\Seeders\CmsErpDatabaseSeeder;
+use Modules\Employee\Database\Seeders\EmployeeDatabaseSeeder;
 use Modules\Facilities\Database\Seeders\FacilitiesDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,11 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-     $this->call([
-        CmsErpDatabaseSeeder::class,
-        FacilitiesDatabaseSeeder::class,
-
-     ]);
+        $this->call([
+            CmsErpDatabaseSeeder::class,
+            FacilitiesDatabaseSeeder::class,
+            EmployeeDatabaseSeeder::class,
+        ]);
 
     }
 }
