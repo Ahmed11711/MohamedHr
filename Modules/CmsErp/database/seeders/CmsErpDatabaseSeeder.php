@@ -24,14 +24,12 @@ class CmsErpDatabaseSeeder extends Seeder
         $this->call(BloodType\BloodTypeSeeder::class);
         $this->call(Allowance\AllowanceSeeder::class);
         $this->call(SecurityQuestions\SecurityQuestionsSeeder::class);
-<<<<<<< HEAD
         $this->call(ReligionSeeder::class);
         $this->call(CompanyTypeSeeder::class);
         $this->call(CompanyHeadquarterSeeder::class);   
-        
-=======
+
         $this->call(Language\LanguageSeeder::class);
->>>>>>> e40630aaac86d342b71cde4b993bcfe99676068f
+
         // $this->call([]);
     }
 }
