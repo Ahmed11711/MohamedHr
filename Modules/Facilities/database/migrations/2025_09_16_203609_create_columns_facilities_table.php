@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('columns', function (Blueprint $table) {
+        Schema::create('columns_facilities', function (Blueprint $table) {
         $table->id();
-        //  $table->string('module');
         $table->string('model');
         $table->json('key');
         $table->json('label');
         $table->boolean('sortable')->default(true);
         $table->boolean('filterable')->default(true);
-
         $table->timestamps();
-         });
+        });
     }
 
     /**
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('columns');
+        Schema::dropIfExists('columns_facilities');
     }
 };

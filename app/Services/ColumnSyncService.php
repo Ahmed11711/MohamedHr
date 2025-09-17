@@ -21,7 +21,7 @@ class ColumnSyncService
 
         $ignore = ['id', 'created_at', 'updated_at', 'deleted_at'];
 
-        $tr = new GoogleTranslate('ar'); // إعداد الترجمة إلى العربية
+        $tr = new GoogleTranslate('ar');  
 
         foreach ($columns as $col) {
             if (in_array($col, $ignore)) {
@@ -42,13 +42,13 @@ class ColumnSyncService
             ];
 
             // check if already exists for the same model
-            $exists = DB::table('columns')
+            $exists = DB::table('columns_facilities')
                 ->where('model', $model)
                 ->whereJsonContains('key->en', $col)
                 ->exists();
 
             if (!$exists) {
-                DB::table('columns')->insert([
+                DB::table('columns_facilities')->insert([
                     'model'      => $model,
                     'key'        => json_encode($key, JSON_UNESCAPED_UNICODE),
                     'label'      => json_encode($label, JSON_UNESCAPED_UNICODE),

@@ -4,7 +4,7 @@ namespace Modules\Facilities\Database\Seeders\User;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-
+ 
 class UserSeeder extends Seeder
 {
     public function run(): void
@@ -37,8 +37,47 @@ class UserSeeder extends Seeder
                 'termsAccepted' => true,
         ]);
 
+        User::firstOrCreate([
+                'userName' => 'Sample userName 3',
+                'email' => 'user3@example.com',
+                'fullName' => 'Sample fullName 3',
+                'password' => bcrypt('password123'),
+                'mobileNumber' => '010100003',
+                'securityQuestion_id' => '3',
+                'security_answer' => 'Sample security_answer 3',
+                'gender' => 'Female',
+                'nationality_id' => '3',
+                'language_id' => '3',
+                'termsAccepted' => false,
+        ]);
 
+        User::firstOrCreate([
+                'userName' => 'Sample userName 4',
+                'email' => 'user4@example.com',
+                'fullName' => 'Sample fullName 4',
+                'password' => bcrypt('password123'),
+                'mobileNumber' => '010100004',
+                'securityQuestion_id' => '4',
+                'security_answer' => 'Sample security_answer 4',
+                'gender' => 'Male',
+                'nationality_id' => '4',
+                'language_id' => '4',
+                'termsAccepted' => true,
+        ]);
 
+        User::firstOrCreate([
+                'userName' => 'Sample userName 5',
+                'email' => 'user5@example.com',
+                'fullName' => 'Sample fullName 5',
+                'password' => bcrypt('password123'),
+                'mobileNumber' => '010100005',
+                'securityQuestion_id' => '5',
+                'security_answer' => 'Sample security_answer 5',
+                'gender' => 'Female',
+                'nationality_id' => '5',
+                'language_id' => '5',
+                'termsAccepted' => true,
+        ]);
 
     }
 }

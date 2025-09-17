@@ -2,21 +2,22 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Services\ApiRouteService;
-use App\Services\RequestGenerator;
 use App\Services\ColumnSyncService;
-use App\Services\ResourceGenerator;
-use App\Services\ModuleCheckService;
 use App\Services\ControllerGenerator;
+use App\Services\InfoSyncService;
 use App\Services\ModuleSeederService;
 use App\Services\ProviderBindService;
 use App\Services\RepositoryGenerator;
+use App\Services\RequestGenerator;
+use App\Services\ResourceGenerator;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
 class CrudGeneratorCommand extends Command
 {
     protected $signature = 'crud:generate {module} {model}';
+
     protected $description = 'Generate CRUD (Controller, Requests, Resource, Repository) inside an HMVC Module';
 
     public function handle()
@@ -37,16 +38,28 @@ class CrudGeneratorCommand extends Command
         // Generate Bind Repository
         ProviderBindService::make($module, $model);
 
-        ModuleSeederService::make($module, $model);
+        // ModuleSeederService::make($module, $model);
 
+<<<<<<< HEAD
         ModuleSeederService::make($module, $model);
         //
         ColumnSyncService::make($module, $model);
         // ModuleSeederService::make($module, $model);
+=======
+        // ModuleSeederService::make($module, $model);
+        // ColumnSyncService
+        ColumnSyncService::make($module, $model);
+        // infoSyncService
+        InfoSyncService::make($module, $model);
+>>>>>>> e40630aaac86d342b71cde4b993bcfe99676068f
 
         $this->info("CRUD generated for {$model} inside Module {$module}");
 
         Artisan::call('optimize');
+<<<<<<< HEAD
         $this->info("Artisan optimize executed successfully.");
+=======
+        $this->info('Artisan optimize executed successfully.');
+>>>>>>> e40630aaac86d342b71cde4b993bcfe99676068f
     }
 }
