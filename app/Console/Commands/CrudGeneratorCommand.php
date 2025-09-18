@@ -59,8 +59,8 @@ class CrudGeneratorCommand extends Command
                 $this->info('Artisan optimize executed successfully.');
 
                 // Sync Info
-                InfoSyncService::make($module, $model);
-                RelationSyncService::make($module, $model);
+                // InfoSyncService::make($module, $model);
+                // RelationSyncService::make($module, $model);
 
                 $this->info("CRUD generated for {$model} inside Module {$module}");
 
