@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->string('bank_number')->nullable();
             $table->text('notes')->nullable();
             $table->string('cost_center')->nullable();
+            $table->string('attachment')->nullable();
             $table->timestamps();
         });
     }
