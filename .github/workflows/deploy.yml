@@ -1,24 +1,32 @@
-name: Deploy Laravel
+name: Deploy Laravel Project
 
 on:
   push:
     branches:
-      - master  # أي Push على main سيعمل CI/CD
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.8.2
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-    - name: Deploy to Server
-      run: |
-        shh cannatasudoan@118.139.166.220 "cd /home/cannatasudoan/Laravel && git pull origin main && composer install --no-interaction --prefer-dist --optimize-autoloader && php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache && sudo systemctl restart php8.1-fpm"
+      - name: Deploy to server
+        run: |
+          ssh -o StrictHostKeyChecking=no cannatasudoan@118.139.166.220 << 'EOF'
+            cd /home/cannatasudoan/Laravel
+            git pull origin main
+            composer install --no-interaction --prefer-dist --optimize-autoloader
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            sudo systemctl restart php8.1-fpm
+          EOF
