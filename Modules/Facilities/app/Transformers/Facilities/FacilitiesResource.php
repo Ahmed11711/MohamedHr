@@ -17,7 +17,7 @@ class FacilitiesResource extends JsonResource
             'company_name_ar' => $resource->company_name_ar,
             'company_name_en' => $resource->company_name_en,
             'companyType' => $resource->companyType?->name,
-            'companySize' => $resource->companySize?->name,
+            // 'companySize' => $resource->companySize?->name,
             'companyHeadquarters' => $resource->companyHeadquarters?->name,
             'companyActivities' => $resource->companyActivities?->name,
             'created_at' => $resource->created_at,

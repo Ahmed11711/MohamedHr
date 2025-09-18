@@ -8,6 +8,7 @@ use App\Services\ControllerGenerator;
 use App\Services\InfoSyncService;
 use App\Services\ModuleSeederService;
 use App\Services\ProviderBindService;
+use App\Services\RelationSyncService;
 use App\Services\RepositoryGenerator;
 use App\Services\RequestGenerator;
 use App\Services\ResourceGenerator;
@@ -59,6 +60,7 @@ class CrudGeneratorCommand extends Command
 
                 // Sync Info
                 InfoSyncService::make($module, $model);
+                RelationSyncService::make($module, $model);
 
                 $this->info("CRUD generated for {$model} inside Module {$module}");
 

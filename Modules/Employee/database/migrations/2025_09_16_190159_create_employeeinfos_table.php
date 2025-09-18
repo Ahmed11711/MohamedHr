@@ -32,7 +32,7 @@ return new class extends Migration {
             $table->string('personal_email')->unique()->nullable();
 
             $table->foreignId('nationality_id')->constrained('nationalities')->onDelete('cascade');
-            $table->foreign('religion_id')->constrained('religions')->onDelete('cascade');
+            $table->foreignId('religion_id')->constrained('religions')->onDelete('cascade');
             $table->string('passport_number')->unique()->nullable();
             $table->enum('passport_type', ['regular', 'diplomatic', 'service'])->nullable();
             $table->string('issuance_location')->nullable();

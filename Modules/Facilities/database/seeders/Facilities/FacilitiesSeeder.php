@@ -38,7 +38,7 @@ class FacilitiesSeeder extends Seeder
                 'company_name_en' => 'Sample company_name_en 3',
                 'company_type_id' => '3',
                 'company_size_id' => '3',
-                'company_headquarters_id' => '1',
+                'company_headquarters_id' => '2',
                 'company_activities_id' => '3',
         ]);
 

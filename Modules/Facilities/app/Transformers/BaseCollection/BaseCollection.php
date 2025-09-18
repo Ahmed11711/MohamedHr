@@ -23,11 +23,11 @@ class BaseCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'data' => ($this->resourceClass)::collection($this->collection),
+            'data'    => ($this->resourceClass)::collection($this->collection),
             'columns' => columnsResource::collection(
                 ColumnsFacilities::where('model', $this->modelName)->get()
             ),
-            'infos' => infoResource::collection(
+            'infos'   => infoResource::collection(
                 InfoFacilities::where('infoable_type', $this->modelName)->get()
             ),
         ];

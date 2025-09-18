@@ -12,7 +12,7 @@ trait ApiResponseTrait
         return response()->json(
             [
                 'success' => true,
-                'message' => $message,
+                'data' => $message,
                 'status' => $status,
             ]
         );
@@ -35,7 +35,7 @@ trait ApiResponseTrait
         return $this->error('expire token');
     }
 
-    public function successData($data, $message="Reviver data retrieved successfully",$status = 200)
+    public function successData($data, $message = "Reviver data retrieved successfully", $status = 200)
     {
         return response()->json(
             [

@@ -6,6 +6,7 @@ use Modules\Facilities\Repositories\Facilities\FacilitiesRepositoryInterface;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Modules\Facilities\Transformers\BaseCollection\BaseCollection;
 
 use Modules\Facilities\Http\Requests\Facilities\FacilitiesStoreRequest;
 use Modules\Facilities\Http\Requests\Facilities\FacilitiesUpdateRequest;
@@ -25,8 +26,13 @@ class FacilitiesController extends Controller
     public function index()
     {
         $data = $this->FacilitiesRepository->all();
-        return $this->successResponse(FacilitiesResource::collection($data), 'Facilities list retrieved successfully');
-    }
+
+        return $this->successResponse(
+                    new BaseCollection($data, 'facilities', FacilitiesResource::class),
+                    'Facilities list retrieved successfully'
+                );
+        
+        }
 
     public function show($id)
     {

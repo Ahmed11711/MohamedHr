@@ -34,6 +34,7 @@ use {$namespaceRepo};
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Modules\Facilities\Transformers\BaseCollection\BaseCollection;
 
 use {$storeRequestClass};
 use {$updateRequestClass};
@@ -53,8 +54,13 @@ class {$model}Controller extends Controller
     public function index()
     {
         \$data = \$this->{$model}Repository->all();
-        return \$this->successResponse({$model}Resource::collection(\$data), '{$model} list retrieved successfully');
-    }
+
+        return \$this->successResponse(
+                    new BaseCollection(\$data, '" . strtolower($model) . "', {$model}Resource::class),
+                    '{$model} list retrieved successfully'
+                );
+        
+        }
 
     public function show(\$id)
     {
