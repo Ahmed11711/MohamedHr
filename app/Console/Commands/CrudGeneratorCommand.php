@@ -38,28 +38,16 @@ class CrudGeneratorCommand extends Command
         // Generate Bind Repository
         ProviderBindService::make($module, $model);
 
-        // ModuleSeederService::make($module, $model);
-
-<<<<<<< HEAD
+        // Generate Seeder
         ModuleSeederService::make($module, $model);
-        //
+        // Sync Columns
         ColumnSyncService::make($module, $model);
-        // ModuleSeederService::make($module, $model);
-=======
-        // ModuleSeederService::make($module, $model);
-        // ColumnSyncService
-        ColumnSyncService::make($module, $model);
-        // infoSyncService
+        // Sync Info
         InfoSyncService::make($module, $model);
->>>>>>> e40630aaac86d342b71cde4b993bcfe99676068f
 
         $this->info("CRUD generated for {$model} inside Module {$module}");
 
         Artisan::call('optimize');
-<<<<<<< HEAD
         $this->info("Artisan optimize executed successfully.");
-=======
-        $this->info('Artisan optimize executed successfully.');
->>>>>>> e40630aaac86d342b71cde4b993bcfe99676068f
     }
 }

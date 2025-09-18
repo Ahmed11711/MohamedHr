@@ -20,20 +20,19 @@ return new class extends Migration {
             $table->json('lastName')->nullable();
 
             $table->date('dob')->nullable();
-            $table->string('birth_place')->nullable();
+            $table->foreignId('country_id')->constrained('countries')->onDelete('cascade');
 
             $table->string('national_id')->unique();
             $table->date('ex_national_id')->nullable();
 
-            $table->enum('marital_status', ['single', 'married', 'divorced', 'widowed'])->nullable();
+            $table->foreignId('marital_status_id')->constrained('marital_statuses')->onDelete('cascade');
             $table->enum('gender', ['male', 'female'])->nullable();
 
             $table->string('professional_email')->unique()->nullable();
             $table->string('personal_email')->unique()->nullable();
 
-            $table->string('nationality')->nullable();
-            $table->string('religion')->nullable();
-
+            $table->foreignId('nationality_id')->constrained('nationalities')->onDelete('cascade');
+            $table->foreign('religion_id')->constrained('religions')->onDelete('cascade');
             $table->string('passport_number')->unique()->nullable();
             $table->enum('passport_type', ['regular', 'diplomatic', 'service'])->nullable();
             $table->string('issuance_location')->nullable();
