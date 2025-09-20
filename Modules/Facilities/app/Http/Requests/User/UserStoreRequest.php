@@ -16,16 +16,16 @@ class UserStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userName' => 'required',
-            'email' => 'required|unique:users,email',
+            'userName' => 'required|string|max:255',
+            'email' => 'required|string|max:255|unique:users,email',
             'fullName' => 'required|string',
-            'password' => 'required',
-            'mobileNumber' => 'required',
-            'securityQuestion_id' => 'required|exists:security_questions,id',
-            'security_answer' => 'required',
-            'gender' => 'required',
-            'nationality_id' => 'required|integer|exists:nationalities,id',
-            'language_id' => 'required|integer|exists:languages,id',
+            'password' => 'required|string|max:255',
+            'mobileNumber' => 'required|string|max:255',
+            'securityQuestion_id' => 'required|integer|exists:security_questions,id',
+            'security_answer' => 'required|string|max:255',
+            'gender' => 'required|in:Male,Female',
+            'nationality_id' => 'required|exists:nationalities,id',
+            'language_id' => 'required|exists:languages,id',
             'termsAccepted' => 'required|boolean',
         ];
     }

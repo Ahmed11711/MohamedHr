@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('employee_medicals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
+            $table->integer('employee_id');
 
             $table->string('certificate_number')->nullable();
             $table->decimal('certificate_value', 10, 2)->nullable();
@@ -22,11 +22,11 @@ return new class extends Migration {
 
             $table->boolean('has_medical_insurance')->default(false);
             $table->decimal('insurance_value', 10, 2)->nullable();
-            $table->foreignId('insurance_company_id')->nullable()->constrained('insurance_companies')->nullOnDelete();
+            $table->integer('insurance_company_id')->nullable();
             $table->string('policy_number')->nullable();
 
-            $table->foreignId('blood_type_id')->nullable()->constrained('blood_types')->nullOnDelete();
-            $table->string('chronic_diseases')->nullable(); 
+            $table->integer('blood_type_id')->nullable();
+            $table->string('chronic_diseases')->nullable();
             $table->text('status')->nullable();
             $table->string('attachment')->nullable();
             $table->timestamps();

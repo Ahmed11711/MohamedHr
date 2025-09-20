@@ -12,24 +12,20 @@ return new class extends Migration {
     {
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employeeinfo_id')
-                ->constrained('employeeinfos')
-                ->onDelete('cascade');
+            $table->integer('employeeinfo_id');
 
             $table->string('name');
-            $table->foreignId('certificate_type_id')
-                ->constrained('certificate_types')
-                ->onDelete('cascade');
+            $table->integer('certificate_type_id');
 
-            $table->string('certificate_number')->unique(); 
-            $table->string('place_of_issuance');            
+            $table->string('certificate_number')->unique();
+            $table->string('place_of_issuance');
             $table->string('type_of_issuance')->nullable();
-            $table->string('degree')->nullable();           
-            $table->date('date_of_issuance');             
-            $table->date('expiry_date')->nullable();       
-            $table->decimal('cost', 10, 2)->nullable();  
-            $table->string('description')->nullable();  
-            $table->string('attachment')->nullable();       
+            $table->string('degree')->nullable();
+            $table->date('date_of_issuance');
+            $table->date('expiry_date')->nullable();
+            $table->decimal('cost', 10, 2)->nullable();
+            $table->string('description')->nullable();
+            $table->string('attachment')->nullable();
             $table->timestamps();
         });
 

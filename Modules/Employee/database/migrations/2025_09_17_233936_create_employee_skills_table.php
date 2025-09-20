@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('employee_skills', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
-            $table->foreignId('skill_id')->constrained('skills')->onDelete('cascade');
+            $table->integer('employee_id');
+            $table->foreignId('skill_id');
             $table->string('lavel')->nullable();
             $table->date('date')->nullable();
             $table->timestamps();

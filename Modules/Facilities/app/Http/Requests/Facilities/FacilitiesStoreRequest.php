@@ -16,14 +16,14 @@ class FacilitiesStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'img' => 'nullable|max:255|file',
-            'unified_national_number' => 'nullable',
-            'company_name_ar' => 'required',
-            'company_name_en' => 'required',
-            'company_type_id' => 'required|exists:company_types,id',
-            'company_size_id' => 'required',
-            'company_headquarters_id' => 'required|exists:company_headquarters,id',
-            'company_activities_id' => 'required|exists:company_activities,id',
+            'img' => 'nullable|string|max:255|max:255|file',
+            'unified_national_number' => 'nullable|string|max:255',
+            'company_name_ar' => 'required|string|max:255',
+            'company_name_en' => 'required|string|max:255',
+            'company_type_id' => 'required|integer|exists:company_types,id',
+            'company_size_id' => 'required|integer|exists:company_sizes,id',
+            'company_headquarters_id' => 'required|integer|exists:company_headquarters,id',
+            'company_activities_id' => 'required|integer|exists:company_activities,id',
         ];
     }
 

@@ -19,8 +19,8 @@ return new class extends Migration {
             $table->foreignId('city_id')->constrained('cities')->onDelete('cascade');
             $table->string('qualification');
             $table->string('specialization');
-            $table->foreignId('education_level_id')->constrained('education_levels')->onDelete('cascade');
-            $table->foreignId('study_type_id')->constrained('study_types')->onDelete('cascade'); // ✅ تصحيح
+            $table->integer('education_level_id');
+            $table->integer('study_type_id');
             $table->date('graduation_year');
             $table->string('degree');
             $table->timestamps();

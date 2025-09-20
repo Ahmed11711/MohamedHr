@@ -35,15 +35,15 @@ class ModuleSeederService
 
         File::put($seederPath, $seederStub);
 
-         self::updateModuleSeeder($module, $model);
+        self::updateModuleSeeder($module, $model);
 
-         $seederClass = "Modules\\{$module}\\Database\\Seeders\\{$model}\\{$model}Seeder";
+        $seederClass = "Modules\\{$module}\\Database\\Seeders\\{$model}\\{$model}Seeder";
         Artisan::call('db:seed', [
             '--class' => $seederClass,
             '--force' => true
         ]);
 
-         $moduleSeederClass = "Modules\\{$module}\\Database\\Seeders\\{$module}DatabaseSeeder";
+        $moduleSeederClass = "Modules\\{$module}\\Database\\Seeders\\{$module}DatabaseSeeder";
         Artisan::call('db:seed', [
             '--class' => $moduleSeederClass,
             '--force' => true
@@ -64,8 +64,13 @@ class ModuleSeederService
 
                 $columnType = self::getColumnType($table, $col);
 
-                 if ($columnType === 'json') {
+                // تحديد القيمة بناءً على نوع العمود
+                if ($columnType === 'json') {
                     $value = "json_encode(['sample' => 'Sample {$col} {$i}'])";
+                } elseif ($columnType === 'date') {
+                    $value = now()->subYears(rand(15, 50))->format('Y-m-d');
+                } elseif (in_array($columnType, ['datetime', 'timestamp'])) {
+                    $value = now()->subDays(rand(1, 1000))->format('Y-m-d H:i:s');
                 } elseif (str_ends_with($col, '_id')) {
                     $relatedTable = Str::snake(Str::plural(Str::replaceLast('_id', '', $col)));
                     if (Schema::hasTable($relatedTable)) {
@@ -92,7 +97,8 @@ class ModuleSeederService
                     $value = "Sample {$col} {$i}";
                 }
 
-                 if ($columnType === 'json' || $col === 'password') {
+                // طريقة إدراج القيمة في seeder
+                if (in_array($columnType, ['json']) || $col === 'password') {
                     $dataString .= "                '{$col}' => {$value},\n";
                 } else {
                     $dataString .= "                '{$col}' => '{$value}',\n";
@@ -108,7 +114,7 @@ class ModuleSeederService
 
 namespace {$namespace};
 
-use Illuminate\Database\Seeder;
+use Illuminate\\Database\\Seeder;
 use Modules\\{$module}\\Models\\{$model};
 
 class {$model}Seeder extends Seeder

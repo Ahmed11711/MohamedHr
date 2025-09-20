@@ -16,14 +16,14 @@ class FacilitiesUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'img' => 'nullable|sometimes|max:255|file',
-            'unified_national_number' => 'nullable|sometimes',
-            'company_name_ar' => 'sometimes|required',
-            'company_name_en' => 'sometimes|required',
-            'company_type_id' => 'sometimes|required|exists:company_types,id',
-            'company_size_id' => 'sometimes|required',
-            'company_headquarters_id' => 'sometimes|required|exists:company_headquarters,id',
-            'company_activities_id' => 'sometimes|required|exists:company_activities,id',
+            'img' => 'nullable|sometimes|string|max:255|max:255|file',
+            'unified_national_number' => 'nullable|sometimes|string|max:255',
+            'company_name_ar' => 'sometimes|required|string|max:255',
+            'company_name_en' => 'sometimes|required|string|max:255',
+            'company_type_id' => 'sometimes|required|integer|exists:company_types,id',
+            'company_size_id' => 'sometimes|required|integer|exists:company_sizes,id',
+            'company_headquarters_id' => 'sometimes|required|integer|exists:company_headquarters,id',
+            'company_activities_id' => 'sometimes|required|integer|exists:company_activities,id',
         ];
     }
 

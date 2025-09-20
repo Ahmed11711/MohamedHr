@@ -40,17 +40,16 @@ class CrudGeneratorCommand extends Command
                 ProviderBindService::make($module, $model);
 
                 // ModuleSeederService::make($module, $model);
-
+  ColumnSyncService::make($module, $model);
+                // infoSyncService
+                InfoSyncService::make($module, $model);
                 // Generate Seeder
                 ModuleSeederService::make($module, $model);
                 // Sync Columns
-                ColumnSyncService::make($module, $model);
-                // ModuleSeederService::make($module, $model);
+                 // ModuleSeederService::make($module, $model);
                 // ModuleSeederService::make($module, $model);
                 // ColumnSyncService
-                ColumnSyncService::make($module, $model);
-                // infoSyncService
-                InfoSyncService::make($module, $model);
+
 
                 $this->info("CRUD generated for {$model} inside Module {$module}");
 

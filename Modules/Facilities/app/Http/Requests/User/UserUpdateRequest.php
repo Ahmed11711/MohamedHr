@@ -16,16 +16,16 @@ class UserUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userName' => 'sometimes|required',
-            'email' => 'sometimes|required|unique:users,email,'.$this->route('user').',id',
+            'userName' => 'sometimes|required|string|max:255',
+            'email' => 'sometimes|required|string|max:255|unique:users,email,'.$this->route('user').',id',
             'fullName' => 'sometimes|required|string',
-            'password' => 'sometimes|required',
-            'mobileNumber' => 'sometimes|required',
-            'securityQuestion_id' => 'sometimes|required|exists:security_questions,id',
-            'security_answer' => 'sometimes|required',
-            'gender' => 'sometimes|required',
-            'nationality_id' => 'sometimes|required|integer|exists:nationalities,id',
-            'language_id' => 'sometimes|required|integer|exists:languages,id',
+            'password' => 'sometimes|required|string|max:255',
+            'mobileNumber' => 'sometimes|required|string|max:255',
+            'securityQuestion_id' => 'sometimes|required|integer|exists:security_questions,id',
+            'security_answer' => 'sometimes|required|string|max:255',
+            'gender' => 'sometimes|required|in:Male,Female',
+            'nationality_id' => 'sometimes|required|exists:nationalities,id',
+            'language_id' => 'sometimes|required|exists:languages,id',
             'termsAccepted' => 'sometimes|required|boolean',
         ];
     }

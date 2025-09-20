@@ -2,6 +2,9 @@
 
 namespace Modules\Facilities\Providers;
 
+use Modules\Facilities\Repositories\Owner\OwnerRepositoryInterface;
+use Modules\Facilities\Repositories\Owner\OwnerRepository;
+
 use Modules\Facilities\Repositories\Facilities\FacilitiesRepositoryInterface;
 use Modules\Facilities\Repositories\Facilities\FacilitiesRepository;
 
@@ -46,6 +49,7 @@ $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(FacilitiesRepositoryInterface::class, FacilitiesRepository::class);
+        $this->app->bind(OwnerRepositoryInterface::class, OwnerRepository::class);
 }
 
     /**

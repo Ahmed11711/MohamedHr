@@ -13,8 +13,8 @@ public function up(): void
 {
     Schema::create('language_employees', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
-        $table->foreignId('language_id')->constrained('languages')->onDelete('cascade');
+        $table->integer('employee_id');
+        $table->integer('language_id');
         $table->string('proficiency_level')->nullable();
         $table->string('write_level')->nullable();
         $table->string('speak_level')->nullable();

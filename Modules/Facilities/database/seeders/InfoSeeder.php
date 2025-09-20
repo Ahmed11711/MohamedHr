@@ -27,5 +27,14 @@ class InfoSeeder extends Seeder
             'updated_at' => now(),
         ]
         ]);
+            DB::table('info_Facilities')->insert([
+            [
+            'infoable_type' => 'Owner',
+            'title' => '{"en":"Owner","ar":"مالك"}',
+            'desc' => '{"en":"Description for Owner","ar":"وصف للمالك"}',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]
+        ]);
     }
 }

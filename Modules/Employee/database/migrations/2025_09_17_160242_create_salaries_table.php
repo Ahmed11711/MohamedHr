@@ -12,11 +12,11 @@ return new class extends Migration {
     {
         Schema::create('salaries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
+            $table->integer('employee_id');
             $table->decimal('amount');
-            $table->foreignId('currency_id')->constrained('currencies')->onDelete('cascade');
-            $table->foreignId('salary_type_id')->constrained('salary_types')->onDelete('cascade');
-            $table->foreignId('payment_method_id')->constrained('payment_methods')->onDelete('cascade');
+            $table->integer('currency_id');
+            $table->integer('salary_type_id');
+            $table->integer('payment_method_id');
             $table->string('bank_name')->nullable();
             $table->string('bank_number')->nullable();
             $table->text('notes')->nullable();

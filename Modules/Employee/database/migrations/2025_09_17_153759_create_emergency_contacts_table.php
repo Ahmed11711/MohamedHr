@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('emergency_contacts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
+            $table->integer('employee_id');
             $table->string('name');
             $table->string('relationship')->nullable();
             $table->string('job_title')->nullable();

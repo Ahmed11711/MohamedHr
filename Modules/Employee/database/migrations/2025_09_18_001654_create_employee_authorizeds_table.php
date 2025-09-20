@@ -12,22 +12,18 @@ return new class extends Migration {
     {
         Schema::create('employee_authorizeds', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
+            $table->integer('employee_id')->constrained('employees')->onDelete('cascade');
 
-            $table->foreignId('authorized_approve_expenses_id')
+            $table->integer('authorized_approve_expenses_id')
                 ->nullable()
-                ->constrained('employees')
-                ->nullOnDelete();
+              ;
 
-            $table->foreignId('authorized_approve_shift_id')
+            $table->integer('authorized_approve_shift_id')
                 ->nullable()
-                ->constrained('employees')
-                ->nullOnDelete();
-
-            $table->foreignId('authorized_approve_holidays_id')
+               ;
+            $table->integer('authorized_approve_holidays_id')
                 ->nullable()
-                ->constrained('employees')
-                ->nullOnDelete();
+            ;
 
             $table->timestamps();
         });

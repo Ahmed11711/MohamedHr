@@ -13,6 +13,7 @@ class FacilitiesDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(Owner\OwnerSeeder::class);
         $this->call(Facilities\FacilitiesSeeder::class);
         $this->call(User\UserSeeder::class);
         $this->call([

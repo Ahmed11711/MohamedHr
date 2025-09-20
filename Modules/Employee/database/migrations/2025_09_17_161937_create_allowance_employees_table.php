@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('allowance_employees', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
-            $table->foreignId('allowance_id')->constrained('allowances')->onDelete('cascade');
+            $table->integer('employee_id');
+            $table->integer('allowance_id');
             $table->decimal('amount');
             $table->timestamps();
         });
@@ -23,7 +23,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    
+
     public function down(): void
     {
         Schema::dropIfExists('allowance_employees');

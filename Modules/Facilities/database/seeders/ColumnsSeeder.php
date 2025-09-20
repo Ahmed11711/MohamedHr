@@ -143,5 +143,72 @@ class ColumnsSeeder extends Seeder
         ), JSON_UNESCAPED_UNICODE), 'sortable' => true, 'filterable' => true, 'created_at' => '2025-09-17 22:16:28', 'updated_at' => '2025-09-17 22:16:28']
       ]
     );
-  }
+          DB::table('columns_facilities')->insert(
+            [
+            ['model' => 'Owner', 'key' => json_encode(array (
+  'en' => 'full_name',
+  'ar' => 'full_name',
+), JSON_UNESCAPED_UNICODE), 'label' => json_encode(array (
+  'en' => 'Full Name',
+  'ar' => 'الاسم الكامل',
+), JSON_UNESCAPED_UNICODE), 'sortable' => true, 'filterable' => true, 'created_at' => '2025-09-20 00:13:14', 'updated_at' => '2025-09-20 00:13:14'],
+            ['model' => 'Owner', 'key' => json_encode(array (
+  'en' => 'ownerType',
+  'ar' => 'Owntype',
+), JSON_UNESCAPED_UNICODE), 'label' => json_encode(array (
+  'en' => 'Ownertype',
+  'ar' => 'Owntype',
+), JSON_UNESCAPED_UNICODE), 'sortable' => true, 'filterable' => true, 'created_at' => '2025-09-20 00:13:14', 'updated_at' => '2025-09-20 00:13:14'],
+            ['model' => 'Owner', 'key' => json_encode(array (
+  'en' => 'national_id_number',
+  'ar' => 'national_id_number',
+), JSON_UNESCAPED_UNICODE), 'label' => json_encode(array (
+  'en' => 'National Id Number',
+  'ar' => 'رقم الهوية الوطني',
+), JSON_UNESCAPED_UNICODE), 'sortable' => true, 'filterable' => true, 'created_at' => '2025-09-20 00:13:15', 'updated_at' => '2025-09-20 00:13:15'],
+            ['model' => 'Owner', 'key' => json_encode(array (
+  'en' => 'jobTitle',
+  'ar' => 'مسمى وظيفي',
+), JSON_UNESCAPED_UNICODE), 'label' => json_encode(array (
+  'en' => 'Jobtitle',
+  'ar' => 'مسمى وظيفي',
+), JSON_UNESCAPED_UNICODE), 'sortable' => true, 'filterable' => true, 'created_at' => '2025-09-20 00:13:17', 'updated_at' => '2025-09-20 00:13:17'],
+            ['model' => 'Owner', 'key' => json_encode(array (
+  'en' => 'date_of_birth',
+  'ar' => 'تاريخ الميلاد',
+), JSON_UNESCAPED_UNICODE), 'label' => json_encode(array (
+  'en' => 'Date Of Birth',
+  'ar' => 'تاريخ الميلاد',
+), JSON_UNESCAPED_UNICODE), 'sortable' => true, 'filterable' => true, 'created_at' => '2025-09-20 00:13:18', 'updated_at' => '2025-09-20 00:13:18'],
+            ['model' => 'Owner', 'key' => json_encode(array (
+  'en' => 'gender',
+  'ar' => 'جنس',
+), JSON_UNESCAPED_UNICODE), 'label' => json_encode(array (
+  'en' => 'Gender',
+  'ar' => 'جنس',
+), JSON_UNESCAPED_UNICODE), 'sortable' => true, 'filterable' => true, 'created_at' => '2025-09-20 00:13:18', 'updated_at' => '2025-09-20 00:13:18'],
+            ['model' => 'Owner', 'key' => json_encode(array (
+  'en' => 'country',
+  'ar' => 'دولة',
+), JSON_UNESCAPED_UNICODE), 'label' => json_encode(array (
+  'en' => 'Country',
+  'ar' => 'دولة',
+), JSON_UNESCAPED_UNICODE), 'sortable' => true, 'filterable' => true, 'created_at' => '2025-09-20 00:13:19', 'updated_at' => '2025-09-20 00:13:19'],
+            ['model' => 'Owner', 'key' => json_encode(array (
+  'en' => 'city',
+  'ar' => 'مدينة',
+), JSON_UNESCAPED_UNICODE), 'label' => json_encode(array (
+  'en' => 'City',
+  'ar' => 'مدينة',
+), JSON_UNESCAPED_UNICODE), 'sortable' => true, 'filterable' => true, 'created_at' => '2025-09-20 00:13:19', 'updated_at' => '2025-09-20 00:13:19'],
+            ['model' => 'Owner', 'key' => json_encode(array (
+  'en' => 'company_details',
+  'ar' => 'company_details',
+), JSON_UNESCAPED_UNICODE), 'label' => json_encode(array (
+  'en' => 'Company Details',
+  'ar' => 'تفاصيل الشركة',
+), JSON_UNESCAPED_UNICODE), 'sortable' => true, 'filterable' => true, 'created_at' => '2025-09-20 00:13:20', 'updated_at' => '2025-09-20 00:13:20']
+        ]
+        );
+    }
 }
