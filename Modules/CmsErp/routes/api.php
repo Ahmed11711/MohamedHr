@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\CmsErp\Http\Controllers\SubscriptionType\SubscriptionTypeController;
+use Modules\CmsErp\Http\Controllers\LicenseType\LicenseTypeController;
 use Modules\CmsErp\Http\Controllers\Religion\ReligionController;
 use Modules\CmsErp\Http\Controllers\City\CityController;
 use Modules\CmsErp\Http\Controllers\Country\CountryController;
@@ -36,6 +38,8 @@ use Modules\CmsErp\Http\Controllers\SecurityQuestions\SecurityQuestionsControlle
 use Modules\CmsErp\Http\Controllers\CmsErpController;
 
 Route::prefix('v1')->group(function () {
+    Route::apiResource('subscription_types', SubscriptionTypeController::class)->names('subscription_type');
+    Route::apiResource('license_types', LicenseTypeController::class)->names('license_type');
     Route::apiResource('religions', ReligionController::class)->names('religion');
     Route::apiResource('cities', CityController::class)->names('city');
     Route::apiResource('countries', CountryController::class)->names('country');

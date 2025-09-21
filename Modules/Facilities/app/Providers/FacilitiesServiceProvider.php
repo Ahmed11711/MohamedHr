@@ -2,6 +2,39 @@
 
 namespace Modules\Facilities\Providers;
 
+use Modules\Facilities\Repositories\MedicalInsurancesFacilities\MedicalInsurancesFacilitiesRepositoryInterface;
+use Modules\Facilities\Repositories\MedicalInsurancesFacilities\MedicalInsurancesFacilitiesRepository;
+
+use Modules\Facilities\Repositories\MedicalInsuranceFacilities\MedicalInsuranceFacilitiesRepositoryInterface;
+use Modules\Facilities\Repositories\MedicalInsuranceFacilities\MedicalInsuranceFacilitiesRepository;
+
+use Modules\Facilities\Repositories\MedicalInsuranceCategories\MedicalInsuranceCategoriesRepositoryInterface;
+use Modules\Facilities\Repositories\MedicalInsuranceCategories\MedicalInsuranceCategoriesRepository;
+
+use Modules\Facilities\Repositories\periodicObligations\periodicObligationsRepositoryInterface;
+use Modules\Facilities\Repositories\periodicObligations\periodicObligationsRepository;
+
+use Modules\Facilities\Repositories\SubscriptionFacilities\SubscriptionFacilitiesRepositoryInterface;
+use Modules\Facilities\Repositories\SubscriptionFacilities\SubscriptionFacilitiesRepository;
+
+use Modules\Facilities\Repositories\License\LicenseRepositoryInterface;
+use Modules\Facilities\Repositories\License\LicenseRepository;
+
+use Modules\Facilities\Repositories\Branches\BranchesRepositoryInterface;
+use Modules\Facilities\Repositories\Branches\BranchesRepository;
+
+use Modules\Facilities\Repositories\DigitalFacility\DigitalFacilityRepositoryInterface;
+use Modules\Facilities\Repositories\DigitalFacility\DigitalFacilityRepository;
+
+use Modules\Facilities\Repositories\FacilityDigital\FacilityDigitalRepositoryInterface;
+use Modules\Facilities\Repositories\FacilityDigital\FacilityDigitalRepository;
+
+use Modules\Facilities\Repositories\FacilityAttachments\FacilityAttachmentsRepositoryInterface;
+use Modules\Facilities\Repositories\FacilityAttachments\FacilityAttachmentsRepository;
+
+use Modules\Facilities\Repositories\FacilityFile\FacilityFileRepositoryInterface;
+use Modules\Facilities\Repositories\FacilityFile\FacilityFileRepository;
+
 use Modules\Facilities\Repositories\Owner\OwnerRepositoryInterface;
 use Modules\Facilities\Repositories\Owner\OwnerRepository;
 
@@ -50,6 +83,17 @@ $this->app->register(EventServiceProvider::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(FacilitiesRepositoryInterface::class, FacilitiesRepository::class);
         $this->app->bind(OwnerRepositoryInterface::class, OwnerRepository::class);
+        $this->app->bind(FacilityFileRepositoryInterface::class, FacilityFileRepository::class);
+        $this->app->bind(FacilityAttachmentsRepositoryInterface::class, FacilityAttachmentsRepository::class);
+        $this->app->bind(FacilityDigitalRepositoryInterface::class, FacilityDigitalRepository::class);
+        $this->app->bind(DigitalFacilityRepositoryInterface::class, DigitalFacilityRepository::class);
+        $this->app->bind(BranchesRepositoryInterface::class, BranchesRepository::class);
+        $this->app->bind(LicenseRepositoryInterface::class, LicenseRepository::class);
+        $this->app->bind(SubscriptionFacilitiesRepositoryInterface::class, SubscriptionFacilitiesRepository::class);
+        $this->app->bind(periodicObligationsRepositoryInterface::class, periodicObligationsRepository::class);
+        $this->app->bind(MedicalInsuranceCategoriesRepositoryInterface::class, MedicalInsuranceCategoriesRepository::class);
+        $this->app->bind(MedicalInsuranceFacilitiesRepositoryInterface::class, MedicalInsuranceFacilitiesRepository::class);
+        $this->app->bind(MedicalInsurancesFacilitiesRepositoryInterface::class, MedicalInsurancesFacilitiesRepository::class);
 }
 
     /**

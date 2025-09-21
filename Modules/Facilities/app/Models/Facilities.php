@@ -28,6 +28,7 @@ class Facilities extends Model
 
 
 
+
     public function companyType()
     {
         return $this->belongsTo(CompanyType::class, 'company_type_id');

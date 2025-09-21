@@ -2,6 +2,12 @@
 
 namespace Modules\CmsErp\Providers;
 
+use Modules\CmsErp\Repositories\SubscriptionType\SubscriptionTypeRepositoryInterface;
+use Modules\CmsErp\Repositories\SubscriptionType\SubscriptionTypeRepository;
+
+use Modules\CmsErp\Repositories\LicenseType\LicenseTypeRepositoryInterface;
+use Modules\CmsErp\Repositories\LicenseType\LicenseTypeRepository;
+
 use Modules\CmsErp\Repositories\Religion\ReligionRepositoryInterface;
 use Modules\CmsErp\Repositories\Religion\ReligionRepository;
 
@@ -163,6 +169,8 @@ $this->app->register(EventServiceProvider::class);
         $this->app->bind(CountryRepositoryInterface::class, CountryRepository::class);
         $this->app->bind(CityRepositoryInterface::class, CityRepository::class);
         $this->app->bind(ReligionRepositoryInterface::class, ReligionRepository::class);
+        $this->app->bind(LicenseTypeRepositoryInterface::class, LicenseTypeRepository::class);
+        $this->app->bind(SubscriptionTypeRepositoryInterface::class, SubscriptionTypeRepository::class);
 }
 
     /**
