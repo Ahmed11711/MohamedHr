@@ -54,59 +54,59 @@ class ModuleSeederService
 
     private static function generateStub($module, $model, $columns, $table)
     {
-        $rows = "";
+        $rows = "        \${$table} = [\n";
 
         for ($i = 1; $i <= 5; $i++) {
-            $dataString = "";
+            $dataString = "            [\n";
 
             foreach ($columns as $col) {
                 if (in_array($col, ['id', 'created_at', 'updated_at'])) continue;
-
+            if (Str::endsWith($col, '_id')) {
+                    $value = rand(1, 3);
+                    $dataString .= "                '{$col}' => {$value},\n";
+                    continue;
+                }
                 $columnType = self::getColumnType($table, $col);
 
-                // تحديد القيمة بناءً على نوع العمود
-                if ($columnType === 'json') {
-                    $value = "json_encode(['sample' => 'Sample {$col} {$i}'])";
-                } elseif ($columnType === 'date') {
-                    $value = now()->subYears(rand(15, 50))->format('Y-m-d');
-                } elseif (in_array($columnType, ['datetime', 'timestamp'])) {
-                    $value = now()->subDays(rand(1, 1000))->format('Y-m-d H:i:s');
-                } elseif (str_ends_with($col, '_id')) {
-                    $relatedTable = Str::snake(Str::plural(Str::replaceLast('_id', '', $col)));
-                    if (Schema::hasTable($relatedTable)) {
-                        $ids = DB::table($relatedTable)->pluck('id')->toArray();
-                        $value = count($ids) ? $ids[array_rand($ids)] : $i;
-                    } else {
-                        $value = $i;
-                    }
-                } elseif ($col === 'name') {
-                    $value = "Sample {$col} {$i}";
-                } elseif (str_contains($col, 'email')) {
-                    $value = "user{$i}@example.com";
-                } elseif (str_contains($col, 'mobile')) {
-                    $value = "01010000{$i}";
-                } elseif ($col === 'username') {
-                    $value = "user{$i}";
-                } elseif ($col === 'full_name') {
-                    $value = "Sample Name {$i}";
-                } elseif ($col === 'password') {
-                    $value = "bcrypt('password123')";
-                } elseif ($col === 'gender') {
-                    $value = $i % 2 === 0 ? 'Male' : 'Female';
-                } else {
-                    $value = "Sample {$col} {$i}";
-                }
+                    if ($columnType === 'json') {
+                $dataString .= "                '{$col}' => [\n";
+                $dataString .= "                    'en' => 'Sample {$col} {$i}',\n";
+                $dataString .= "                    'ar' => 'عينة {$col} {$i}'\n";
+                $dataString .= "                ],\n";
+                continue;
+            }
 
-                // طريقة إدراج القيمة في seeder
-                if (in_array($columnType, ['json']) || $col === 'password') {
+
+                if (in_array($columnType, ['integer','int','bigint','smallint','mediumint','tinyint'])) {
+                    $value = rand(1, 1000);
                     $dataString .= "                '{$col}' => {$value},\n";
+
+                } elseif (in_array($columnType, ['float', 'double', 'decimal'])) {
+                    $value = number_format(rand(100, 10000) / 100, 2, '.', '');
+                    $dataString .= "                '{$col}' => {$value},\n";
+
+                } elseif ($columnType === 'date') {
+                    $value = now()->subYears(rand(1, 20))->format('Y-m-d');
+                    $dataString .= "                '{$col}' => '{$value}',\n";
+
+                } elseif (in_array($columnType, ['datetime', 'timestamp'])) {
+                    $value = now()->subDays(rand(1, 500))->format('Y-m-d H:i:s');
+                    $dataString .= "                '{$col}' => '{$value}',\n";
+
                 } else {
+                    $value = "Sample {$col} {$i}";
                     $dataString .= "                '{$col}' => '{$value}',\n";
                 }
             }
 
-            $rows .= "        {$model}::firstOrCreate([\n{$dataString}        ]);\n\n";
+            $dataString .= "            ],\n";
+            $rows .= $dataString;
         }
+
+        $rows .= "        ];\n\n";
+        $rows .= "        foreach (\${$table} as \$data) {\n";
+        $rows .= "            {$model}::firstOrCreate(\$data);\n";
+        $rows .= "        }\n";
 
         $namespace = "Modules\\{$module}\\Database\\Seeders\\{$model}";
 
@@ -163,5 +163,16 @@ class {$module}DatabaseSeeder extends Seeder
     private static function getColumnType($table, $column)
     {
         return DB::getSchemaBuilder()->getColumnType($table, $column);
+    }
+
+    private static function isMoneyColumn(string $column): bool
+    {
+        $keywords = ['price', 'amount', 'total', 'salary', 'cost'];
+        foreach ($keywords as $keyword) {
+            if (Str::contains(strtolower($column), $keyword)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

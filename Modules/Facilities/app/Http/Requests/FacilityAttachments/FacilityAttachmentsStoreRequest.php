@@ -16,7 +16,7 @@ class FacilityAttachmentsStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-'file' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,xlsx|max:10240',
+             'file' => 'required|file|mimes:jpg,jpeg,png,pdf,xls,xlsx|max:10240',
          ];
     }
 

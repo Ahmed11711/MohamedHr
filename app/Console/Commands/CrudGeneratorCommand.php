@@ -14,10 +14,11 @@ use App\Services\RequestGenerator;
 use App\Services\ResourceGenerator;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 
 class CrudGeneratorCommand extends Command
 {
-        protected $signature = 'crud:generate {module} {model}';
+protected $signature = 'crud:generate {module} {model} {seed?}';
 
         protected $description = 'Generate CRUD (Controller, Requests, Resource, Repository) inside an HMVC Module';
 
@@ -25,9 +26,11 @@ class CrudGeneratorCommand extends Command
         {
                 $module = $this->argument('module');
                 $model = $this->argument('model');
+                $seeder = $this->argument('seed') ?? 'True';
 
-                // Generate Repository
-                RepositoryGenerator::generate($module, $model);
+
+
+                 RepositoryGenerator::generate($module, $model);
                 // Generate Request Validation
                 RequestGenerator::make($module, $model);
                 // Generate Controller
@@ -39,16 +42,17 @@ class CrudGeneratorCommand extends Command
                 // Generate Bind Repository
                 ProviderBindService::make($module, $model);
 
-                // ModuleSeederService::make($module, $model);
-  ColumnSyncService::make($module, $model);
+
+                // Sync Columns
+                ColumnSyncService::make($module, $model);
                 // infoSyncService
                 InfoSyncService::make($module, $model);
+
+
+
                 // Generate Seeder
                 ModuleSeederService::make($module, $model);
-                // Sync Columns
-                 // ModuleSeederService::make($module, $model);
-                // ModuleSeederService::make($module, $model);
-                // ColumnSyncService
+
 
 
                 $this->info("CRUD generated for {$model} inside Module {$module}");
@@ -59,7 +63,7 @@ class CrudGeneratorCommand extends Command
 
                 // Sync Info
                 InfoSyncService::make($module, $model);
-                RelationSyncService::make($module, $model);
+                // RelationSyncService::make($module, $model);
 
                 $this->info("CRUD generated for {$model} inside Module {$module}");
 

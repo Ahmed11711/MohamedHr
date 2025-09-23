@@ -40,8 +40,7 @@ class RequestGenerator
             foreach ($columns as $column) {
                 if (in_array($column, ['id', 'created_at', 'updated_at', 'deleted_at'])) continue;
 
-                // نجيب النوع الأصلي من قاعدة البيانات
-                $columnInfo = DB::selectOne("
+                 $columnInfo = DB::selectOne("
                     SELECT COLUMN_TYPE, IS_NULLABLE
                     FROM INFORMATION_SCHEMA.COLUMNS
                     WHERE TABLE_NAME = ? AND COLUMN_NAME = ?
@@ -51,59 +50,64 @@ class RequestGenerator
                 $type = $columnInfo->COLUMN_TYPE;   // زي: varchar(255), enum('male','female')
                 $isNullable = $columnInfo->IS_NULLABLE === 'YES';
 
-                // نحدد القاعدة بناءً على النوع
                 switch (true) {
-                    case preg_match('/^varchar\((\d+)\)$/i', $type, $matches):
-                        $rule = "string|max:{$matches[1]}";
-                        break;
+    case preg_match('/^varchar\((\d+)\)$/i', $type, $matches):
+        $rule = "string|max:{$matches[1]}";
+        break;
 
-                    case preg_match('/^enum\((.+)\)$/i', $type, $matches):
-                        $values = array_map(
-                            fn($v) => trim($v, " '\""),
-                            explode(',', $matches[1])
-                        );
-                        $rule = 'in:' . implode(',', $values);
-                        break;
+    case preg_match('/^enum\((.+)\)$/i', $type, $matches):
+        $values = array_map(
+            fn($v) => trim($v, " '\""),
+            explode(',', $matches[1])
+        );
+        $rule = 'in:' . implode(',', $values);
+        break;
 
-                    case $type === 'text':
-                        $rule = 'string';
-                        break;
+    case $type === 'text':
+        $rule = 'string';
+        break;
 
-                    case in_array($type, ['int', 'integer', 'bigint']):
-                        $rule = 'integer';
-                        break;
+    case in_array($type, ['int', 'integer', 'bigint']):
+        $rule = 'integer';
+        break;
 
-                    case in_array($type, ['boolean', 'tinyint', 'tinyint(1)']):
-                        $rule = 'boolean';
-                        break;
+    case in_array($type, ['boolean', 'tinyint', 'tinyint(1)']):
+        $rule = 'boolean';
+        break;
 
-                    case in_array($type, ['date', 'datetime', 'timestamp']):
-                        $rule = 'date';
-                        break;
+    case in_array($type, ['date', 'datetime', 'timestamp']):
+        $rule = 'date';
+        break;
 
-                    case $type === 'json':
-                        $rule = 'array';
-                        break;
+    case $type === 'json':
+        $rule = 'array';
+        break;
 
-                    default:
-                        $rule = '';
-                }
+    case preg_match('/^decimal\((\d+),(\d+)\)$/i', $type, $matches):
+        $rule = 'numeric';
+        break;
 
-                // علاقات الـ foreign keys
-                if (Str::endsWith($column, '_id')) {
+    case in_array($type, ['float', 'double']):
+        $rule = 'numeric';
+        break;
+
+    default:
+        $rule = '';
+}
+
+
+                 if (Str::endsWith($column, '_id')) {
                     $relatedTable = Str::snake(Str::plural(Str::replaceLast('_id', '', $column)));
                     if (Schema::hasTable($relatedTable)) {
                         $rule .= ($rule ? '|' : '') . "exists:{$relatedTable},id";
                     }
                 }
 
-                // ملفات وصور
-                if (in_array($column, ['img', 'image', 'images', 'file'])) {
+                 if (in_array($column, ['img', 'image', 'images', 'file'])) {
                     $rule .= ($rule ? '|' : '') . 'max:255|file';
                 }
 
-                // الـ unique index
-                $indexes = DB::select("SHOW INDEX FROM {$table} WHERE Column_name='{$column}' AND Non_unique=0");
+                 $indexes = DB::select("SHOW INDEX FROM {$table} WHERE Column_name='{$column}' AND Non_unique=0");
                 if (!empty($indexes) && !Str::endsWith($column, '_id')) {
                     if ($isUpdate) {
                         $rule .= ($rule ? '|' : '') . "unique:{$table},{$column},'.\$this->route('{$routeParam}').',id";

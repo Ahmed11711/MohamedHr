@@ -98,27 +98,36 @@ class {$model}Resource extends JsonResource
 ";
     }
 
-    private static function updateModelRelations($module, $model, $table)
-    {
-        $modelPath = module_path($module, "app/Models/{$model}.php");
+private static function updateModelRelations($module, $model, $table)
+{
+    $modelPath = module_path($module, "app/Models/{$model}.php");
 
-        if (!File::exists($modelPath)) {
-            return;
-        }
+    if (!File::exists($modelPath)) {
+        return;
+    }
 
-        $content = File::get($modelPath);
-        $columns = Schema::getColumnListing($table);
+    $content = File::get($modelPath);
+    $columns = Schema::getColumnListing($table);
 
-        foreach ($columns as $col) {
-            if (Str::endsWith($col, '_id')) {
-                $relation = Str::camel(Str::replaceLast('_id', '', $col));
-                $relatedModel = Str::studly(Str::replaceLast('_id', '', $col));
+    // أسماء الفنكشن اللي مش عايزين نعملها
+    $skipFunctions = ['payrollAttachments', 'employee'];
 
-                if (Str::contains($content, "function {$relation}(")) {
-                    continue;
-                }
+    foreach ($columns as $col) {
+        if (Str::endsWith($col, '_id')) {
+            $relation = Str::camel(Str::replaceLast('_id', '', $col));
 
-                $relationCode = "
+            // لو الاسم موجود في الـ skipFunctions، نتخطاه
+            if (in_array($relation, $skipFunctions)) {
+                continue;
+            }
+
+            $relatedModel = Str::studly(Str::replaceLast('_id', '', $col));
+
+            if (Str::contains($content, "function {$relation}(")) {
+                continue;
+            }
+
+            $relationCode = "
 
     public function {$relation}()
     {
@@ -126,10 +135,11 @@ class {$model}Resource extends JsonResource
     }
 ";
 
-                $content = preg_replace('/}\s*$/', $relationCode . "\n}", $content);
-            }
+            $content = preg_replace('/}\s*$/', $relationCode . "\n}", $content);
         }
-
-        File::put($modelPath, $content);
     }
+
+    File::put($modelPath, $content);
+}
+
 }

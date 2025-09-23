@@ -46,6 +46,9 @@ class FacilityAttachmentsController extends Controller
 
     public function store(FacilityAttachmentsStoreRequest $request)
     {
+         if ($request->hasFile('file')) {
+            $validated['path'] = $this->uploadFile($request->file('file'),'Facilities','uploads/attachments');
+         }
         $data = $this->FacilityAttachmentsRepository->create($request->validated());
         return $this->successResponse(new FacilityAttachmentsResource($data), 'FacilityAttachments created successfully', 201);
     }

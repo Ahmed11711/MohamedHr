@@ -6,6 +6,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Modules\CmsErp\Database\Seeders\CmsErpDatabaseSeeder;
+use Modules\Payroll\Database\Seeders\PayrollDatabaseSeeder;
 use Modules\Employee\Database\Seeders\EmployeeDatabaseSeeder;
 use Modules\Facilities\Database\Seeders\FacilitiesDatabaseSeeder;
 
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
             CmsErpDatabaseSeeder::class,
             FacilitiesDatabaseSeeder::class,
             EmployeeDatabaseSeeder::class,
+            PayrollDatabaseSeeder::class
         ]);
 
     }

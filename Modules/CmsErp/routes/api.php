@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\CmsErp\Http\Controllers\Attendance\AttendanceController;
+use Modules\CmsErp\Http\Controllers\Bank\BankController;
+use Modules\CmsErp\Http\Controllers\PaymentMethod\PaymentMethodController;
 use Modules\CmsErp\Http\Controllers\SubscriptionType\SubscriptionTypeController;
 use Modules\CmsErp\Http\Controllers\LicenseType\LicenseTypeController;
 use Modules\CmsErp\Http\Controllers\Religion\ReligionController;
@@ -38,6 +41,9 @@ use Modules\CmsErp\Http\Controllers\SecurityQuestions\SecurityQuestionsControlle
 use Modules\CmsErp\Http\Controllers\CmsErpController;
 
 Route::prefix('v1')->group(function () {
+    Route::apiResource('attendances', AttendanceController::class)->names('attendance');
+    Route::apiResource('banks', BankController::class)->names('bank');
+    Route::apiResource('payment_methods', PaymentMethodController::class)->names('payment_method');
     Route::apiResource('subscription_types', SubscriptionTypeController::class)->names('subscription_type');
     Route::apiResource('license_types', LicenseTypeController::class)->names('license_type');
     Route::apiResource('religions', ReligionController::class)->names('religion');
