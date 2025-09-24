@@ -2,15 +2,15 @@
 
 namespace Modules\CmsErp\Http\Controllers\Bank;
 
-use Modules\CmsErp\Repositories\Bank\BankRepositoryInterface;
-use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
+use App\Traits\ApiResponseTrait;
 use App\Http\Controllers\Controller;
-use Modules\CmsErp\Transformers\BaseCollection\BaseCollection;
-
-use Modules\CmsErp\Http\Requests\Bank\BankStoreRequest;
-use Modules\CmsErp\Http\Requests\Bank\BankUpdateRequest;
 use Modules\CmsErp\Transformers\Bank\BankResource;
+use Modules\CmsErp\Http\Requests\Bank\BankStoreRequest;
+
+use Modules\CmsErp\Http\Requests\Bank\BankUpdateRequest;
+use Modules\CmsErp\Repositories\Bank\BankRepositoryInterface;
+use Modules\Payroll\Transformers\BaseCollection\BaseCollection;
 
 class BankController extends Controller
 {

@@ -9,6 +9,8 @@ use Modules\CmsErp\Database\Seeders\CmsErpDatabaseSeeder;
 use Modules\Payroll\Database\Seeders\PayrollDatabaseSeeder;
 use Modules\Employee\Database\Seeders\EmployeeDatabaseSeeder;
 use Modules\Facilities\Database\Seeders\FacilitiesDatabaseSeeder;
+use Modules\Recruitment\Database\Seeders\RecruitmentDatabaseSeeder;
+use Modules\AttendanceTracking\Database\Seeders\AttendanceTrackingDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,7 +23,9 @@ class DatabaseSeeder extends Seeder
             CmsErpDatabaseSeeder::class,
             FacilitiesDatabaseSeeder::class,
             EmployeeDatabaseSeeder::class,
-            PayrollDatabaseSeeder::class
+            PayrollDatabaseSeeder::class,
+            AttendanceTrackingDatabaseSeeder::class,
+            RecruitmentDatabaseSeeder::class
         ]);
 
     }

@@ -4,5 +4,7 @@
     "Facilities": true,
     "CmsErp": true,
     "Employee": true,
-    "Payroll": true
+    "Payroll": true,
+    "AttendanceTracking": true,
+    "Recruitment": true
 }
