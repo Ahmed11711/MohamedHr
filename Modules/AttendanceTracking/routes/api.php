@@ -18,7 +18,7 @@ use Modules\AttendanceTracking\Http\Controllers\LeaveBalance\LeaveBalanceControl
 use Modules\AttendanceTracking\Http\Controllers\LeaveRequest\LeaveRequestController;
 use Modules\AttendanceTracking\Http\Controllers\AttendanceTracking\AttendanceTrackingController;
 
-Route::prefix('v1')->group(function () {
+Route::prefix('AttendanceTracking/v1')->group(function () {
      Route::apiResource('attendance_trackings', AttendanceTrackingController::class)->names('attendance_tracking');
     Route::apiResource('leave_requests', LeaveRequestController::class)->names('leave_request');
     Route::apiResource('leave_balances', LeaveBalanceController::class)->names('leave_balance');
