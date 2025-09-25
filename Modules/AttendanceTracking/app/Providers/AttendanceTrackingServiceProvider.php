@@ -2,6 +2,42 @@
 
 namespace Modules\AttendanceTracking\Providers;
 
+use Modules\AttendanceTracking\Repositories\FlexibleLeaveManagement\FlexibleLeaveManagementRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\FlexibleLeaveManagement\FlexibleLeaveManagementRepository;
+
+use Modules\AttendanceTracking\Repositories\GamificationAttendance\GamificationAttendanceRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\GamificationAttendance\GamificationAttendanceRepository;
+
+use Modules\AttendanceTracking\Repositories\AiAttendanceInsight\AiAttendanceInsightRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\AiAttendanceInsight\AiAttendanceInsightRepository;
+
+use Modules\AttendanceTracking\Repositories\AiAttendanceInsights\AiAttendanceInsightsRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\AiAttendanceInsights\AiAttendanceInsightsRepository;
+
+use Modules\AttendanceTracking\Repositories\AbsenceAnalytics\AbsenceAnalyticsRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\AbsenceAnalytics\AbsenceAnalyticsRepository;
+
+use Modules\AttendanceTracking\Repositories\RemoteAttendance\RemoteAttendanceRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\RemoteAttendance\RemoteAttendanceRepository;
+
+use Modules\AttendanceTracking\Repositories\LeavePolicy\LeavePolicyRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\LeavePolicy\LeavePolicyRepository;
+
+use Modules\AttendanceTracking\Repositories\BiometricIntegration\BiometricIntegrationRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\BiometricIntegration\BiometricIntegrationRepository;
+
+use Modules\AttendanceTracking\Repositories\TimeTrackingIntegration\TimeTrackingIntegrationRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\TimeTrackingIntegration\TimeTrackingIntegrationRepository;
+
+use Modules\AttendanceTracking\Repositories\EmployeeLeaveSelfService\EmployeeLeaveSelfServiceRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\EmployeeLeaveSelfService\EmployeeLeaveSelfServiceRepository;
+
+use Modules\AttendanceTracking\Repositories\AttendanceCompliance\AttendanceComplianceRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\AttendanceCompliance\AttendanceComplianceRepository;
+
+use Modules\AttendanceTracking\Repositories\AttendanceLeaveAnalytics\AttendanceLeaveAnalyticsRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\AttendanceLeaveAnalytics\AttendanceLeaveAnalyticsRepository;
+
 use Modules\AttendanceTracking\Repositories\ShiftSchedule\ShiftScheduleRepositoryInterface;
 use Modules\AttendanceTracking\Repositories\ShiftSchedule\ShiftScheduleRepository;
 
@@ -55,6 +91,18 @@ $this->app->register(EventServiceProvider::class);
         $this->app->bind(LeaveRequestRepositoryInterface::class, LeaveRequestRepository::class);
         $this->app->bind(LeaveBalanceRepositoryInterface::class, LeaveBalanceRepository::class);
         $this->app->bind(ShiftScheduleRepositoryInterface::class, ShiftScheduleRepository::class);
+        $this->app->bind(AttendanceLeaveAnalyticsRepositoryInterface::class, AttendanceLeaveAnalyticsRepository::class);
+        $this->app->bind(AttendanceComplianceRepositoryInterface::class, AttendanceComplianceRepository::class);
+        $this->app->bind(EmployeeLeaveSelfServiceRepositoryInterface::class, EmployeeLeaveSelfServiceRepository::class);
+        $this->app->bind(TimeTrackingIntegrationRepositoryInterface::class, TimeTrackingIntegrationRepository::class);
+        $this->app->bind(BiometricIntegrationRepositoryInterface::class, BiometricIntegrationRepository::class);
+        $this->app->bind(LeavePolicyRepositoryInterface::class, LeavePolicyRepository::class);
+        $this->app->bind(RemoteAttendanceRepositoryInterface::class, RemoteAttendanceRepository::class);
+        $this->app->bind(AbsenceAnalyticsRepositoryInterface::class, AbsenceAnalyticsRepository::class);
+        $this->app->bind(AiAttendanceInsightsRepositoryInterface::class, AiAttendanceInsightsRepository::class);
+        $this->app->bind(AiAttendanceInsightRepositoryInterface::class, AiAttendanceInsightRepository::class);
+        $this->app->bind(GamificationAttendanceRepositoryInterface::class, GamificationAttendanceRepository::class);
+        $this->app->bind(FlexibleLeaveManagementRepositoryInterface::class, FlexibleLeaveManagementRepository::class);
 }
 
     /**
