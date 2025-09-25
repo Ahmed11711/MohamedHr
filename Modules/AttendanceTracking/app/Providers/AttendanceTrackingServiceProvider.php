@@ -2,6 +2,18 @@
 
 namespace Modules\AttendanceTracking\Providers;
 
+use Modules\AttendanceTracking\Repositories\ShiftSchedule\ShiftScheduleRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\ShiftSchedule\ShiftScheduleRepository;
+
+use Modules\AttendanceTracking\Repositories\LeaveBalance\LeaveBalanceRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\LeaveBalance\LeaveBalanceRepository;
+
+use Modules\AttendanceTracking\Repositories\LeaveRequest\LeaveRequestRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\LeaveRequest\LeaveRequestRepository;
+
+use Modules\AttendanceTracking\Repositories\AttendanceTracking\AttendanceTrackingRepositoryInterface;
+use Modules\AttendanceTracking\Repositories\AttendanceTracking\AttendanceTrackingRepository;
+
 use Modules\AttendanceTracking\Repositories\Test\TestRepositoryInterface;
 use Modules\AttendanceTracking\Repositories\Test\TestRepository;
 
@@ -39,6 +51,10 @@ class AttendanceTrackingServiceProvider extends ServiceProvider
 $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(TestRepositoryInterface::class, TestRepository::class);
+        $this->app->bind(AttendanceTrackingRepositoryInterface::class, AttendanceTrackingRepository::class);
+        $this->app->bind(LeaveRequestRepositoryInterface::class, LeaveRequestRepository::class);
+        $this->app->bind(LeaveBalanceRepositoryInterface::class, LeaveBalanceRepository::class);
+        $this->app->bind(ShiftScheduleRepositoryInterface::class, ShiftScheduleRepository::class);
 }
 
     /**

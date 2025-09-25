@@ -4,9 +4,9 @@ namespace Modules\AttendanceTracking\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\AttendanceTracking\Database\Factories\AttendanceTrackinAttachmentFactory;
+// use Modules\AttendanceTracking\Database\Factories\ShiftScheduleFactory;
 
-class AttendanceTrackinAttachment extends Model
+class ShiftSchedule extends BaseModel
 {
     use HasFactory;
 
@@ -15,8 +15,8 @@ class AttendanceTrackinAttachment extends Model
      */
     protected $fillable = [];
 
-    // protected static function newFactory(): AttendanceTrackinAttachmentFactory
+    // protected static function newFactory(): ShiftScheduleFactory
     // {
-    //     // return AttendanceTrackinAttachmentFactory::new();
+    //     // return ShiftScheduleFactory::new();
     // }
 }

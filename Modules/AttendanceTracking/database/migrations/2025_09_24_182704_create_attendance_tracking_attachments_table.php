@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attendance_trackin_attachments', function (Blueprint $table) {
+        Schema::create('attendance_tracking_attachments', function (Blueprint $table) {
             $table->id();
             $table->string('file');
             $table->string('reference_number');
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attendance_trackin_attachments');
+        Schema::dropIfExists('attendance_tracking_attachments');
     }
 };

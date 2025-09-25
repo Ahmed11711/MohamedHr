@@ -4,10 +4,9 @@ namespace Modules\AttendanceTracking\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\AttendanceTracking\Models\AttendanceTrackinAttachment;
-// use Modules\AttendanceTracking\Database\Factories\TestFactory;
+// use Modules\AttendanceTracking\Database\Factories\AttendanceTrackingFactory;
 
-class Test extends BaseModel
+class AttendanceTracking extends BaseModel
 {
     use HasFactory;
 
@@ -16,17 +15,8 @@ class Test extends BaseModel
      */
     protected $fillable = [];
 
-    // protected static function newFactory(): TestFactory
+    // protected static function newFactory(): AttendanceTrackingFactory
     // {
-    //     // return TestFactory::new();
+    //     // return AttendanceTrackingFactory::new();
     // }
-
-
-
-
-
-
-
-
-
 }

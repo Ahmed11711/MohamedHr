@@ -12,8 +12,8 @@ class BaseModel extends Model
     {
         return $this->belongsTo(Employeeinfo::class, 'employee_id');
     }
-        public function attachment()
+        public function attendanceAttachments()
     {
-        return $this->belongsTo(AttendanceTrackinAttachment::class, 'attendance_attachments_id','reference_number');
+        return $this->belongsTo(AttendanceTrackingAttachment::class, 'attendance_attachments_id','reference_number');
     }
 }

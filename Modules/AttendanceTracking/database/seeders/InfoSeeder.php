@@ -11,9 +11,21 @@ class InfoSeeder extends Seeder
     {
         $records = [
             [
-                'infoable_type' => 'Test',
-                'title' => ['en' => 'Test', 'ar' => 'امتحان'],
-                'desc'  => ['en' => 'Description for Test', 'ar' => 'وصف للاختبار'],
+                'infoable_type' => 'ShiftSchedule',
+                'title' => ['en' => 'Shiftschedule', 'ar' => 'التحولات'],
+                'desc'  => ['en' => 'Description for Shiftschedule', 'ar' => 'الوصف لطرح التحول'],
+            ],            [
+                'infoable_type' => 'LeaveBalance',
+                'title' => ['en' => 'Leavebalance', 'ar' => 'تركية'],
+                'desc'  => ['en' => 'Description for Leavebalance', 'ar' => 'وصف لليغ'],
+            ],            [
+                'infoable_type' => 'LeaveRequest',
+                'title' => ['en' => 'Leaverequest', 'ar' => 'leaverequest'],
+                'desc'  => ['en' => 'Description for Leaverequest', 'ar' => 'الوصف لـ leaverequest'],
+            ],            [
+                'infoable_type' => 'AttendanceTracking',
+                'title' => ['en' => 'Attendancetracking', 'ar' => 'تتبع الحضور'],
+                'desc'  => ['en' => 'Description for Attendancetracking', 'ar' => 'وصف لتتبع الحضور'],
             ],
         ];
 

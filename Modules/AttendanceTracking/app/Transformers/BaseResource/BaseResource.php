@@ -3,7 +3,7 @@
 namespace Modules\AttendanceTracking\Transformers\BaseResource;
 
 use Illuminate\Http\Resources\Json\JsonResource;
- 
+
 class BaseResource extends JsonResource
 {
     protected function baseArray(): array
@@ -11,7 +11,7 @@ class BaseResource extends JsonResource
          return [
             'id'       => (string) $this->id,
               'employee' =>  $this->employee ? $this->employee->getTranslation('firstName', app()->getLocale()) : null,
-             'attachment' => $this->attachment?->file,
+             'attendanceAttachments' => $this->attendanceAttachments?->file,
         ];
     }
 

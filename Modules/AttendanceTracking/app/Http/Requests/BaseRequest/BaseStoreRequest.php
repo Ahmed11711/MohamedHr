@@ -17,7 +17,7 @@ class BaseStoreRequest extends FormRequest
     {
         return [
             'employee_id' => 'required|integer|exists:employeeinfos,id',
-            'attendance_attachments_id' => 'required|integer|exists:attendance_trackin_attachments,reference_number',
+            'attendance_attachments_id' => 'required|integer|exists:attendance_tracking_attachments,reference_number',
 
         ];
     }

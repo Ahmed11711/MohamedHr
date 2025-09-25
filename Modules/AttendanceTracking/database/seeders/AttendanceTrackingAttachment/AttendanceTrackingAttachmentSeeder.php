@@ -4,6 +4,7 @@ namespace Modules\AttendanceTracking\Database\Seeders\AttendanceTrackingAttachme
 
 use Illuminate\Database\Seeder;
 use Modules\AttendanceTracking\Models\AttendanceTrackinAttachment;
+use Modules\AttendanceTracking\Models\AttendanceTrackingAttachment;
 
 class AttendanceTrackingAttachmentSeeder extends Seeder
 {
@@ -18,7 +19,7 @@ class AttendanceTrackingAttachmentSeeder extends Seeder
         ];
 
         foreach ($attachments as $attachment) {
-            AttendanceTrackinAttachment::firstOrCreate($attachment);
+            AttendanceTrackingAttachment::firstOrCreate($attachment);
         }
     }
 }
