@@ -2,15 +2,16 @@
 
 namespace Modules\AttendanceTracking\Http\Controllers\LeaveBalance;
 
-use Modules\AttendanceTracking\Repositories\LeaveBalance\LeaveBalanceRepositoryInterface;
-use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
+use App\Traits\ApiResponseTrait;
 use App\Http\Controllers\Controller;
 use Modules\AttendanceTracking\Transformers\BaseCollection\BaseCollection;
+use Modules\AttendanceTracking\Transformers\LeaveBalance\LeaveBalanceResource;
 
+use Modules\AttendanceTracking\Transformers\LeaveBalance\LeaveBalanceResource2;
 use Modules\AttendanceTracking\Http\Requests\LeaveBalance\LeaveBalanceStoreRequest;
 use Modules\AttendanceTracking\Http\Requests\LeaveBalance\LeaveBalanceUpdateRequest;
-use Modules\AttendanceTracking\Transformers\LeaveBalance\LeaveBalanceResource;
+use Modules\AttendanceTracking\Repositories\LeaveBalance\LeaveBalanceRepositoryInterface;
 
 class LeaveBalanceController extends Controller
 {

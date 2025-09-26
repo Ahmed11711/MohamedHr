@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('leave_policies', function (Blueprint $table) {
             $table->id();
-            $table->integer('holidays_list_id'); // Leave Type
+            $table->integer('holidays_list_id'); // Foreign key to holidays_list table
             $table->text('policy_description')->nullable(); //
             $table->integer('annual_balance')->default(0); //
                                                 $table->integer('attendance_attachments_id')->nullable(); // Foreign key to attachments table
