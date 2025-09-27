@@ -3,10 +3,11 @@
 namespace Modules\Performance\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Employee\Models\Employeeinfo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Performance\Database\Factories\GoalFactory;
 
-class Goal extends Model
+class Goal extends BaseModel
 {
     use HasFactory;
 
@@ -15,8 +16,6 @@ class Goal extends Model
      */
     protected $fillable = [];
 
-    // protected static function newFactory(): GoalFactory
-    // {
-    //     // return GoalFactory::new();
-    // }
+
+
 }

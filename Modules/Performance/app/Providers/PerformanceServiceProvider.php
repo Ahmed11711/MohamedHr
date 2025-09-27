@@ -2,6 +2,9 @@
 
 namespace Modules\Performance\Providers;
 
+use Modules\Performance\Repositories\Goal\GoalRepositoryInterface;
+use Modules\Performance\Repositories\Goal\GoalRepository;
+
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
@@ -32,11 +35,11 @@ class PerformanceServiceProvider extends ServiceProvider
     /**
      * Register the service provider.
      */
-    public function register(): void
-    {
-        $this->app->register(EventServiceProvider::class);
+    public function register(): void {
+$this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
-    }
+        $this->app->bind(GoalRepositoryInterface::class, GoalRepository::class);
+}
 
     /**
      * Register commands in the format of Command::class

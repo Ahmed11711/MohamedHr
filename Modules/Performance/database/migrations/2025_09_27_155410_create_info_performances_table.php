@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('promotion_rewards', function (Blueprint $table) {
+        Schema::create('info_performances', function (Blueprint $table) {
             $table->id();
-            $table->integer('employeeinfo_id');
-            $table->string('reward_type')->nullable();
-            // $table->string('reward_type')->nullable();
-            $table->date('reward_date')->nullable();
+            $table->string('infoable_type');
+            $table->json('title');
+            $table->json('desc');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('promotion_rewards');
+        Schema::dropIfExists('info_performances');
     }
 };

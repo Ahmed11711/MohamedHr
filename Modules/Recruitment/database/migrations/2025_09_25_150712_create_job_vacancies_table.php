@@ -25,7 +25,7 @@ return new class extends Migration
             $table->enum('job_type', ['full-time', 'part-time', 'contract'])->default('full-time');
             $table->foreignId('work_location_id')->nullable()->constrained('countries')->onDelete('set null');
             $table->integer('number_of_vacancies')->default(1);
-            $table->foreignId('hiring_manager_id')->nullable()->constrained('employeeinfos')->onDelete('set null');
+            $table->integer('hiring_manager_id');
             $table->string('experience_level')->nullable();
             $table->longText('job_description')->nullable();
             $table->integer('recruitment_attachment_id')->nullable();

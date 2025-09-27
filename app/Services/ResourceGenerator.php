@@ -41,7 +41,7 @@ class ResourceGenerator
     $fieldsString = "";
     $table = Str::snake(Str::pluralStudly($model));
 
-     $skipCols = ['id', 'created_at', 'updated_at', 'deleted_at', 'employee','employee_id','Attachments','attendanceAttachments','attendanceAttachments_id'];
+     $skipCols = ['id', 'created_at', 'updated_at', 'deleted_at', 'employee','employee_id','Attachments','attendanceAttachments','attendanceAttachments_id','employeeinfo','employeeinfo_id'];
 
     foreach ($columns as $col) {
          if (in_array($col, $skipCols)) {
@@ -57,7 +57,7 @@ class ResourceGenerator
             if (Schema::hasTable($relatedTable)) {
                 $relatedCols = Schema::getColumnListing($relatedTable);
                 $firstCol = collect($relatedCols)
-                    ->reject(fn($c) => in_array($c, ['id', 'created_at', 'updated_at', 'deleted_at', 'employee_id', 'employee','Attachments','attendanceAttachments','attendanceAttachments_id']))
+                    ->reject(fn($c) => in_array($c, ['id', 'created_at', 'updated_at', 'deleted_at', 'employee_id', 'employee','Attachments','attendanceAttachments','attendanceAttachments_id','employeeinfo','employeeinfo_id']))
                     ->first();
                 $priorityCols = ['name', 'title', 'full_name', 'company_name'];
                 $preferredCol = collect($priorityCols)->first(fn($pc) => in_array($pc, $relatedCols));
@@ -117,7 +117,7 @@ class {$model}Resource extends BaseResource
         $content = File::get($modelPath);
         $columns = Schema::getColumnListing($table);
 
-         $skipFunctions = ['attendanceAttachments', 'employee'];
+         $skipFunctions = ['attendanceAttachments', 'employee', 'employeeinfo','payrollAttachments'];
 
         foreach ($columns as $col) {
             if (Str::endsWith($col, '_id')) {

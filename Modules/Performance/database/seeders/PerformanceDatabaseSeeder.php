@@ -11,6 +11,10 @@ class PerformanceDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call(Goal\GoalSeeder::class);
+        $this->call([
+            InfoSeeder::class,
+            ColumnsSeeder::class,
+        ]);
     }
 }

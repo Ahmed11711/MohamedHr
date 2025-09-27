@@ -62,8 +62,7 @@ class ColumnSyncService
         $namespace  = "Modules\\{$module}\\Database\\Seeders";
         $tableName  = 'columns_' . Str::snake(Str::pluralStudly($module));
 
-        // لو الملف مش موجود هيعمله من الأول
-        if (!File::exists($filePath)) {
+         if (!File::exists($filePath)) {
             $arrayString = self::arrayToShortSyntax([$model => $fields], 2);
 
             $seederContent = <<<PHP
@@ -101,8 +100,7 @@ PHP;
             File::put($filePath, $seederContent);
 
         } else {
-            // Inject لو الموديل مش موجود
-            $oldContent = File::get($filePath);
+             $oldContent = File::get($filePath);
 
             if (strpos($oldContent, "'{$model}'") === false) {
                 $inject = "        '{$model}' => " . self::arrayToShortSyntax($fields, 2) . ",\n";
@@ -127,14 +125,12 @@ PHP;
     $indentStr = str_repeat('    ', $indent);
     $nextIndentStr = str_repeat('    ', $indent + 1);
 
-    // لو array داخلية كلها values (numeric keys) => inline
-    if (!self::isAssoc($array) && self::isFlatArray($array)) {
+     if (!self::isAssoc($array) && self::isFlatArray($array)) {
         $items = array_map(fn($v) => var_export($v, true), $array);
         return '[' . implode(', ', $items) . ']';
     }
 
-    // لو associative array
-    if (self::isAssoc($array)) {
+     if (self::isAssoc($array)) {
         $items = [];
         foreach ($array as $key => $value) {
             $items[] = $nextIndentStr . var_export($key, true) . ' => ' . self::arrayToShortSyntax($value, $indent + 1);
@@ -142,8 +138,7 @@ PHP;
         return "[\n" . implode(",\n", $items) . "\n{$indentStr}]";
     }
 
-    // لو array عادية nested
-    $items = [];
+     $items = [];
     foreach ($array as $value) {
         $items[] = $nextIndentStr . self::arrayToShortSyntax($value, $indent + 1);
     }
