@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('employeeinfos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('facility_id')->constrained()->onDelete('cascade');
+            $table->integer('facility_id');
             $table->boolean('saudi_national')->default(0);
             $table->json('firstName');
             $table->json('secondName')->nullable();
@@ -20,19 +20,19 @@ return new class extends Migration {
             $table->json('lastName')->nullable();
 
             $table->date('dob')->nullable();
-            $table->foreignId('country_id')->constrained('countries')->onDelete('cascade');
+            $table->integer('country_id');
 
             $table->string('national_id')->unique();
             $table->date('ex_national_id')->nullable();
 
-            $table->foreignId('marital_status_id')->constrained('marital_statuses')->onDelete('cascade');
+            $table->integer('marital_status_id');
             $table->enum('gender', ['male', 'female'])->nullable();
 
             $table->string('professional_email')->unique()->nullable();
             $table->string('personal_email')->unique()->nullable();
 
-            $table->foreignId('nationality_id')->constrained('nationalities')->onDelete('cascade');
-            $table->foreignId('religion_id')->constrained('religions')->onDelete('cascade');
+            $table->integer('nationality_id');
+            $table->integer('religion_id');
             $table->string('passport_number')->unique()->nullable();
             $table->enum('passport_type', ['regular', 'diplomatic', 'service'])->nullable();
             $table->string('issuance_location')->nullable();

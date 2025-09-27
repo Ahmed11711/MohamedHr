@@ -12,7 +12,6 @@ class InfoSyncService
      * Generate/Update InfoSeeder file instead of inserting in DB
      *
      * @param string $module     Module name (e.g., Facilities)
-     * @param string $modelClass Full model class (e.g., App\Models\User)
      * @param string $modelName  Name to store in infoable_type (e.g., 'User')
      * @return string
      */
@@ -26,9 +25,6 @@ class InfoSyncService
         $englishDesc = "Description for {$englishTitle}";
         $arabicDesc  = $tr->translate($englishDesc);
 
-        $title = json_encode(['en' => $englishTitle, 'ar' => $arabicTitle], JSON_UNESCAPED_UNICODE);
-        $desc  = json_encode(['en' => $englishDesc, 'ar' => $arabicDesc], JSON_UNESCAPED_UNICODE);
-
         $path = module_path($module, "Database/Seeders");
 
         if (!File::exists($path)) {
@@ -40,41 +36,51 @@ class InfoSyncService
 
         $namespace  = "Modules\\{$module}\\Database\\Seeders";
 
-        $arrayString = "[\n            'infoable_type' => '{$modelName}',\n" .
-            "            'title' => '{$title}',\n" .
-            "            'desc' => '{$desc}',\n" .
-            "            'created_at' => now(),\n" .
-            "            'updated_at' => now(),\n        ]";
+        $newRecord = <<<PHP
+            [
+                'infoable_type' => '{$modelName}',
+                'title' => ['en' => '{$englishTitle}', 'ar' => '{$arabicTitle}'],
+                'desc'  => ['en' => '{$englishDesc}', 'ar' => '{$arabicDesc}'],
+            ],
+PHP;
 
-        if (!File::exists($filePath)) {
+         if (!File::exists($filePath)) {
             $seederContent = <<<PHP
 <?php
 
 namespace {$namespace};
 
 use Illuminate\\Database\\Seeder;
-use Illuminate\\Support\\Facades\\DB;
+use Modules\\{$module}\\Models\\Info{$module};
 
 class InfoSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('info_{$module}')->insert([
-            {$arrayString}
-        ]);
+        \$records = [
+{$newRecord}
+        ];
+
+        foreach (\$records as \$record) {
+            Info{$module}::firstOrCreate(
+                ['infoable_type' => \$record['infoable_type']],
+                [
+                    'title' => \$record['title'],
+                    'desc'  => \$record['desc'],
+                ]
+            );
+        }
     }
 }
 PHP;
             File::put($filePath, $seederContent);
         } else {
-            $oldContent = File::get($filePath);
+             $oldContent = File::get($filePath);
 
-            if (strpos($oldContent, "infoable_type' => '{$modelName}'") === false) {
-                $newInsert = "        DB::table('info_{$module}')->insert([\n            {$arrayString}\n        ]);\n";
-
+            if (strpos($oldContent, "'infoable_type' => '{$modelName}'") === false) {
                 $newContent = preg_replace(
-                    '/\}\s*\}\s*$/',
-                    $newInsert . "    }\n}",
+                    '/(\$records\s*=\s*\[\n)/',
+                    "\$1{$newRecord}",
                     $oldContent
                 );
 

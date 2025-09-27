@@ -30,7 +30,7 @@ class RelationSyncService
         $resourceContent = File::get($resourcePath);
         $modelContent    = File::get($modelPath);
 
-        // استخراج العلاقات: أي شيء فيه $resource->relation?-> أو $resource->relation-> 
+        // استخراج العلاقات: أي شيء فيه $resource->relation?-> أو $resource->relation->
         preg_match_all('/\$resource->(\w+)\??->/', $resourceContent, $matches);
         $relations = $matches[1] ?? [];
 

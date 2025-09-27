@@ -14,6 +14,10 @@ class BaseRepository implements BaseRepositoryInterface
         $this->model = $model;
     }
 
+    public function query()
+{
+    return $this->model->newQuery();
+}
     public function all()
     {
         return $this->model->all();
@@ -21,8 +25,7 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function allRelations(array $relations)
     {
-        Log::info("uu",[$relations]);
-    return $this->model->with($relations)->get();
+     return $this->model->with($relations)->get();
 
     }
 
@@ -53,8 +56,8 @@ class BaseRepository implements BaseRepositoryInterface
         $record = $this->find($id);
         return $record->delete();
     }
-    public function query()
-    {
-        return $this->model->query()->orderBy('created','desc');
-    }
+    // public function query()
+    // {
+    //     return $this->model->query()->orderBy('created','desc');
+    // }
 }

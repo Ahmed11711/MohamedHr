@@ -2,6 +2,15 @@
 
 namespace Modules\CmsErp\Providers;
 
+use Modules\CmsErp\Repositories\Attendance\AttendanceRepositoryInterface;
+use Modules\CmsErp\Repositories\Attendance\AttendanceRepository;
+
+use Modules\CmsErp\Repositories\Bank\BankRepositoryInterface;
+use Modules\CmsErp\Repositories\Bank\BankRepository;
+
+use Modules\CmsErp\Repositories\PaymentMethod\PaymentMethodRepositoryInterface;
+use Modules\CmsErp\Repositories\PaymentMethod\PaymentMethodRepository;
+
 use Modules\CmsErp\Repositories\SubscriptionType\SubscriptionTypeRepositoryInterface;
 use Modules\CmsErp\Repositories\SubscriptionType\SubscriptionTypeRepository;
 
@@ -171,6 +180,9 @@ $this->app->register(EventServiceProvider::class);
         $this->app->bind(ReligionRepositoryInterface::class, ReligionRepository::class);
         $this->app->bind(LicenseTypeRepositoryInterface::class, LicenseTypeRepository::class);
         $this->app->bind(SubscriptionTypeRepositoryInterface::class, SubscriptionTypeRepository::class);
+        $this->app->bind(PaymentMethodRepositoryInterface::class, PaymentMethodRepository::class);
+        $this->app->bind(BankRepositoryInterface::class, BankRepository::class);
+        $this->app->bind(AttendanceRepositoryInterface::class, AttendanceRepository::class);
 }
 
     /**

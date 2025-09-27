@@ -37,10 +37,12 @@ class RequestGenerator
             $rules = [];
             $routeParam = Str::camel($model); // ex: Nationality => nationality
 
-            foreach ($columns as $column) {
-                if (in_array($column, ['id', 'created_at', 'updated_at', 'deleted_at'])) continue;
+             $skipColumns = ['employee_id', 'attendance_attachments_id','recruitment_attachments_id'];
 
-                // نجيب النوع الأصلي من قاعدة البيانات
+            foreach ($columns as $column) {
+                if (in_array($column, ['id', 'created_at', 'updated_at', 'deleted_at','recruitment_attachments_id'])) continue;
+                if (in_array($column, $skipColumns)) continue;
+
                 $columnInfo = DB::selectOne("
                     SELECT COLUMN_TYPE, IS_NULLABLE
                     FROM INFORMATION_SCHEMA.COLUMNS
@@ -48,10 +50,9 @@ class RequestGenerator
                       AND TABLE_SCHEMA = DATABASE()
                 ", [$table, $column]);
 
-                $type = $columnInfo->COLUMN_TYPE;   // زي: varchar(255), enum('male','female')
+                $type = $columnInfo->COLUMN_TYPE;
                 $isNullable = $columnInfo->IS_NULLABLE === 'YES';
 
-                // نحدد القاعدة بناءً على النوع
                 switch (true) {
                     case preg_match('/^varchar\((\d+)\)$/i', $type, $matches):
                         $rule = "string|max:{$matches[1]}";
@@ -85,24 +86,30 @@ class RequestGenerator
                         $rule = 'array';
                         break;
 
+                    case preg_match('/^decimal\((\d+),(\d+)\)$/i', $type, $matches):
+                        $rule = 'numeric';
+                        break;
+
+                    case in_array($type, ['float', 'double']):
+                        $rule = 'numeric';
+                        break;
+
                     default:
                         $rule = '';
                 }
 
-                // علاقات الـ foreign keys
-                if (Str::endsWith($column, '_id')) {
+                 if (Str::endsWith($column, '_id')) {
                     $relatedTable = Str::snake(Str::plural(Str::replaceLast('_id', '', $column)));
                     if (Schema::hasTable($relatedTable)) {
                         $rule .= ($rule ? '|' : '') . "exists:{$relatedTable},id";
                     }
                 }
 
-                // ملفات وصور
-                if (in_array($column, ['img', 'image', 'images', 'file'])) {
+                 if (in_array($column, ['img', 'image', 'images', 'file'])) {
                     $rule .= ($rule ? '|' : '') . 'max:255|file';
                 }
 
-                // الـ unique index
+                // unique
                 $indexes = DB::select("SHOW INDEX FROM {$table} WHERE Column_name='{$column}' AND Non_unique=0");
                 if (!empty($indexes) && !Str::endsWith($column, '_id')) {
                     if ($isUpdate) {
@@ -129,47 +136,40 @@ class RequestGenerator
             return $rules;
         };
 
-        File::put($storeRequestPath, self::generateStub($module, $model . 'StoreRequest', $generateRules(false), $model));
-        File::put($updateRequestPath, self::generateStub($module, $model . 'UpdateRequest', $generateRules(true), $model));
+        File::put(
+            $storeRequestPath,
+            self::generateStub($module, $model . 'StoreRequest', $generateRules(false), $model, false)
+        );
+
+        File::put(
+            $updateRequestPath,
+            self::generateStub($module, $model . 'UpdateRequest', $generateRules(true), $model, true)
+        );
 
         return "Requests for {$model} created successfully inside Module {$module}.";
     }
 
-    private static function generateStub($module, $className, $rules, $modelName)
+    private static function generateStub($module, $className, $rules, $modelName, $isUpdate = false)
     {
         $rulesString = "";
         foreach ($rules as $col => $r) {
             $rulesString .= "            '{$col}' => '{$r}',\n";
         }
 
+        $baseClass = $isUpdate ? 'BaseUpdateRequest' : 'BaseStoreRequest';
+
         return "<?php
 
 namespace Modules\\{$module}\\Http\\Requests\\{$modelName};
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Contracts\Validation\Validator;
+use Modules\\{$module}\\Http\\Requests\\BaseRequest\\{$baseClass};
 
-class {$className} extends FormRequest
+class {$className} extends {$baseClass}
 {
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     public function rules(): array
     {
-        return [
-{$rulesString}        ];
-    }
-
-    public function failedValidation(Validator \$validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Validation errors',
-            'error' => \$validator->errors()
-        ], 422));
+        return array_merge(\$this->baseRules(), [
+{$rulesString}        ]);
     }
 }
 ";

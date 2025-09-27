@@ -3,5 +3,8 @@
     "Blogs": true,
     "Facilities": true,
     "CmsErp": true,
-    "Employee": true
+    "Employee": true,
+    "Payroll": true,
+    "AttendanceTracking": true,
+    "Recruitment": true
 }

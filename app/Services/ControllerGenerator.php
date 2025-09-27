@@ -25,6 +25,7 @@ class ControllerGenerator
 
         $storeRequestClass  = "Modules\\{$module}\\Http\\Requests\\{$model}\\{$model}StoreRequest";
         $updateRequestClass = "Modules\\{$module}\\Http\\Requests\\{$model}\\{$model}UpdateRequest";
+$namespaceBaseCol  = "Modules\\{$module}\\Transformers\\BaseCollection\\BaseCollection";
 
         $controllerStub = "<?php
 
@@ -34,7 +35,7 @@ use {$namespaceRepo};
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Modules\Facilities\Transformers\BaseCollection\BaseCollection;
+use {$namespaceBaseCol};
 
 use {$storeRequestClass};
 use {$updateRequestClass};
@@ -59,7 +60,7 @@ class {$model}Controller extends Controller
                     new BaseCollection(\$data, '" . strtolower($model) . "', {$model}Resource::class),
                     '{$model} list retrieved successfully'
                 );
-        
+
         }
 
     public function show(\$id)
