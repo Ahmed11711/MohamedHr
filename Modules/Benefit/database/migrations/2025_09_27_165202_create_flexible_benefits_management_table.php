@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->text('selected_benefits')->nullable();
             $table->decimal('benefits_cost', 12, 2)->nullable();
             $table->enum('selection_status', ['Pending', 'Confirmed'])->default('Pending');
-
             $table->timestamps();
         });
     }

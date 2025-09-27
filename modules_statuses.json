@@ -9,5 +9,7 @@
     "Recruitment": true,
     "Performance": true,
     "Training": true,
-    "Benefit": true
+    "Benefit": true,
+    "Exit": true,
+    "ExitManagement": true
 }
