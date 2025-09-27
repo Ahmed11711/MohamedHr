@@ -8,5 +8,6 @@
     "AttendanceTracking": true,
     "Recruitment": true,
     "Performance": true,
-    "Training": true
+    "Training": true,
+    "Benefit": true
 }
