@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('performance_attatchments', function (Blueprint $table) {
+        Schema::create('training_budget_management', function (Blueprint $table) {
             $table->id();
-            $table->string('attatchment');
-            $table->string('attachment_type')->nullable();
-            $table->string('attachment_size')->nullable();
+            $table->integer('course_id'); // course id
+            $table->decimal('allocated_budget', 10, 2);
+            $table->decimal('spent_budget', 10, 2)->default(0);
+            $table->decimal('budget_variance', 12, 2)->default(0);
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('performance_attatchments');
+        Schema::dropIfExists('training_budget_management');
     }
 };

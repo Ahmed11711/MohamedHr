@@ -7,5 +7,6 @@
     "Payroll": true,
     "AttendanceTracking": true,
     "Recruitment": true,
-    "Performance": true
+    "Performance": true,
+    "Training": true
 }

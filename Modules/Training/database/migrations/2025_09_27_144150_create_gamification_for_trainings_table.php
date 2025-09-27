@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('performance_attatchments', function (Blueprint $table) {
+        Schema::create('gamification_for_trainings', function (Blueprint $table) {
             $table->id();
-            $table->string('attatchment');
-            $table->string('attachment_type')->nullable();
-            $table->string('attachment_size')->nullable();
+            $table->integer('employeeinfo_id'); // employee_info id
+            $table->unsignedInteger('training_points')->default(0);
+            $table->text('earned_rewards')->nullable();
+            $table->string('progress_level')->default('Beginner');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('performance_attatchments');
+        Schema::dropIfExists('gamification_for_trainings');
     }
 };
