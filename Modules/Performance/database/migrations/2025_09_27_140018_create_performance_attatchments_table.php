@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('goal_attachments', function (Blueprint $table) {
+        Schema::create('performance_attatchments', function (Blueprint $table) {
             $table->id();
-            $table->integer('goal_id');
-            $table->string('attachment');
-            $table->string('attachment_type')->nullable();
-            $table->string('attachment_size')->nullable();
+            
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('goal_attachments');
+        Schema::dropIfExists('performance_attatchments');
     }
 };
