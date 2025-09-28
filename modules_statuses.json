@@ -3,5 +3,14 @@
     "Blogs": true,
     "Facilities": true,
     "CmsErp": true,
-    "Employee": true
+    "Employee": true,
+    "Payroll": true,
+    "AttendanceTracking": true,
+    "Recruitment": true,
+    "Performance": true,
+    "Training": true,
+    "Benefit": true,
+    "Exit": true,
+    "ExitManagement": true,
+    "Compliance": true
 }

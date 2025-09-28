@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Repositories\BaseRepository;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Repositories\BaseRepository\BaseRepositoryInterface;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use App\Repositories\BaseRepository\BaseRepositoryInterface;
 
 class BaseRepository implements BaseRepositoryInterface
 {
@@ -14,6 +16,10 @@ class BaseRepository implements BaseRepositoryInterface
         $this->model = $model;
     }
 
+    public function query()
+    {
+        return $this->model->newQuery();
+    }
     public function all()
     {
         return $this->model->all();
@@ -21,9 +27,7 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function allRelations(array $relations)
     {
-        Log::info("uu",[$relations]);
-    return $this->model->with($relations)->get();
-
+        return $this->model->with($relations)->get();
     }
 
     public function paginate()
@@ -53,8 +57,26 @@ class BaseRepository implements BaseRepositoryInterface
         $record = $this->find($id);
         return $record->delete();
     }
-    public function query()
+    public function deleteMultiple(array $ids)
     {
-        return $this->model->query()->orderBy('created','desc');
+        if (empty($ids)) {
+            return 0;
+        }
+        return $this->model->whereIn('id', $ids)->delete();
+    }
+    public function deleteWithAttachments(array $ids): int
+    {
+        $records = $this->model->whereIn('id', $ids)->get();
+        foreach ($records as $record) {
+            foreach ($record->attachments as $attachment) {
+                if (Storage::disk('public')->exists($attachment->file)) {
+                    Storage::disk('public')->delete($attachment->file);
+                }
+                $attachment->delete();
+            }
+            $record->delete();
+        }
+
+        return count($records);
     }
 }

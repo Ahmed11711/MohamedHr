@@ -18,36 +18,31 @@ class RelationSyncService
         $modelPath    = module_path($module, "Models/{$model}.php");
         $resourcePath = module_path($module, "Transformers/{$model}/{$model}Resource.php");
 
-        // ✅ تأكيد وجود الملفات
-        if (!File::exists($modelPath)) {
+         if (!File::exists($modelPath)) {
             return "Model file not found: " . realpath($modelPath);
         }
         if (!File::exists($resourcePath)) {
             return "Resource file not found: " . realpath($resourcePath);
         }
 
-        // قراءة المحتوى
-        $resourceContent = File::get($resourcePath);
+         $resourceContent = File::get($resourcePath);
         $modelContent    = File::get($modelPath);
 
-        // استخراج العلاقات: أي شيء فيه $resource->relation?-> أو $resource->relation-> 
-        preg_match_all('/\$resource->(\w+)\??->/', $resourceContent, $matches);
+         preg_match_all('/\$resource->(\w+)\??->/', $resourceContent, $matches);
         $relations = $matches[1] ?? [];
 
         if (empty($relations)) {
             return "No relations found in resource!";
         }
 
-        // ✅ Debug: شوف كل العلاقات اللي لاقاها
-        // dd($modelPath, $resourcePath, $relations);
+         // dd($modelPath, $resourcePath, $relations);
 
         foreach ($relations as $relation) {
             $methodName = Str::camel($relation);   // companyType
             $className  = Str::studly($relation);  // CompanyType
             $namespace  = "Modules\\{$module}\\Models\\{$className}";
 
-            // إضافة use لو مش موجود
-            if (!Str::contains($modelContent, "use {$namespace};")) {
+             if (!Str::contains($modelContent, "use {$namespace};")) {
                 $modelContent = preg_replace(
                     '/namespace\s+[^\s;]+;\s*/',
                     "namespace " . self::getNamespace($modelClass) . ";\n\nuse {$namespace};\n",

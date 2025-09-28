@@ -19,7 +19,7 @@ class FacilityAttachments extends Model
        protected static function booted()
     {
         static::creating(function ($model) {
-             $model->reference_number = now()->format('YmdHis') . mt_rand(100, 999);
+    $model->reference_number = (int) (now()->format('ymd') . mt_rand(100, 999));
         });
     }
 

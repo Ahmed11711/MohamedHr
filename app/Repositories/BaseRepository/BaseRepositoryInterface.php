@@ -17,4 +17,6 @@ interface BaseRepositoryInterface {
     public function update($id, array $data);
 
     public function delete($id);
+    public function deleteMultiple(array $id);
+    public function deleteWithAttachments(array $id);
 }

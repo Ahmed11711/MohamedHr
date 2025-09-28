@@ -27,5 +27,14 @@ class InfoSeeder extends Seeder
             'updated_at' => now(),
         ]
         ]);
+            DB::table('info_CmsErp')->insert([
+            [
+            'infoable_type' => 'PaymentMethod',
+            'title' => '{"en":"Paymentmethod","ar":"PaymentMethod"}',
+            'desc' => '{"en":"Description for Paymentmethod","ar":"وصف للدفع"}',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]
+        ]);
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 
 class ControllerGenerator
 {
@@ -12,7 +11,7 @@ class ControllerGenerator
         $controllerDir  = module_path($module, "app/Http/Controllers/{$model}");
         $controllerPath = $controllerDir . "/{$model}Controller.php";
 
-        $namespaceRepo = "Modules\\{$module}\\Repositories\\{$model}\\{$model}RepositoryInterface";
+        $namespaceRepo     = "Modules\\{$module}\\Repositories\\{$model}\\{$model}RepositoryInterface";
         $namespaceResource = "Modules\\{$module}\\Transformers\\{$model}\\{$model}Resource";
 
         if (!File::isDirectory($controllerDir)) {
@@ -23,8 +22,12 @@ class ControllerGenerator
             return "{$model}Controller already exists!";
         }
 
-        $storeRequestClass  = "Modules\\{$module}\\Http\\Requests\\{$model}\\{$model}StoreRequest";
+        $storeRequestClass = "Modules\\{$module}\\Http\\Requests\\{$model}\\{$model}StoreRequest";
         $updateRequestClass = "Modules\\{$module}\\Http\\Requests\\{$model}\\{$model}UpdateRequest";
+        $namespaceBaseCol   = "Modules\\{$module}\\Transformers\\BaseCollection\\BaseCollection";
+        $namespaceEnums     = "Modules\\{$module}\\Transformers\\{$model}\\{$model}ResourceEnums";
+
+        $modelKey = strtolower($model);
 
         $controllerStub = "<?php
 
@@ -34,11 +37,12 @@ use {$namespaceRepo};
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Modules\Facilities\Transformers\BaseCollection\BaseCollection;
-
+use {$namespaceBaseCol};
 use {$storeRequestClass};
 use {$updateRequestClass};
 use {$namespaceResource};
+use {$namespaceEnums};
+use App\Services\AttachmentService\AttachmentService;
 
 class {$model}Controller extends Controller
 {
@@ -51,16 +55,15 @@ class {$model}Controller extends Controller
         \$this->{$model}Repository = \${$model}Repository;
     }
 
-    public function index()
+    public function index(Request \$request)
     {
-        \$data = \$this->{$model}Repository->all();
-
-        return \$this->successResponse(
-                    new BaseCollection(\$data, '" . strtolower($model) . "', {$model}Resource::class),
-                    '{$model} list retrieved successfully'
-                );
-        
-        }
+     return \$request->boolean('list')
+      ? \$this->successResponse(new {$model}ResourceEnums([]),'{$model} enums retrieved successfully')
+      : \$this->successResponse(
+         new BaseCollection(\$this->{$model}Repository->all(), '{$modelKey}', {$model}Resource::class),
+         '{$model} list retrieved successfully'
+            );
+    }
 
     public function show(\$id)
     {
@@ -71,22 +74,51 @@ class {$model}Controller extends Controller
         return \$this->successResponse(new {$model}Resource(\$data), '{$model} retrieved successfully');
     }
 
-    public function store({$model}StoreRequest \$request)
+    public function store({$model}StoreRequest \$request, AttachmentService \$service)
     {
-        \$data = \$this->{$model}Repository->create(\$request->validated());
-        return \$this->successResponse(new {$model}Resource(\$data), '{$model} created successfully', 201);
+        \$data = \$request->validated();
+        \$files = \$request->file('files') ?? [];
+        unset(\$data['files']);
+
+        \$record = \$this->{$model}Repository->create(\$data);
+
+        if (!empty(\$files)) {
+            \$service->uploadFiles(\$files, \$record, strtolower('{$module}'));
+        }
+
+        return \$this->successResponse(new {$model}Resource(\$record), '{$model} created successfully', 201);
     }
 
-    public function update({$model}UpdateRequest \$request, \$id)
+    public function update({$model}UpdateRequest \$request, \$id, AttachmentService \$service)
     {
-        \$data = \$this->{$model}Repository->update(\$id, \$request->validated());
-        return \$this->successResponse(new {$model}Resource(\$data), '{$model} updated successfully');
+        \$data = \$request->validated();
+        \$files = \$request->file('files') ?? [];
+        unset(\$data['files']);
+
+        \$record = \$this->{$model}Repository->update(\$id, \$data);
+
+        if (!empty(\$files)) {
+            \$service->uploadFiles(\$files, \$record, strtolower('{$module}'));
+        }
+
+        return \$this->successResponse(new {$model}Resource(\$record), '{$model} updated successfully');
     }
 
-    public function destroy(\$id)
+    public function destroy(\$id, Request \$request)
     {
-        \$this->{$model}Repository->delete(\$id);
-        return \$this->successResponse(null, '{$model} deleted successfully');
+        \$ids = \$request->input('ids', []);
+
+        if (is_string(\$ids)) {
+            \$ids = json_decode(\$ids, true);
+        }
+
+        if (!is_array(\$ids)) {
+            return \$this->errorResponse('IDs must be an array', 400);
+        }
+
+        \$deletedCount = \$this->{$model}Repository->deleteWithAttachments(\$ids);
+
+        return \$this->successResponse(null, \"{\$deletedCount} {$model} deleted successfully\");
     }
 }
 ";

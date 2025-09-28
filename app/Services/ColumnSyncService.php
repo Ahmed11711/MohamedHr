@@ -34,7 +34,7 @@ class ColumnSyncService
         $tr   = new GoogleTranslate('ar');
         $skip = ['id', 'created_at', 'updated_at', 'deleted_at'];
 
-        $data = [];
+        $fields = [];
 
         foreach ($columns as $col) {
             if (in_array($col, $skip)) {
@@ -44,24 +44,11 @@ class ColumnSyncService
             $arabicKey   = $tr->translate($col);
             $arabicLabel = $tr->translate(Str::title(str_replace('_', ' ', $col)));
 
-            $key = [
-                'en' => $col,
-                'ar' => $arabicKey,
-            ];
-
-            $label = [
-                'en' => Str::title(str_replace('_', ' ', $col)),
-                'ar' => $arabicLabel,
-            ];
-
-            $data[] = [
-                'model'      => $model,
-                'key'        => $key,
-                'label'      => $label,
-                'sortable'   => true,
-                'filterable' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
+            $fields[] = [
+                $col,                                   // en key
+                $arabicKey,                             // ar key
+                Str::title(str_replace('_', ' ', $col)),// en label
+                $arabicLabel                            // ar label
             ];
         }
 
@@ -71,14 +58,13 @@ class ColumnSyncService
             File::makeDirectory($path, 0755, true);
         }
 
-        $seederName = "ColumnsSeeder.php";
-        $filePath   = $path . '/' . $seederName;
-
+        $filePath   = $path . '/ColumnsSeeder.php';
         $namespace  = "Modules\\{$module}\\Database\\Seeders";
+        $tableName  = 'columns_' . Str::snake(Str::pluralStudly($module));
 
-        $arrayString = self::buildArrayString($data);
+         if (!File::exists($filePath)) {
+            $arrayString = self::arrayToShortSyntax([$model => $fields], 2);
 
-        if (!File::exists($filePath)) {
             $seederContent = <<<PHP
 <?php
 
@@ -91,22 +77,37 @@ class ColumnsSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('columns_facilities')->insert(
-            {$arrayString}
-        );
+        \$now = now()->toDateTimeString();
+
+        \$columns = {$arrayString};
+
+        foreach (\$columns as \$model => \$fields) {
+            foreach (\$fields as \$field) {
+                DB::table('{$tableName}')->insert([
+                    'model' => \$model,
+                    'key' => json_encode(['en' => \$field[0], 'ar' => \$field[1]], JSON_UNESCAPED_UNICODE),
+                    'label' => json_encode(['en' => \$field[2], 'ar' => \$field[3]], JSON_UNESCAPED_UNICODE),
+                    'sortable' => true,
+                    'filterable' => true,
+                    'created_at' => \$now,
+                    'updated_at' => \$now,
+                ]);
+            }
+        }
     }
 }
 PHP;
             File::put($filePath, $seederContent);
+
         } else {
-            $oldContent = File::get($filePath);
+             $oldContent = File::get($filePath);
 
-            $newInsert = "        DB::table('columns_facilities')->insert(\n            {$arrayString}\n        );\n";
+            if (strpos($oldContent, "'{$model}'") === false) {
+                $inject = "        '{$model}' => " . self::arrayToShortSyntax($fields, 2) . ",\n";
 
-            if (strpos($oldContent, "'model' => '{$model}'") === false) {
                 $newContent = preg_replace(
-                    '/\}\s*\}\s*$/',
-                    $newInsert . "    }\n}",
+                    '/(\$columns\s*=\s*\[)/',
+                    "$1\n{$inject}",
                     $oldContent
                 );
 
@@ -117,26 +118,45 @@ PHP;
         return "Seeder updated: {$filePath}";
     }
 
-    private static function buildArrayString(array $data): string
-    {
-        $rows = collect($data)->map(function ($row) {
-            $items = [];
-            foreach ($row as $k => $v) {
-                if (in_array($k, ['key', 'label'])) {
-                    // نخليهم json_encode صح
-                    $v = "json_encode(" . var_export($v, true) . ", JSON_UNESCAPED_UNICODE)";
-                } elseif (is_string($v)) {
-                    $v = "'" . addslashes($v) . "'";
-                } elseif (is_bool($v)) {
-                    $v = $v ? 'true' : 'false';
-                } elseif ($v instanceof \DateTimeInterface) {
-                    $v = "'" . $v->format('Y-m-d H:i:s') . "'";
-                }
-                $items[] = "'{$k}' => {$v}";
-            }
-            return '[' . implode(', ', $items) . ']';
-        })->implode(",\n            ");
+    /**
+     * Convert array to short syntax for seeder
+     */private static function arrayToShortSyntax(array $array, int $indent = 0): string
+{
+    $indentStr = str_repeat('    ', $indent);
+    $nextIndentStr = str_repeat('    ', $indent + 1);
 
-        return "[\n            {$rows}\n        ]";
+     if (!self::isAssoc($array) && self::isFlatArray($array)) {
+        $items = array_map(fn($v) => var_export($v, true), $array);
+        return '[' . implode(', ', $items) . ']';
     }
+
+     if (self::isAssoc($array)) {
+        $items = [];
+        foreach ($array as $key => $value) {
+            $items[] = $nextIndentStr . var_export($key, true) . ' => ' . self::arrayToShortSyntax($value, $indent + 1);
+        }
+        return "[\n" . implode(",\n", $items) . "\n{$indentStr}]";
+    }
+
+     $items = [];
+    foreach ($array as $value) {
+        $items[] = $nextIndentStr . self::arrayToShortSyntax($value, $indent + 1);
+    }
+    return "[\n" . implode(",\n", $items) . "\n{$indentStr}]";
+}
+
+private static function isAssoc(array $arr): bool
+{
+    return array_keys($arr) !== range(0, count($arr) - 1);
+}
+
+private static function isFlatArray(array $arr): bool
+{
+    foreach ($arr as $v) {
+        if (is_array($v)) {
+            return false;
+        }
+    }
+    return true;
+}
 }

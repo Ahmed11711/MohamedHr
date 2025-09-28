@@ -14,7 +14,6 @@ class FacilitiesDatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(MedicalInsurancesFacilities\MedicalInsurancesFacilitiesSeeder::class);
-        $this->call(MedicalInsuranceCategories\MedicalInsuranceCategoriesSeeder::class);
         $this->call(periodicObligations\periodicObligationsSeeder::class);
         $this->call(SubscriptionFacilities\SubscriptionFacilitiesSeeder::class);
         $this->call(License\LicenseSeeder::class);
