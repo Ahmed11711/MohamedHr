@@ -12,10 +12,10 @@ return new class extends Migration {
     {
         Schema::create('predictive_turnover_management', function (Blueprint $table) {
             $table->id();
-            $table->string('prediction_type');                            // نوع التنبؤ
-            $table->float('prediction_rate')->nullable();                 // معدل التنبؤ
-            $table->string('period')->nullable();                         // الفترة
-            $table->string('predictive_turnover_report_pdf')->nullable(); // تقرير التنبؤ PDF
+            $table->string('prediction_type');
+            $table->float('prediction_rate')->nullable();
+            $table->string('period')->nullable();                       
+            $table->string('predictive_turnover_report_pdf')->nullable();
             $table->string('prediction_charts_png')->nullable();
             $table->timestamps();
         });

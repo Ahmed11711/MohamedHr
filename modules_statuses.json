@@ -11,5 +11,6 @@
     "Training": true,
     "Benefit": true,
     "Exit": true,
-    "ExitManagement": true
+    "ExitManagement": true,
+    "Compliance": true
 }
