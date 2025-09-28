@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('infoable_type');
             $table->json('title');
             $table->json('desc');
-            $table->timestamps();
+               $table->timestamps();
         });
     }
 
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-         Schema::dropIfExists('info_performances');
+          Schema::dropIfExists('performance_attatchments');
 
     }
 };

@@ -7,5 +7,10 @@
     "Payroll": true,
     "AttendanceTracking": true,
     "Recruitment": true,
-    "Performance": true
+    "Performance": true,
+    "Training": true,
+    "Benefit": true,
+    "Exit": true,
+    "ExitManagement": true,
+    "Compliance": true
 }

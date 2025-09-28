@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('column_performances', function (Blueprint $table) {
+         Schema::create('column_performances', function (Blueprint $table) {
             $table->id();
             $table->string('model');
         $table->json('key');
         $table->json('label');
         $table->boolean('sortable')->default(true);
         $table->boolean('filterable')->default(true);
-            $table->timestamps();
+
+$table->timestamps();
         });
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('column_performances');
+         Schema::dropIfExists('column_performances');
+
     }
 };

@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::create('info_performances', function (Blueprint $table) {
+        Schema::create('a_i_driven_learning_recommendations', function (Blueprint $table) {
             $table->id();
-            $table->string('infoable_type');
-            $table->json('title');
-            $table->json('desc');
+            $table->integer('employeeinfo_id'); // employee_info id
+             $table->string('recommended_course');
+            $table->text('recommendation_reason')->nullable();
+            $table->unsignedTinyInteger('fit_score')->default(0);
             $table->timestamps();
         });
     }
@@ -25,7 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-         Schema::dropIfExists('info_performances');
-
+        Schema::dropIfExists('a_i_driven_learning_recommendations');
     }
 };
