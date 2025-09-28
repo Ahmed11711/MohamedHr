@@ -11,6 +11,9 @@ class TrainingDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            ColumnsSeeder::class,
+            InfoSeeder::class,
+        ]);
     }
 }

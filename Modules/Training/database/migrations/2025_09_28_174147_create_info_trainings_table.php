@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::create('info_performances', function (Blueprint $table) {
+        Schema::create('info_trainings', function (Blueprint $table) {
             $table->id();
-            $table->string('infoable_type');
+                 $table->string('infoable_type');
             $table->json('title');
             $table->json('desc');
-               $table->timestamps();
+            $table->timestamps();
         });
     }
 
@@ -25,7 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-          Schema::dropIfExists('performance_attatchments');
-
+        Schema::dropIfExists('info_trainings');
     }
 };

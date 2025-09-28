@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             EmployeeDatabaseSeeder::class,
             PayrollDatabaseSeeder::class,
             AttendanceTrackingDatabaseSeeder::class,
-            RecruitmentDatabaseSeeder::class,
+            // RecruitmentDatabaseSeeder::class,
             PerformanceDatabaseSeeder::class
         ]);
 
