@@ -3,7 +3,6 @@
 namespace Modules\Recruitment\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Recruitment\Database\Seeders\RecruitmentAttachment\RecruitmentAttachmentSeeder;
 
 class RecruitmentDatabaseSeeder extends Seeder
 {
@@ -12,12 +11,14 @@ class RecruitmentDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(Ahmed\AhmedSeeder::class);
-         $this->call([
-            RecruitmentAttachmentSeeder::class,
-            InfoSeeder::class,
-            ColumnsSeeder::class,
-
-]);
+        $this->call(CandidateSkill\CandidateSkillSeeder::class);
+        $this->call(ApplicationPreviousExperience\ApplicationPreviousExperienceSeeder::class);
+        $this->call(JobOffer\JobOfferSeeder::class);
+        $this->call(EmployeeReferral\EmployeeReferralSeeder::class);
+        $this->call(Onboarding\OnboardingSeeder::class);
+        $this->call(Interview\InterviewSeeder::class);
+        $this->call(Application\ApplicationSeeder::class);
+        $this->call(JobVacancy\JobVacancySeeder::class);
+        // $this->call([]);
     }
 }

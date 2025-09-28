@@ -2,8 +2,53 @@
 
 namespace Modules\Recruitment\Providers;
 
-use Modules\Recruitment\Repositories\Ahmed\AhmedRepositoryInterface;
-use Modules\Recruitment\Repositories\Ahmed\AhmedRepository;
+use Modules\Recruitment\Repositories\CandidateSkill\CandidateSkillRepositoryInterface;
+use Modules\Recruitment\Repositories\CandidateSkill\CandidateSkillRepository;
+
+use Modules\Recruitment\Repositories\CandidateAttachment\CandidateAttachmentRepositoryInterface;
+use Modules\Recruitment\Repositories\CandidateAttachment\CandidateAttachmentRepository;
+
+use Modules\Recruitment\Repositories\OnboardingTask\OnboardingTaskRepositoryInterface;
+use Modules\Recruitment\Repositories\OnboardingTask\OnboardingTaskRepository;
+
+use Modules\Recruitment\Repositories\InterviewAttachment\InterviewAttachmentRepositoryInterface;
+use Modules\Recruitment\Repositories\InterviewAttachment\InterviewAttachmentRepository;
+
+use Modules\Recruitment\Repositories\ApplicationPreviousExperience\ApplicationPreviousExperienceRepositoryInterface;
+use Modules\Recruitment\Repositories\ApplicationPreviousExperience\ApplicationPreviousExperienceRepository;
+
+use Modules\Recruitment\Repositories\JobVacancyAttachment\JobVacancyAttachmentRepositoryInterface;
+use Modules\Recruitment\Repositories\JobVacancyAttachment\JobVacancyAttachmentRepository;
+
+use Modules\Recruitment\Repositories\JobVacancyLanguage\JobVacancyLanguageRepositoryInterface;
+use Modules\Recruitment\Repositories\JobVacancyLanguage\JobVacancyLanguageRepository;
+
+use Modules\Recruitment\Repositories\JobVacancySkill\JobVacancySkillRepositoryInterface;
+use Modules\Recruitment\Repositories\JobVacancySkill\JobVacancySkillRepository;
+
+use Modules\Recruitment\Repositories\EmploymentContract\EmploymentContractRepositoryInterface;
+use Modules\Recruitment\Repositories\EmploymentContract\EmploymentContractRepository;
+
+use Modules\Recruitment\Repositories\JobOffer\JobOfferRepositoryInterface;
+use Modules\Recruitment\Repositories\JobOffer\JobOfferRepository;
+
+use Modules\Recruitment\Repositories\RecruitmentAgency\RecruitmentAgencyRepositoryInterface;
+use Modules\Recruitment\Repositories\RecruitmentAgency\RecruitmentAgencyRepository;
+
+use Modules\Recruitment\Repositories\EmployeeReferral\EmployeeReferralRepositoryInterface;
+use Modules\Recruitment\Repositories\EmployeeReferral\EmployeeReferralRepository;
+
+use Modules\Recruitment\Repositories\Onboarding\OnboardingRepositoryInterface;
+use Modules\Recruitment\Repositories\Onboarding\OnboardingRepository;
+
+use Modules\Recruitment\Repositories\Interview\InterviewRepositoryInterface;
+use Modules\Recruitment\Repositories\Interview\InterviewRepository;
+
+use Modules\Recruitment\Repositories\Application\ApplicationRepositoryInterface;
+use Modules\Recruitment\Repositories\Application\ApplicationRepository;
+
+use Modules\Recruitment\Repositories\JobVacancy\JobVacancyRepositoryInterface;
+use Modules\Recruitment\Repositories\JobVacancy\JobVacancyRepository;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -38,7 +83,22 @@ class RecruitmentServiceProvider extends ServiceProvider
     public function register(): void {
 $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
-        $this->app->bind(AhmedRepositoryInterface::class, AhmedRepository::class);
+        $this->app->bind(JobVacancyRepositoryInterface::class, JobVacancyRepository::class);
+        $this->app->bind(ApplicationRepositoryInterface::class, ApplicationRepository::class);
+        $this->app->bind(InterviewRepositoryInterface::class, InterviewRepository::class);
+        $this->app->bind(OnboardingRepositoryInterface::class, OnboardingRepository::class);
+        $this->app->bind(EmployeeReferralRepositoryInterface::class, EmployeeReferralRepository::class);
+        $this->app->bind(RecruitmentAgencyRepositoryInterface::class, RecruitmentAgencyRepository::class);
+        $this->app->bind(JobOfferRepositoryInterface::class, JobOfferRepository::class);
+        $this->app->bind(EmploymentContractRepositoryInterface::class, EmploymentContractRepository::class);
+        $this->app->bind(JobVacancySkillRepositoryInterface::class, JobVacancySkillRepository::class);
+        $this->app->bind(JobVacancyLanguageRepositoryInterface::class, JobVacancyLanguageRepository::class);
+        $this->app->bind(JobVacancyAttachmentRepositoryInterface::class, JobVacancyAttachmentRepository::class);
+        $this->app->bind(ApplicationPreviousExperienceRepositoryInterface::class, ApplicationPreviousExperienceRepository::class);
+        $this->app->bind(InterviewAttachmentRepositoryInterface::class, InterviewAttachmentRepository::class);
+        $this->app->bind(OnboardingTaskRepositoryInterface::class, OnboardingTaskRepository::class);
+        $this->app->bind(CandidateAttachmentRepositoryInterface::class, CandidateAttachmentRepository::class);
+        $this->app->bind(CandidateSkillRepositoryInterface::class, CandidateSkillRepository::class);
 }
 
     /**

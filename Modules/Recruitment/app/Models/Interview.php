@@ -4,9 +4,9 @@ namespace Modules\Recruitment\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\Recruitment\Database\Factories\ApplicationPreviousExperienceFactory;
+// use Modules\Recruitment\Database\Factories\InterviewFactory;
 
-class ApplicationPreviousExperience extends Model
+class Interview extends Model
 {
     use HasFactory;
 
@@ -15,9 +15,9 @@ class ApplicationPreviousExperience extends Model
      */
     protected $fillable = [];
 
-    // protected static function newFactory(): ApplicationPreviousExperienceFactory
+    // protected static function newFactory(): InterviewFactory
     // {
-    //     // return ApplicationPreviousExperienceFactory::new();
+    //     // return InterviewFactory::new();
     // }
 
 
