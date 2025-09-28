@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Performance\Database\Factories\AiDrivenPerformanceInsightFactory;
 
-class AiDrivenPerformanceInsight extends Model
+class AiDrivenPerformanceInsight extends BaseModel
 {
     use HasFactory;
 

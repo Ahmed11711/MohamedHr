@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 
 class ControllerGenerator
 {
@@ -12,7 +11,7 @@ class ControllerGenerator
         $controllerDir  = module_path($module, "app/Http/Controllers/{$model}");
         $controllerPath = $controllerDir . "/{$model}Controller.php";
 
-        $namespaceRepo = "Modules\\{$module}\\Repositories\\{$model}\\{$model}RepositoryInterface";
+        $namespaceRepo     = "Modules\\{$module}\\Repositories\\{$model}\\{$model}RepositoryInterface";
         $namespaceResource = "Modules\\{$module}\\Transformers\\{$model}\\{$model}Resource";
 
         if (!File::isDirectory($controllerDir)) {
@@ -23,9 +22,12 @@ class ControllerGenerator
             return "{$model}Controller already exists!";
         }
 
-        $storeRequestClass  = "Modules\\{$module}\\Http\\Requests\\{$model}\\{$model}StoreRequest";
+        $storeRequestClass = "Modules\\{$module}\\Http\\Requests\\{$model}\\{$model}StoreRequest";
         $updateRequestClass = "Modules\\{$module}\\Http\\Requests\\{$model}\\{$model}UpdateRequest";
-        $namespaceBaseCol  = "Modules\\{$module}\\Transformers\\BaseCollection\\BaseCollection";
+        $namespaceBaseCol   = "Modules\\{$module}\\Transformers\\BaseCollection\\BaseCollection";
+        $namespaceEnums     = "Modules\\{$module}\\Transformers\\{$model}\\{$model}ResourceEnums";
+
+        $modelKey = strtolower($model);
 
         $controllerStub = "<?php
 
@@ -39,6 +41,7 @@ use {$namespaceBaseCol};
 use {$storeRequestClass};
 use {$updateRequestClass};
 use {$namespaceResource};
+use {$namespaceEnums};
 use App\Services\AttachmentService\AttachmentService;
 
 class {$model}Controller extends Controller
@@ -52,14 +55,14 @@ class {$model}Controller extends Controller
         \$this->{$model}Repository = \${$model}Repository;
     }
 
-    public function index()
+    public function index(Request \$request)
     {
-        \$data = \$this->{$model}Repository->all();
-
-        return \$this->successResponse(
-            new BaseCollection(\$data, '" . strtolower($model) . "', {$model}Resource::class),
-            '{$model} list retrieved successfully'
-        );
+     return \$request->boolean('list')
+      ? \$this->successResponse(new {$model}ResourceEnums([]),'{$model} enums retrieved successfully')
+      : \$this->successResponse(
+         new BaseCollection(\$this->{$model}Repository->all(), '{$modelKey}', {$model}Resource::class),
+         '{$model} list retrieved successfully'
+            );
     }
 
     public function show(\$id)
@@ -101,7 +104,7 @@ class {$model}Controller extends Controller
         return \$this->successResponse(new {$model}Resource(\$record), '{$model} updated successfully');
     }
 
-    public function destroy(\$id,Request \$request)
+    public function destroy(\$id, Request \$request)
     {
         \$ids = \$request->input('ids', []);
 

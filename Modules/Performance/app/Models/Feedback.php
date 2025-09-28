@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Performance\Database\Factories\FeedbackFactory;
 
-class Feedback extends Model
+class Feedback extends BaseModel
 {
     use HasFactory;
 

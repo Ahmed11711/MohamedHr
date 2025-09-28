@@ -2,6 +2,39 @@
 
 namespace Modules\Performance\Providers;
 
+use Modules\Performance\Repositories\LearningManagementIntegration\LearningManagementIntegrationRepositoryInterface;
+use Modules\Performance\Repositories\LearningManagementIntegration\LearningManagementIntegrationRepository;
+
+use Modules\Performance\Repositories\AiDrivenPerformanceInsight\AiDrivenPerformanceInsightRepositoryInterface;
+use Modules\Performance\Repositories\AiDrivenPerformanceInsight\AiDrivenPerformanceInsightRepository;
+
+use Modules\Performance\Repositories\EmployeeRecognitionManagement\EmployeeRecognitionManagementRepositoryInterface;
+use Modules\Performance\Repositories\EmployeeRecognitionManagement\EmployeeRecognitionManagementRepository;
+
+use Modules\Performance\Repositories\ContinuousPerformanceManagement\ContinuousPerformanceManagementRepositoryInterface;
+use Modules\Performance\Repositories\ContinuousPerformanceManagement\ContinuousPerformanceManagementRepository;
+
+use Modules\Performance\Repositories\CompetencyManagement\CompetencyManagementRepositoryInterface;
+use Modules\Performance\Repositories\CompetencyManagement\CompetencyManagementRepository;
+
+use Modules\Performance\Repositories\SuccessionPlanning\SuccessionPlanningRepositoryInterface;
+use Modules\Performance\Repositories\SuccessionPlanning\SuccessionPlanningRepository;
+
+use Modules\Performance\Repositories\PromotionReward\PromotionRewardRepositoryInterface;
+use Modules\Performance\Repositories\PromotionReward\PromotionRewardRepository;
+
+use Modules\Performance\Repositories\Feedback360\Feedback360RepositoryInterface;
+use Modules\Performance\Repositories\Feedback360\Feedback360Repository;
+
+use Modules\Performance\Repositories\DevelopmentPlan\DevelopmentPlanRepositoryInterface;
+use Modules\Performance\Repositories\DevelopmentPlan\DevelopmentPlanRepository;
+
+use Modules\Performance\Repositories\Feedback\FeedbackRepositoryInterface;
+use Modules\Performance\Repositories\Feedback\FeedbackRepository;
+
+use Modules\Performance\Repositories\Evaluation\EvaluationRepositoryInterface;
+use Modules\Performance\Repositories\Evaluation\EvaluationRepository;
+
 use Modules\Performance\Repositories\Goal\GoalRepositoryInterface;
 use Modules\Performance\Repositories\Goal\GoalRepository;
 
@@ -39,6 +72,17 @@ class PerformanceServiceProvider extends ServiceProvider
 $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(GoalRepositoryInterface::class, GoalRepository::class);
+        $this->app->bind(EvaluationRepositoryInterface::class, EvaluationRepository::class);
+        $this->app->bind(FeedbackRepositoryInterface::class, FeedbackRepository::class);
+        $this->app->bind(DevelopmentPlanRepositoryInterface::class, DevelopmentPlanRepository::class);
+        $this->app->bind(Feedback360RepositoryInterface::class, Feedback360Repository::class);
+        $this->app->bind(PromotionRewardRepositoryInterface::class, PromotionRewardRepository::class);
+        $this->app->bind(SuccessionPlanningRepositoryInterface::class, SuccessionPlanningRepository::class);
+        $this->app->bind(CompetencyManagementRepositoryInterface::class, CompetencyManagementRepository::class);
+        $this->app->bind(ContinuousPerformanceManagementRepositoryInterface::class, ContinuousPerformanceManagementRepository::class);
+        $this->app->bind(EmployeeRecognitionManagementRepositoryInterface::class, EmployeeRecognitionManagementRepository::class);
+        $this->app->bind(AiDrivenPerformanceInsightRepositoryInterface::class, AiDrivenPerformanceInsightRepository::class);
+        $this->app->bind(LearningManagementIntegrationRepositoryInterface::class, LearningManagementIntegrationRepository::class);
 }
 
     /**

@@ -33,6 +33,12 @@ class ResourceGenerator
 
         self::updateModelRelations($module, $model, $table);
 
+            $enumsPath = "{$modelFolder}/{$model}ResourceEnums.php";
+        if (!File::exists($enumsPath)) {
+            $enumsStub = self::generateEnumsStub($module, $model, $table);
+            File::put($enumsPath, $enumsStub);
+        }
+
         return "{$model}Resource + Relations updated successfully inside Module {$module}.";
     }
 
@@ -106,34 +112,49 @@ class {$model}Resource extends BaseResource
 ";
 }
 
-    private static function updateModelRelations($module, $model, $table)
-    {
-        $modelPath = module_path($module, "app/Models/{$model}.php");
+   private static function updateModelRelations($module, $model, $table)
+{
+    $modelPath = module_path($module, "app/Models/{$model}.php");
 
-        if (!File::exists($modelPath)) {
-            return;
+    if (!File::exists($modelPath)) {
+        return;
+    }
+
+    $content = File::get($modelPath);
+
+    // ✅ استبدال Model بـ BaseModel لو لسه مش متعدل
+    if (Str::contains($content, 'extends Model')) {
+        $content = str_replace('extends Model', 'extends BaseModel', $content);
+
+        // إضافة use BaseModel; لو مش موجود
+        if (!Str::contains($content, 'use App\\Models\\BaseModel;')) {
+            $content = preg_replace(
+                '/namespace .*?;\s*/',
+                "$0\nuse App\\Models\\BaseModel;\n",
+                $content
+            );
         }
+    }
 
-        $content = File::get($modelPath);
-        $columns = Schema::getColumnListing($table);
+    $columns = Schema::getColumnListing($table);
 
-         $skipFunctions = ['attendanceAttachments', 'employee', 'employeeinfo','payrollAttachments'];
+    $skipFunctions = ['attendanceAttachments', 'employee', 'employeeinfo','attachments','payrollAttachments'];
 
-        foreach ($columns as $col) {
-            if (Str::endsWith($col, '_id')) {
-                $relation = Str::camel(Str::replaceLast('_id', '', $col));
+    foreach ($columns as $col) {
+        if (Str::endsWith($col, '_id')) {
+            $relation = Str::camel(Str::replaceLast('_id', '', $col));
 
-                 if (in_array($relation, $skipFunctions)) {
-                    continue;
-                }
+            if (in_array($relation, $skipFunctions)) {
+                continue;
+            }
 
-                $relatedModel = Str::studly(Str::replaceLast('_id', '', $col));
+            $relatedModel = Str::studly(Str::replaceLast('_id', '', $col));
 
-                if (Str::contains($content, "function {$relation}(")) {
-                    continue;
-                }
+            if (Str::contains($content, "function {$relation}(")) {
+                continue;
+            }
 
-                $relationCode = "
+            $relationCode = "
 
     public function {$relation}()
     {
@@ -141,10 +162,82 @@ class {$model}Resource extends BaseResource
     }
 ";
 
-                $content = preg_replace('/}\s*$/', $relationCode . "\n}", $content);
+            $content = preg_replace('/}\s*$/', $relationCode . "\n}", $content);
+        }
+    }
+
+    File::put($modelPath, $content);
+}
+private static function generateEnumsStub($module, $model, $table)
+{
+    $className = "{$model}ResourceEnums";
+    $columns   = Schema::getColumnListing($table);
+
+    $fieldsString = "";
+    $useModels    = []; // 🟢 هنا هخزن أسماء الموديلات
+
+    foreach ($columns as $col) {
+        $type = Schema::getColumnType($table, $col);
+
+        // ✅ ENUM columns → label/value (PHP array format)
+        if ($type === 'enum') {
+            $enumValues = Schema::getConnection()
+                ->select("SHOW COLUMNS FROM {$table} WHERE Field = '{$col}'")[0]->Type ?? '';
+
+            preg_match("/enum\((.*)\)/", $enumValues, $matches);
+
+            if (!empty($matches[1])) {
+                $values = str_getcsv(str_replace("'", "", $matches[1]));
+
+                $formatted = array_map(function ($val) {
+                    return "[ 'label' => '" . ucfirst(str_replace('_', ' ', $val)) . "', 'value' => '{$val}' ]";
+                }, $values);
+
+                $fieldsString .= "                '{$col}' => [\n                    " . implode(",\n                    ", $formatted) . "\n                ],\n";
             }
         }
 
-        File::put($modelPath, $content);
+        // ✅ Relations من *_id (مع تخطي employeeinfo_id)
+        if (Str::endsWith($col, '_id') && $col !== 'employeeinfo_id') {
+            $relation     = Str::camel(Str::replaceLast('_id', '', $col)); // ex: position
+            $modelName    = Str::studly(Str::replaceLast('_id', '', $col)); // ex: Position
+            $relatedTable = Str::snake(Str::pluralStudly($modelName));      // ex: positions
+
+            // جيب أول عمود بعد الـ id
+            $relatedCols = Schema::getColumnListing($relatedTable);
+            $firstCol = collect($relatedCols)
+                ->reject(fn($c) => in_array($c, ['id', 'created_at', 'updated_at', 'deleted_at']))
+                ->first();
+
+            $labelKey = $firstCol ?? 'id';
+
+            // 🟢 ضيف الموديل لقائمة use
+            $useModels[] = "use Modules\\CmsErp\\Models\\{$modelName};";
+
+            $fieldsString .= "                '{$relation}' => BaseEnums::collectionFrom({$modelName}::all(), '{$labelKey}'),\n";
+        }
     }
+
+    // 🟢 شيل التكرارات
+    $useModels = array_unique($useModels);
+
+    return "<?php
+
+namespace Modules\\{$module}\\Transformers\\{$model};
+
+use Illuminate\\Http\\Resources\\Json\\JsonResource;
+use App\\Transformers\\BaseEnums\\BaseEnums;
+" . implode("\n", $useModels) . "
+
+class {$className} extends JsonResource
+{
+    public function toArray(\$request)
+    {
+       return [
+{$fieldsString}
+        ];
+    }
+}
+";
+}
 }

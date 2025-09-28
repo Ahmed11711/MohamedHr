@@ -2,11 +2,11 @@
 
 namespace Modules\Performance\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Modules\CmsErp\Models\Activity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Performance\Database\Factories\ContinuousPerformanceManagementFactory;
 
-class ContinuousPerformanceManagement extends Model
+class ContinuousPerformanceManagement extends BaseModel
 {
     use HasFactory;
 
@@ -19,4 +19,11 @@ class ContinuousPerformanceManagement extends Model
     // {
     //     // return ContinuousPerformanceManagementFactory::new();
     // }
+
+
+    public function activity()
+    {
+        return $this->belongsTo(Activity::class, 'activity_id');
+    }
+
 }

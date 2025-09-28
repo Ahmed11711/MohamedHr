@@ -2,11 +2,12 @@
 
 namespace Modules\Performance\Models;
 
+use Faker\Provider\Base;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Performance\Database\Factories\EvaluationFactory;
 
-class Evaluation extends Model
+class Evaluation extends BaseModel
 {
     use HasFactory;
 

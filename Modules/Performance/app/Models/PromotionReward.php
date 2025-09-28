@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Performance\Database\Factories\PromotionRewardFactory;
 
-class PromotionReward extends Model
+class PromotionReward extends BaseModel
 {
     use HasFactory;
 

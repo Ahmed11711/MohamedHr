@@ -2,11 +2,11 @@
 
 namespace Modules\Performance\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\CmsErp\Models\Position;
+ use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Performance\Database\Factories\SuccessionPlanningFactory;
 
-class SuccessionPlanning extends Model
+class SuccessionPlanning extends BaseModel
 {
     use HasFactory;
 
@@ -19,4 +19,11 @@ class SuccessionPlanning extends Model
     // {
     //     // return SuccessionPlanningFactory::new();
     // }
+
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class, 'position_id');
+    }
+
 }

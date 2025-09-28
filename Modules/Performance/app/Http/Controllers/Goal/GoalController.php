@@ -10,6 +10,7 @@ use Modules\Performance\Transformers\BaseCollection\BaseCollection;
 use Modules\Performance\Http\Requests\Goal\GoalStoreRequest;
 use Modules\Performance\Http\Requests\Goal\GoalUpdateRequest;
 use Modules\Performance\Transformers\Goal\GoalResource;
+use Modules\Performance\Transformers\Goal\GoalResourceEnums;
 use App\Services\AttachmentService\AttachmentService;
 
 class GoalController extends Controller
@@ -23,14 +24,13 @@ class GoalController extends Controller
         $this->GoalRepository = $GoalRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->GoalRepository->all();
-
-        return $this->successResponse(
-            new BaseCollection($data, 'goal', GoalResource::class),
-            'Goal list retrieved successfully'
-        );
+    return $request->boolean('list')
+    ? $this->successResponse(new GoalResourceEnums([]),'Goal enums retrieved successfully')
+    : $this->successResponse(new BaseCollection($this->GoalRepository->all(), 'goal', GoalResource::class),
+                'Goal list retrieved successfully'
+            );
     }
 
     public function show($id)
@@ -72,16 +72,19 @@ class GoalController extends Controller
         return $this->successResponse(new GoalResource($record), 'Goal updated successfully');
     }
 
-    public function destroy($id,Request $request)
+    public function destroy($id, Request $request)
     {
-       $ids = $request->input('ids', []);
+        $ids = $request->input('ids', []);
+
         if (is_string($ids)) {
             $ids = json_decode($ids, true);
         }
+
         if (!is_array($ids)) {
             return $this->errorResponse('IDs must be an array', 400);
         }
-    $deletedCount = $this->GoalRepository->deleteWithAttachments($ids);
+
+        $deletedCount = $this->GoalRepository->deleteWithAttachments($ids);
 
         return $this->successResponse(null, "{$deletedCount} Goal deleted successfully");
     }

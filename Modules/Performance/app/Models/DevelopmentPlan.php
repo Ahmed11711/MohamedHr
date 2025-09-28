@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Performance\Database\Factories\DevelopmentPlanFactory;
 
-class DevelopmentPlan extends Model
+class DevelopmentPlan extends BaseModel
 {
     use HasFactory;
 

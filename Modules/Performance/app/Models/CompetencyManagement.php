@@ -2,11 +2,9 @@
 
 namespace Modules\Performance\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\Performance\Database\Factories\CompetencyManagementFactory;
+  use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class CompetencyManagement extends Model
+class CompetencyManagement extends BaseModel
 {
     use HasFactory;
 

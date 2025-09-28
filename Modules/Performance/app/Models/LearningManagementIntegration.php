@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Performance\Database\Factories\LearningManagementIntegrationFactory;
 
-class LearningManagementIntegration extends Model
+class LearningManagementIntegration extends BaseModel
 {
     use HasFactory;
 
