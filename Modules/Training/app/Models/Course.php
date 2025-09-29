@@ -2,13 +2,14 @@
 
 namespace Modules\Training\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\BaseModel;
+use Spatie\Translatable\HasTranslations;
+ use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Training\Database\Factories\TrainingProgramManagementFactory;
 
-class Course extends Model
+class Course extends BaseModel
 {
-    use HasFactory;
+    use HasFactory,HasTranslations;
 
     /**
      * The attributes that are mass assignable.

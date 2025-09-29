@@ -7,6 +7,8 @@ use App\Transformers\columns\columnsResource;
 use Modules\Performance\Models\InfoPerformance;
 use Modules\Performance\Models\ColumnPerformance;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Modules\Training\Models\ColumnTraining;
+use Modules\Training\Models\InfoTraining;
 
 class BaseCollection extends ResourceCollection
 {
@@ -26,10 +28,10 @@ class BaseCollection extends ResourceCollection
         return [
             'data'    => ($this->resourceClass)::collection($this->collection),
             'columns' => columnsResource::collection(
-                ColumnPerformance::where('model', $this->modelName)->get()
+                ColumnTraining::where('model', $this->modelName)->get()
             ),
             'infos' => new infoResource(
-                InfoPerformance::where('infoable_type', $this->modelName)->first()
+                InfoTraining::where('infoable_type', $this->modelName)->first()
             ),
 
         ];

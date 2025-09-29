@@ -20,13 +20,23 @@ class BaseEnums extends JsonResource
         $resource = $this->resource;
 
         return [
-            "label" => $resource->getTranslation($this->labelKey, app()->getLocale()),
+"label" => $this->getLabelValue($resource, $this->labelKey),
             "value" => $resource->id,
         ];
     }
 
-    /**
-      */
+ protected function getLabelValue($resource, string $key)
+{
+    if (
+        method_exists($resource, 'getTranslatableAttributes') &&
+        in_array($key, $resource->getTranslatableAttributes())
+    ) {
+        return $resource->getTranslation($key, app()->getLocale());
+    }
+
+    return $resource->{$key};
+}
+
     public static function collectionFrom(Collection $items, string $labelKey = 'label')
     {
         return $items->map(fn($item) => new static($item, $labelKey))->values();

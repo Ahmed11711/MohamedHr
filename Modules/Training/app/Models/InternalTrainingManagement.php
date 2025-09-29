@@ -2,11 +2,11 @@
 
 namespace Modules\Training\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+ use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Training\Database\Factories\InternalTrainingManagementFactory;
 
-class InternalTrainingManagement extends Model
+class InternalTrainingManagement extends BaseModel
 {
     use HasFactory;
 
@@ -19,4 +19,11 @@ class InternalTrainingManagement extends Model
     // {
     //     // return InternalTrainingManagementFactory::new();
     // }
+
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id');
+    }
+
 }

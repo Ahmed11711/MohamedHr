@@ -162,7 +162,7 @@ class RequestGenerator
 
 namespace Modules\\{$module}\\Http\\Requests\\{$modelName};
 
-use Modules\\{$module}\\Http\\Requests\\BaseRequest\\{$baseClass};
+use App\Http\Requests\BaseRequest\\{$baseClass};
 
 class {$className} extends {$baseClass}
 {

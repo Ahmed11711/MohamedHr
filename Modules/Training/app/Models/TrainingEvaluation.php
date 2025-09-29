@@ -2,11 +2,12 @@
 
 namespace Modules\Training\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Training\Models\Course;
+
+ use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Training\Database\Factories\TrainingEvaluationFactory;
 
-class TrainingEvaluation extends Model
+class TrainingEvaluation extends BaseModel
 {
     use HasFactory;
 
@@ -19,4 +20,11 @@ class TrainingEvaluation extends Model
     // {
     //     // return TrainingEvaluationFactory::new();
     // }
+
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id');
+    }
+
 }

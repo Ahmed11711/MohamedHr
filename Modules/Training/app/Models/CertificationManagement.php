@@ -2,11 +2,12 @@
 
 namespace Modules\Training\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Training\Models\BaseModel;
+
+  use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Training\Database\Factories\CertificationManagementFactory;
 
-class CertificationManagement extends Model
+class CertificationManagement extends BaseModel
 {
     use HasFactory;
 

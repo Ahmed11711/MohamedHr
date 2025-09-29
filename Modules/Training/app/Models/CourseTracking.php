@@ -2,11 +2,10 @@
 
 namespace Modules\Training\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\Training\Database\Factories\CourseTrackingFactory;
+use Modules\Training\Models\BaseModel;
+ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class CourseTracking extends Model
+class CourseTracking extends BaseModel
 {
     use HasFactory;
 
@@ -19,4 +18,11 @@ class CourseTracking extends Model
     // {
     //     // return CourseTrackingFactory::new();
     // }
+
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id');
+    }
+
 }

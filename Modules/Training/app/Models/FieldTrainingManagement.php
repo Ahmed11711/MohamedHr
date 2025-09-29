@@ -2,11 +2,10 @@
 
 namespace Modules\Training\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+ use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Training\Database\Factories\FieldTrainingManagementFactory;
 
-class FieldTrainingManagement extends Model
+class FieldTrainingManagement extends BaseModel
 {
     use HasFactory;
 

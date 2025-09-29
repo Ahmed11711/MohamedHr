@@ -93,7 +93,7 @@ class ResourceGenerator
 
 namespace Modules\\{$module}\\Transformers\\{$model};
 
-use Modules\\{$module}\\Transformers\\BaseResource\\BaseResource;
+use App\Transformers\BaseResource\BaseResource;
 
 class {$model}Resource extends BaseResource
 {
