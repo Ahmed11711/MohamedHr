@@ -86,8 +86,7 @@ class AttendanceTrackingServiceProvider extends ServiceProvider
     public function register(): void {
 $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
-        $this->app->bind(TestRepositoryInterface::class, TestRepository::class);
-        $this->app->bind(AttendanceTrackingRepositoryInterface::class, AttendanceTrackingRepository::class);
+         $this->app->bind(AttendanceTrackingRepositoryInterface::class, AttendanceTrackingRepository::class);
         $this->app->bind(LeaveRequestRepositoryInterface::class, LeaveRequestRepository::class);
         $this->app->bind(LeaveBalanceRepositoryInterface::class, LeaveBalanceRepository::class);
         $this->app->bind(ShiftScheduleRepositoryInterface::class, ShiftScheduleRepository::class);
@@ -99,8 +98,7 @@ $this->app->register(EventServiceProvider::class);
         $this->app->bind(LeavePolicyRepositoryInterface::class, LeavePolicyRepository::class);
         $this->app->bind(RemoteAttendanceRepositoryInterface::class, RemoteAttendanceRepository::class);
         $this->app->bind(AbsenceAnalyticsRepositoryInterface::class, AbsenceAnalyticsRepository::class);
-        $this->app->bind(AiAttendanceInsightsRepositoryInterface::class, AiAttendanceInsightsRepository::class);
-        $this->app->bind(AiAttendanceInsightRepositoryInterface::class, AiAttendanceInsightRepository::class);
+         $this->app->bind(AiAttendanceInsightRepositoryInterface::class, AiAttendanceInsightRepository::class);
         $this->app->bind(GamificationAttendanceRepositoryInterface::class, GamificationAttendanceRepository::class);
         $this->app->bind(FlexibleLeaveManagementRepositoryInterface::class, FlexibleLeaveManagementRepository::class);
 }

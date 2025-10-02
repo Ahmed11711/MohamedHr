@@ -10,18 +10,23 @@ use Modules\CmsErp\Models\Language;
 use Modules\CmsErp\Models\Nationality;
 use Modules\CmsErp\Models\SecurityQuestions;
 use Modules\Facilities\Models\InfoFacilities;
-
-class User extends Authenticatable
+use Tymon\JWTAuth\Contracts\JWTSubject;
+class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+ 
 
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -43,13 +48,10 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+        'is_verified' => 'boolean',
         ];
     }
-    public function getTermsAcceptedAttribute($value)
-    {
-        return (bool) $value;
-    }
-
+ 
     // User columns 
     public function columns()
     {

@@ -15,17 +15,11 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('userName');
+            $table->string('fullName');
+            $table->string('phone')->unique();
             $table->string('email')->unique();
-            $table->text('fullName');
             $table->string('password');
-            $table->string('mobileNumber');
-            $table->integer('securityQuestion_id');
-            $table->string('security_answer');
-            $table->enum('gender', ['Male', 'Female']);
-            $table->unsignedBigInteger('nationality_id');
-            $table->unsignedBigInteger('language_id');
-            $table->boolean('termsAccepted')->default(false);
-
+            $table->boolean('is_fully_verified')->default(false);
             $table->timestamps();
         });
 
