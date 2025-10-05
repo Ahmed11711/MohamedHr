@@ -79,4 +79,16 @@ class BaseRepository implements BaseRepositoryInterface
 
         return count($records);
     }
+
+    public function getByFieldAll(array $columns = ['*'])
+    {
+        return $this->model
+            ->select($columns)
+            ->get();
+    }
+    public function getByFieldFind(string $field, $value)
+    {
+        return $this->model->where($field,$value)->first();
+             
+    }
 }

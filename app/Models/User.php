@@ -25,7 +25,11 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims()
     {
-        return [];
+        return [
+            'user_id' =>$this->id,
+            'user_name' =>$this->userName,
+            'db_name' =>$this->domine ? $this->domine->db_name : null,
+        ];
     }
 
     /**
@@ -74,5 +78,12 @@ class User extends Authenticatable implements JWTSubject
     public function securityQuestion()
     {
         return $this->belongsTo(SecurityQuestions::class, 'securityQuestion_id');
+    }
+
+
+    // user domines
+    public function domine()
+    {
+        return $this->hasOne(Tenant::class, 'user_id', 'id');
     }
 }

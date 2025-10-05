@@ -16,10 +16,11 @@ return new class extends Migration
             $table->id();
             $table->string('userName');
             $table->string('fullName');
-            $table->string('phone')->unique();
+            $table->string('phone');
             $table->string('email')->unique();
             $table->string('password');
             $table->boolean('is_fully_verified')->default(false);
+            $table->string('google_id')->nullable()->unique();
             $table->timestamps();
         });
 

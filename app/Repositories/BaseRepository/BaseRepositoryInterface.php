@@ -19,4 +19,6 @@ interface BaseRepositoryInterface {
     public function delete($id);
     public function deleteMultiple(array $id);
     public function deleteWithAttachments(array $id);
+    public function getByFieldAll(array $columns );
+    public function getByFieldFind (string $field, $id,  );
 }

@@ -25,7 +25,8 @@ class PayrollController extends Controller
 
     public function index()
     {
-        $data = $this->PayrollRepository->all();
+        
+        $data = $this->PayrollRepository->getByFieldAll(['basic_salary','overtime_hours','overtime_amount']);
 
         return $this->successResponse(
                     new BaseCollection($data, 'payroll', PayrollResource::class),

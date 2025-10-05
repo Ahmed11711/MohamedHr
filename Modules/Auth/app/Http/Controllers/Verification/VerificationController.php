@@ -3,16 +3,21 @@
 namespace Modules\Auth\Http\Controllers\Verification;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\CreateTenantJob;
 use App\Models\UserTwoFactor;
 use App\Services\TwoFactorService\TwoFactorService;
 use App\Traits\ApiResponseTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Modules\Auth\Http\Requests\Auth\Login\LoginByPhoneRequest;
 use Modules\Auth\Http\Requests\Auth\Verification\VerificationRequest;
 use Modules\Auth\Http\Requests\Auth\Verification\ResendCodeRequest;
 use Modules\Auth\Repositories\Auth\AuthRepositoryInterface;
 use Modules\Auth\Repositories\UserTwoFactor\UserTwoFactorRepositoryInterface;
-use PragmaRX\Google2FA\Google2FA;
+use Modules\Auth\Services\Verification\VerificationService;
+use Modules\Auth\Transformers\Auth\LoginResource;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class VerificationController extends Controller
 {
@@ -20,112 +25,48 @@ class VerificationController extends Controller
     public function __construct(
         protected AuthRepositoryInterface $userRepository,
         protected TwoFactorService $twoFactorService,
-        protected UserTwoFactorRepositoryInterface $userTwoFactorRepository
+        protected UserTwoFactorRepositoryInterface $userTwoFactorRepository,
+        protected VerificationService $verificationService,
     ) {}
+    // for register
     public function confirmVerification(VerificationRequest $request)
     {
         $data = $request->validated();
-        $record = $this->userTwoFactorRepository->getForVerification($data['user_id'], $data['method']);
-
-        if (! $record) {
-            return $this->errorResponse('No verification record found', 404);
-        }
-
-        $response = $this->handelCaseVerification($record, $data['code']);
-
-        if ($record->is_verified) {
-            $this->markUserAsVerifiedIfAllMethodsDone($data['user_id']);
-        }
-
-        return $response;
+        return $this->verificationService->confirmVerification($data['user_id'], $data['method'], $data['code']);
     }
 
-
-    public function handelCaseVerification($record, $value)
+    public function verifyOtpWithToken(VerificationRequest $request)
     {
-        if ($record->method === 'email' || $record->method === 'sms') {
-            return $this->verifyOtp($record, $value);
-        } elseif ($record->method === 'app') {
-            return $this->verifyAppCode($record, $value);
-        } else {
-            return $this->errorResponse('Invalid verification method', 422);
-        }
+        $data = $request->validated();
+        return $this->verificationService->confirmVerification($data['user_id'], $data['method'], $data['code'], 'login');
     }
 
-    /**
-     * Verify Email/SMS OTP.
-     */
-    private function verifyOtp(UserTwoFactor $record, string $value)
-    {
-        if (!Hash::check($value, $record->otp_code)) {
-            return $this->errorResponse('Invalid OTP', 422);
-        }
-
-        if (Carbon::parse($record->otp_expires_at)->isPast()) {
-            return $this->errorResponse('OTP expired', 422);
-        }
-
-        $record->update(['is_verified' => true]);
-
-        return $this->successResponse('OTP verified successfully');
-    }
-
-    /**
-     * Verify Authenticator App code.
-     */
-    private function verifyAppCode(UserTwoFactor $record, string $value)
-    {
-        $google2fa = new Google2FA();
-
-        $isValid = $google2fa->verifyKey($record->secret, $value, 2);
-
-        if (! $isValid) {
-            return $this->errorResponse('Invalid authenticator code', 422);
-        }
-
-        $record->update(['is_verified' => true]);
-
-        return $this->successResponse('Authenticator app verified successfully');
-    }
-
-    protected function markUserAsVerifiedIfAllMethodsDone($user_id)
-    {
-
-
-        $allVerified = $this->userTwoFactorRepository->checkAllMethodsVerified($user_id);
-        if ($allVerified) {
-            $this->userRepository->verifyAccount($user_id);
-        }
-    }
-
-    //////////////////////////////////////////////////////////////////
-    //                      resend code
-    //////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
+    //                      processVerificationCode
 
     public function resendVerificationCode(ResendCodeRequest $request)
     {
         $data = $request->validated();
-
-
-        $resend = $this->twoFactorService->resendCode($data['user_id'], $data['method']);
-
-        if (!$resend['success']) {
-            return $this->errorResponse($resend['message'], 422);
-        }
-
-        return $this->successData(['otp' => $resend['otp']], $resend['message']);
+        return $this->verificationService->processVerificationCode($data, 'resend');
     }
 
     public function sendVerificationCode(ResendCodeRequest $request)
     {
         $data = $request->validated();
+        return $this->verificationService->processVerificationCode($data, 'send');
+    }
 
-        $resend = $this->twoFactorService->resendCode($data['user_id'], $data['method'], 5, 'send');
+    public function sendOtpByPhone(LoginByPhoneRequest $request)
+    {
+         $data=$request->validated();
+         $user=$this->userRepository->getByFiled('phone',$data);
+         $data=[
+            'user_id'=>$user->id,
+            'method' =>'sms',
+         ];
 
-        if (!$resend['success']) {
-            return $this->errorResponse($resend['message'], 422);
-        }
+         return $this->verificationService->processVerificationCode($data, 'send');
 
-        return $this->successData(['otp' => $resend['otp']], $resend['message']);
+
     }
 }

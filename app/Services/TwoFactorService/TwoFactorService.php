@@ -4,112 +4,104 @@ namespace App\Services\TwoFactorService;
 
 use App\Models\UserTwoFactor;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
-use Modules\Auth\Repositories\UserTwoFactor\UserTwoFactorRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 use PragmaRX\Google2FA\Google2FA;
+use Modules\Auth\Repositories\UserTwoFactor\UserTwoFactorRepositoryInterface;
+use Throwable;
 
 class TwoFactorService
 {
     protected Google2FA $google2fa;
-
-    public function __construct(protected UserTwoFactorRepositoryInterface $userTwoFactorRepository)
-    {
+     
+    public function __construct(protected UserTwoFactorRepositoryInterface $repository) {
         $this->google2fa = new Google2FA();
-    }
+     }
 
-    public function generateAllFactors(int $userId, int $ttlMinutes = 5): array
+    /**
+     * Generate all verification factors for a user (email, sms, app)
+     */
+    // public function generateAllFactors(int $userId, int $ttlMinutes = 5): array
+    // {
+    //     $now = now();
+    //     $expiresAt = Carbon::now()->addMinutes($ttlMinutes);
+
+    //     $records = [
+    //         $this->buildFactor($userId, 'email', random_int(100000, 999999), $expiresAt, $now),
+    //         $this->buildFactor($userId, 'sms', random_int(100000, 999999), $expiresAt, $now),
+    //         $this->buildFactor($userId, 'app', null, null, $now, $this->google2fa->generateSecretKey()),
+    //     ];
+
+    //     UserTwoFactor::insert($records);
+
+    //     return [
+    //         'email_otp'  => $records[0]['raw_otp'],
+    //         'sms_otp'    => $records[1]['raw_otp'],
+    //         'app_secret' => $records[2]['secret'],
+    //     ];
+    // }
+
+    /**
+     * Handle resending a verification code
+     */
+    public function resendCode(int $userId, string $method, int $ttlMinutes = 5, string $action = 'resend')
     {
-        $otpEmail = random_int(100000, 999999);
-        $otpSms   = random_int(100000, 999999);
-        $expiresAt = Carbon::now()->addMinutes($ttlMinutes);
-        $secret = $this->google2fa->generateSecretKey();
+         try {
+            $record = $this->repository->getByUserAndMethod($userId, $method);
 
+            if (!$record) {
+                return $this->response(false, 'No verification record found.');
+            }
 
-        $now = now();
+            if ($record->is_verified && $action === 'resend') {
+                return $this->response(false, 'This method is already verified.');
+            }
 
-        $records = [
-            [
-                'user_id'        => $userId,
-                'method'         => 'email',
-                'otp_code'       => bcrypt((string)$otpEmail),
-                'otp_expires_at' => $expiresAt,
-                'secret'         => null,
-                'is_verified'    => false,
-                'created_at'     => $now,
-                'updated_at'     => $now,
-            ],
-            [
-                'user_id'        => $userId,
-                'method'         => 'sms',
-                'otp_code'       => bcrypt((string)$otpSms),
-                'otp_expires_at' => $expiresAt,
-                'secret'         => null,
-                'is_verified'    => false,
-                'created_at'     => $now,
-                'updated_at'     => $now,
-            ],
-            [
-                'user_id'        => $userId,
-                'method'         => 'app',
-                'otp_code'       => null,
-                'otp_expires_at' => null,
-                'secret'         => $secret,
-                'is_verified'    => false,
-                'created_at'     => $now,
-                'updated_at'     => $now,
-            ],
-        ];
-
-        UserTwoFactor::insert($records);
-
-        return [
-            'email_otp'  => $otpEmail,
-            'sms_otp'    => $otpSms,
-            'app_secret' => $secret,
-        ];
-    }
-
-
-    public function resendCode(int $userId, string $method, int $ttlMinutes = 5, $type='resend'): array
-    {
-        $record = $this->userTwoFactorRepository->getByUserAndMethod($userId, $method);
-
-        if (!$record) {
-            return [
-                'success' => false,
-                'message' => 'No verification record found.'
-            ];
-        }
-
-        if ($record->is_verified && $type=='resend') {
-            return [
-                'success' => false,
-                'message' => 'This method is already verified.'
-            ];
-        }
-
-        if ($method === 'email' || $method === 'sms') {
-            $otp = random_int(100000, 999999);
-            $record->update([
-                'otp_code' => bcrypt((string)$otp),
-                'otp_expires_at' => now()->addMinutes($ttlMinutes),
-                'is_verified' => false,
+            return match ($method) {
+                'email', 'sms' => $this->handleOtpResend($record, $ttlMinutes),
+                'app'          => $this->response(false, 'App-based verification cannot be resent.'),
+                default         => $this->response(false, 'Unsupported verification method.'),
+            };
+        } catch (Throwable $e) {
+            Log::error('TwoFactorService::resendCode failed', [
+                'user_id' => $userId,
+                'method'  => $method,
+                'error'   => $e->getMessage(),
             ]);
 
-            return [
-                'success' => true,
-                'otp' => (string)$otp,
-                'message' => 'Verification code resent successfully.'
-            ];
+            return $this->response(false, 'An internal error occurred while resending the verification code.');
         }
-
-        return [
-            'success' => false,
-            'message' => 'Invalid method for resending code.'
-        ];
     }
 
+    /**
+     * Resend OTP logic (shared between email & sms)
+     */
+    private function handleOtpResend($record, int $ttlMinutes): array
+    {
+        $otp = random_int(100000, 999999);
 
-   
+        $record->update([
+            'otp_code'       => bcrypt((string)$otp),
+            'otp_expires_at' => now()->addMinutes($ttlMinutes),
+            'is_verified'    => false,
+        ]);
+
+        return $this->response(true, 'Verification code resent successfully.', [
+            'otp' => (string)$otp,
+        ]);
+    }
+
+    /**
+     * Helper to create a verification record
+     */
+    
+    /**
+     * Unified response helper
+     */
+    private function response(bool $success, string $message, array $extra = []): array
+    {
+        return array_merge([
+            'success' => $success,
+            'message' => $message,
+        ], $extra);
+    }
 }

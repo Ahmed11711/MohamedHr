@@ -14,7 +14,7 @@ class VerificationRequest extends BaseValidation
         return [
             'user_id' => 'required|exists:users,id',
             'method'  => 'required|string|in:email,sms,app',
-            'code'    => 'required|string',
+            'code'    => 'required|string|min:6|max:6',
         ];
     }
 

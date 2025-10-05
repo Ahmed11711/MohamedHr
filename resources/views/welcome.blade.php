@@ -8,7 +8,7 @@
   <h2>Scan this QR</h2>
   
   <img 
-    src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=otpauth://totp/MyApp:App@example.com?secret=6RHTQSTZ7QXSDERAFQWF5A7GAAT5I5WM&issuer=MyApp" 
+    src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=otpauth://totp/MyApp:App@example.com?secret=DHKE27SKKPH6SJK3CIF52PQDW4HO7FPK&issuer=MyApp" 
     alt="QR Code">
 </body>
 </html>
