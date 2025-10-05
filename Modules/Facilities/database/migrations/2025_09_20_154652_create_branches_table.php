@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('registration_number');
-            $table->text('address');
-
-            $table->integer('branch_types_id');
-            $table->date('registration_start_date');
-            $table->date('registration_end_date');
-            $table->integer('facility_attachments_id');
+            $table->string('img')->nullable();
+            $table->string('unified_national_number')->nullable();
+            $table->string('company_name_ar');
+            $table->string('company_name_en');
+            $table->integer('company_type_id');
+            $table->integer('company_size_id');
+            $table->integer('company_headquarters_id');
+            $table->integer('company_activities_id');
 
             $table->timestamps();
         });

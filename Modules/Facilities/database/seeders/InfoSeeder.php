@@ -10,6 +10,7 @@ class InfoSeeder extends Seeder
     public function run(): void
     {
         DB::table('info_Facilities')->insert([
+
             [
             'infoable_type' => 'Facilities',
             'title' => '{"en":"Facilities","ar":"مرافق"}',
@@ -120,4 +121,10 @@ class InfoSeeder extends Seeder
         ]
         ]);
     }
-}
+
+
+
+        
+        
+        }
+ 

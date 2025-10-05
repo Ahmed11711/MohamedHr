@@ -24,16 +24,6 @@ class branches extends Model
     // }
 
 
-    public function branchTypes()
-    {
-        return $this->belongsTo(BranchType::class, 'branch_types_id');
-    }
-
-
-
-    public function facilityAttachments()
-    {
-        return $this->belongsTo(FacilityAttachments::class, 'facility_attachments_id','reference_number');
-    }
+   
 
 }
